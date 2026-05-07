@@ -1,0 +1,130 @@
+# DataLens AI — Excel Analyzer
+# One prompt per line. Lines starting with # are ignored.
+
+# ── General Analysis
+Identify key trends and patterns across all uploaded files
+List all open issues, risks, and action items with priority
+Provide strategic recommendations based on the data
+Highlight anomalies, outliers, or data quality issues
+
+# ── Add your custom prompts below:
+# Compare performance metrics across all sheets
+# Find all records where values exceed thresholds
+# Identify missing or incomplete data fields
+# Summarize month-over-month or year-over-year changes
+#GL review points
+1.	Scan for "debit" balances in liability accounts or "credit" balances in asset accounts (e.g., a negative bank balance or negative accounts payable).
+2.	Ensure that the beginning balances match the audited ending balances of the previous year.
+3.	If there are long-term loans between related parties, ensure interest is being imputed or recorded according to local tax laws.
+4.	Scan the GL for vendors like Amazon, local grocery stores, or luxury retailers that might indicate personal spending being buried in business expenses.
+5.	Ensure that the intermediary accounts, like payroll clearing & undeposited funds, should be cleared out every time. If there’s a balance at the end of a period, we need to search for the cause.
+6.	Periodically review the Fixed Asset Ledger to see if you are still depreciating items you no longer own.
+7.	Verify that the "Accumulated Depreciation" on the Balance Sheet increased by exactly the amount of "Depreciation Expense" on the P&L.
+8.	Look at large repairs or supplies expenses. If a single item exceeds your company’s capitalization threshold (e.g., $2,500), it should likely be moved to the Balance Sheet as a Fixed Asset.
+9.	Ensure revenue is recorded in the period it was earned, not just when the cash was received.
+10.	Ensure every bank account is reconciled, and that "Outstanding Checks" aren't months old.
+11.	The total of your Accounts Receivable (AR) and Accounts Payable (AP) aging reports must match the GL balance exactly.
+12.	Ensure that all the recurring invoices for utility expenses, telephone expenses, etc. are recorded for all periods & not missed out.
+13.	Ensure that advances to vendors match exactly with the AP Aging report for the period.
+14.	Review the vendor-wise transaction report to make sure that the expenses for a particular vendor are coded in the same GL each time.
+15.	Flagging if the Net Income on the P&L doesn't match the Retained Earnings change on the BS.
+16.	Identifying spikes, missing accruals, or unusual manual journals.
+
+
+
+
+17.	The Three-Way Match (Integrity Check)
+TB vs. GL: Does the sum of the General Ledger transactions match the Trial Balance?
+BS vs. P&L: Does the movement in equity and debt accounts align with cash flow and interest expense?
+18.	Flagging any expense line item that has grown significantly as a percentage of revenue compared to the prior year.
+19.	Identifying manual journal entries made on non-working days.
+20.	Flagging large, round-sum transactions (e.g., exactly ) which often indicate estimates rather than actual invoices.
+21.	Searching GL descriptions for "Suspense," "Misc," or "Adjustment" to find hidden errors.
+
+
+Comparative P&L (monthly) analysis
+1.	Compare Month-over-Month (MoM) and Year-over-Year (YoY) performance. Highlight any revenue or expense fluctuations exceeding 10%
+2.	Identify unusual spikes in the GL that do not align with historical monthly patterns (e.g., a sudden jump in 'Repairs & Maintenance' without a corresponding increase in operations).
+3.	Flag potential misclassifications (e.g., Capital Expenditure items coded as Operating Expenses in the GL).
+4.	Identify months where recurring expenses (like Rent or Utilities) are missing, suggesting missed accruals or double-billing.
+5.	Flag any significant drops in Gross Margin or Operating Margin % that require a 'Management Explanation.'
+6.	Review the last 3-5 days of the month. Did a large sale get recorded on the 31st that actually belongs in the next month?
+7.	If your gross margin decreased as compared to the prior month, check for the below points:
+•	Did a major supplier raise prices without you noticing?
+•	Did an operating expense (like office rent) get accidentally coded into COGS?
+•	Watch for large "Shrinkage" or "Write-off" entries that might be distorting the monthly profit.
+8.	Scan for accounts with a $0 balance that had a balance last month (e.g., Utilities, Rent, Janitorial). Did the bill not arrive, or did the autopay fail?
+9.	Look for accounts that exactly doubled. It’s easy to accidentally pay an invoice twice or sync a bank feed twice.
+10.	Review if the payroll taxes are still a consistent percentage of gross wages. 
+11.	Compare the ratio analysis for both months to have a proper analytical view.
+12.	Unless it’s a refund, an expense account should never have a "Credit" (negative) balance.
+
+Present your findings in a structured table with the following columns:
+•	Area of Concern: (e.g., Travel Expenses)
+•	Observation: (The specific data point found)
+•	Risk Level: (High/Medium/Low)
+•	Audit Inquiry: (The specific question I should ask the department head)
+•	Action Required: (Suggested correction or investigation step)
+
+
+Comparative P&L (YTD) analysis
+1.	Identify all line items where YTD Actuals exceed the YTD Budget by more than 10%. Highlight 'Run-Rate' risks—if we continue at this pace, which accounts will be depleted before year-end?
+2.	Compare this year's YTD to last year's YTD. Identify margin erosion (e.g., if Revenue grew 10% but Cost of Goods Sold grew 20%).
+3.	Scan the General Ledger for large YTD totals in 'Miscellaneous' or 'Other' accounts that should be reclassified to specific P&L lines for better transparency.
+4.	Based on GL entries, flag if a disproportionate amount of YTD revenue is coming from a single source or if credit notes/refunds are trending higher than the prior YTD.
+5.	Ensure that large annual contracts billed in a particular month aren't all sitting in "That Month’s Revenue." They should be spread across the YTD months via a Deferred Revenue account.
+6.	Look for expense categories where the YTD actual is already approaching the Full Year Budget.
+7.	Ensure that as YTD Revenue grows, "Fixed Costs" (Rent, Salaries, Insurance) should stay relatively flat.
+8.	Divide YTD Revenue by average YTD Headcount. Compare this to the prior year. A declining ratio suggests the company is over-hiring relative to its growth.
+9.	Focus on "Earnings Before Interest, Taxes, Depreciation, and Amortization." This is the true measure of YTD operational health.
+10.	Identify "one-time" expenses (e.g., a legal settlement or a rebranding project). These should be flagged so they don't skew the "normalized" YTD projections.
+11.	Scan for "lumpy" expenses. If "Property Tax" or "Annual Insurance" shows $0 YTD but had a large balance last YTD, an accrual entry was likely missed.
+
+Provide a summary report categorized by:
+•	Critical Budget Overruns: (Accounts at risk of exceeding annual limits)
+•	Efficiency Gains/Losses: (Where YTD margins have improved or declined YoY)
+•	Audit Red Flags: (Cumulative anomalies that suggest bookkeeping errors or potential fraud)
+•	Forecast Projection: (A brief 'at-this-rate' outlook for the remainder of the fiscal year)
+
+
+Balance Sheet (YTD) analysis
+1.	Calculate and compare the Current Ratio and Quick Ratio against the prior year. Flag any significant drops in liquidity.
+2.	Identify if AR is growing faster than Revenue (potential collection issues).
+3.	Flag any 'Stale' payables (balances older than 90 days) that haven't moved.
+4.	Scan the Fixed Asset registers in the GL for large purchases. Flag any high-value items that should have been capitalized but were expensed, or assets with no depreciation movement YTD.
+5.	Check for 'Debit Balances' in Liability accounts (which usually indicate overpayments or mapping errors).
+6.	Verify if the YTD Net Income from the P&L correctly flows into the Retained Earnings on the Balance Sheet. Highlight any manual adjustments to Equity that lack a clear GL description.
+7.	Identify 'Suspense' or 'Clearing' accounts that have non-zero balances. These are immediate audit red flags.
+8.	Flag any Asset accounts with a credit balance (e.g., negative Bank or negative Accounts Receivable) and any Liability accounts with a debit balance (e.g., negative Accounts Payable).
+
+
+9.	Analyze the Accrued Liabilities and Prepaid Expenses accounts. Flag any account where the balance has remained 'Static' (unchanged) for more than three months. This suggests that monthly amortizations or accrual reversals are not being performed, leading to distorted P&L monthly performance.
+10.	Identify all Intercompany Loan or Due to/from Shareholder accounts. Flag any significant YTD increases in these balances that lack a clear repayment schedule or interest calculation.
+11.	Compare the Allowance for Doubtful Accounts against the total Accounts Receivable balance. If AR has grown YTD but the Allowance remains flat, flag this as an 'Under-provisioning Risk.
+12.	Check Inventory Reserves against YTD inventory growth to ensure valuation reflects potential obsolescence.
+13.	If Equity is shrinking (due to YTD losses or high distributions/dividends) while Debt remains flat, the ratio will spike. This indicates the business is becoming "fragile" and may struggle to get future financing
+
+
+AR Aging analysis
+1.	Identify any single customer who represents more than 20% of the total outstanding balance. Flag this as a 'Dependency Risk.
+2.	Compare the current aging buckets to the prior month. If the 90+ day bucket is growing faster than the 0-30 day bucket, flag this as a 'Collection Failure.'
+3.	Highlight specific invoices older than 90 days that have had no partial payments or communication notes in the GL.
+4.	Cross-reference the GL or Customer Master Data. Flag any customers whose total outstanding balance exceeds their assigned credit limit.
+5.	Identify 'Negative Balances' in the AR Aging. These usually indicate payments received but not matched to an invoice, which distorts the true aging.
+6.	Flag customers who pay newer invoices but leave older ones unpaid; this often indicates a hidden pricing or quality dispute.
+7.	Reconcile the balance of AR Aging report with that of the Accounts Receivable balance in the Balance Sheet.
+
+
+
+AP Aging analysis
+1.	Identify any single vendor representing more than 20% of total payables. Flag this as a 'Supply Chain Risk' if we are overly dependent on one provider.
+2.	Scan the GL/Invoices for terms like '2/10 Net 30.' Identify how much we could save in 'Early Payment Discounts' if we shifted payments.
+3.	Search the GL for keywords like 'Late Fee,' 'Interest,' or 'Penalty.' Cross-reference these with the aging report to see which vendors are costing us extra due to slow processing.
+4.	Flag any 'Debit Balances' (Negative AP). These usually indicate overpayments, unapplied vendor credits, or returned goods that haven't been refunded
+5.	Identify balances older than 90 days. Also determine if these are invoices already paid via a different method but not cleared from the sub-ledger.
+6.	Scan for identical amounts paid to the same vendor within a 30-day window to flag potential double-payments.
+7.	Reconcile the balance of AP Aging report with that of the Accounts Payables balance in the Balance Sheet.
+
+
+
+

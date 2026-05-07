@@ -1,0 +1,27 @@
+Download the files
+
+App: excel_review_dashboard.py
+Requirements: requirements.txt
+
+
+These are generated for you and ready to run.
+
+
+How to run (step-by-step)
+
+Works on Windows/Mac/Linux. Requires Python 3.10+.
+
+
+Create a folder and put the two files inside it.
+Open a terminal in that folder and create a virtual environment (recommended):
+Shellpython -m venv .venv# Activate it# Windows.venv\Scripts\activate# macOS / Linuxsource .venv/bin/activateShow more lines
+
+Install dependencies:
+Shellpip install -r requirements.txtShow more lines
+
+Start the app:
+Shellstreamlit run excel_review_dashboard.pyShow more lines
+
+Your browser will open the dashboard. Upload your files, enter a prompt, and click Analyze.
+
+
