@@ -1,0 +1,37 @@
+{
+  "_description": "Edit this file ONCE with your business details. The app reads it on every run.",
+
+  "business_info": {
+    "business_name": "Your Business Name LLC",
+    "dba_name": "",
+    "certificate_number": "00-0000000000-0",
+    "business_partner_number": "0000000",
+    "fein": "00-0000000",
+    "physical_address": "211 Rayburn Rd",
+    "city": "Plant City",
+    "state": "FL",
+    "zip": "33566",
+    "county": "Hillsborough",
+    "phone": "555-555-5555"
+  },
+
+  "filing_preferences": {
+    "filing_frequency": "monthly",
+    "files_electronically": true,
+    "pays_electronically": true,
+    "required_estimated_tax": false,
+    "donate_collection_allowance_to_education": false
+  },
+
+  "active_lines": {
+    "_description": "Line A (regular sales/services) is the only active line for this configuration.",
+    "line_a_sales_services": true,
+    "line_b_use_tax_purchases": false,
+    "line_c_commercial_rentals": false,
+    "line_d_transient_rentals": false,
+    "line_e_food_beverage_vending": false,
+    "line_17_electricity": false,
+    "line_18_dyed_diesel": false,
+    "line_19_amusement_machines": false
+  }
+}

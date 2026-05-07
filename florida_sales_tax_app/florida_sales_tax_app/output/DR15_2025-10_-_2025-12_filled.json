@@ -1,0 +1,76 @@
+{
+  "reporting_period": "2025-10 to 2025-12",
+  "county": "Hillsborough",
+  "surtax_rate": 0.015,
+  "line_a": {
+    "label": "A. Sales/Services/Electricity",
+    "gross_sales": "129663.87",
+    "exempt_sales": "17729.71",
+    "taxable_amount": "111934.16",
+    "tax_due": "8301.97",
+    "state_tax": "6716.09",
+    "surtax": "1585.92"
+  },
+  "line_b": {
+    "label": "B. Taxable Purchases (Use Tax)",
+    "gross_sales": "0.00",
+    "exempt_sales": "0.00",
+    "taxable_amount": "0.00",
+    "tax_due": "0.00",
+    "state_tax": "0.00",
+    "surtax": "0.00"
+  },
+  "line_c": {
+    "label": "C. Commercial Rentals",
+    "gross_sales": "0.00",
+    "exempt_sales": "0.00",
+    "taxable_amount": "0.00",
+    "tax_due": "0.00",
+    "state_tax": "0.00",
+    "surtax": "0.00"
+  },
+  "line_d": {
+    "label": "D. Transient Rentals",
+    "gross_sales": "0.00",
+    "exempt_sales": "0.00",
+    "taxable_amount": "0.00",
+    "tax_due": "0.00",
+    "state_tax": "0.00",
+    "surtax": "0.00"
+  },
+  "line_e": {
+    "label": "E. Food & Beverage Vending",
+    "gross_sales": "0.00",
+    "exempt_sales": "0.00",
+    "taxable_amount": "0.00",
+    "tax_due": "0.00",
+    "state_tax": "0.00",
+    "surtax": "0.00"
+  },
+  "line_5_total_tax_due": 8301.97,
+  "line_6_lawful_deductions": 0.0,
+  "line_7_net_tax_due": 8301.97,
+  "line_8_est_tax_paid_credits": 0.0,
+  "line_9_est_tax_due_current": 0.0,
+  "line_10_amount_due": 8301.97,
+  "line_11_collection_allowance": 30.0,
+  "line_12_penalty": 0.0,
+  "line_13_interest": 0.0,
+  "line_14_amount_due_with_return": 8271.97,
+  "line_15a_exempt_over_5000": 1935.69,
+  "line_15b_other_not_subject_to_surtax": 0.0,
+  "line_15c_different_surtax_rate_amount": 14325.17,
+  "line_15d_total_surtax_due": 1585.92,
+  "line_16_scholarship_credits": 0.0,
+  "line_17_electricity_taxable": 0.0,
+  "line_18_dyed_diesel_taxable": 0.0,
+  "line_19_amusement_taxable": 0.0,
+  "line_20_high_crime_credits": 0.0,
+  "line_21_other_credits": 0.0,
+  "late_filing": false,
+  "warnings": [
+    "Under-collection detected: Shopify collected $7860.10 but $8301.97 is owed ($441.87 short). You must remit the full calculated amount and absorb the shortfall. Check that Shopify is configured to charge the county surtax."
+  ],
+  "shopify_tax_collected": 7860.1,
+  "tax_gap": 441.87
+}

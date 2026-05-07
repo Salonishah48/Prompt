@@ -1,0 +1,169 @@
+{
+  "_description": "Florida DR-15 Sales & Use Tax rules. Edit this file to update rates/rules when FDOR publishes changes. Source: DR-15N R. 10/25 + Florida Sales Tax Compliance Guide.",
+  "_last_updated": "2026-04-21",
+  "_source_forms": ["DR-15N R. 10/25", "DR-15DSS (Discretionary Surtax)"],
+
+  "state_rates": {
+    "general_sales_tax": 0.06,
+    "electricity": 0.0695,
+    "amusement_machines": 0.04,
+    "new_mobile_homes": 0.07,
+    "commercial_rentals": {
+      "_note": "Repealed effective October 1, 2025 per TIP 25A01-04",
+      "repealed": true,
+      "repeal_date": "2025-10-01",
+      "pre_repeal_rate": 0.02
+    },
+    "transient_rentals": 0.06,
+    "dyed_diesel_fuel": 0.06
+  },
+
+  "surtax_rules": {
+    "_note": "Discretionary Sales Surtax is county-level; verify current rates at DR-15DSS each year.",
+    "single_item_cap_tpp": 5000,
+    "cap_applies_to": "tangible_personal_property_single_item",
+    "cap_exemptions": ["transient_rentals", "services", "commercial_rent"],
+    "collection_basis": "destination"
+  },
+
+  "county_surtax_rates_2026": {
+    "_note": "Representative 2026 rates. Update annually from DR-15DSS. Add/remove counties as needed.",
+    "Alachua": 0.015,
+    "Baker": 0.01,
+    "Bay": 0.01,
+    "Bradford": 0.01,
+    "Brevard": 0.01,
+    "Broward": 0.01,
+    "Calhoun": 0.015,
+    "Charlotte": 0.01,
+    "Citrus": 0.0,
+    "Clay": 0.015,
+    "Collier": 0.0,
+    "Columbia": 0.015,
+    "DeSoto": 0.015,
+    "Dixie": 0.01,
+    "Duval": 0.015,
+    "Escambia": 0.015,
+    "Flagler": 0.01,
+    "Franklin": 0.015,
+    "Gadsden": 0.015,
+    "Gilchrist": 0.01,
+    "Glades": 0.01,
+    "Gulf": 0.01,
+    "Hamilton": 0.015,
+    "Hardee": 0.01,
+    "Hendry": 0.015,
+    "Hernando": 0.005,
+    "Highlands": 0.015,
+    "Hillsborough": 0.015,
+    "Holmes": 0.015,
+    "Indian_River": 0.01,
+    "Jackson": 0.015,
+    "Jefferson": 0.01,
+    "Lafayette": 0.01,
+    "Lake": 0.01,
+    "Lee": 0.005,
+    "Leon": 0.015,
+    "Levy": 0.01,
+    "Liberty": 0.015,
+    "Madison": 0.015,
+    "Manatee": 0.01,
+    "Marion": 0.01,
+    "Martin": 0.005,
+    "Miami_Dade": 0.01,
+    "Monroe": 0.015,
+    "Nassau": 0.01,
+    "Okaloosa": 0.005,
+    "Okeechobee": 0.01,
+    "Orange": 0.005,
+    "Osceola": 0.015,
+    "Palm_Beach": 0.01,
+    "Pasco": 0.01,
+    "Pinellas": 0.01,
+    "Polk": 0.015,
+    "Putnam": 0.01,
+    "Santa_Rosa": 0.01,
+    "Sarasota": 0.01,
+    "Seminole": 0.01,
+    "St_Johns": 0.005,
+    "St_Lucie": 0.01,
+    "Sumter": 0.01,
+    "Suwannee": 0.01,
+    "Taylor": 0.01,
+    "Union": 0.01,
+    "Volusia": 0.005,
+    "Wakulla": 0.015,
+    "Walton": 0.01,
+    "Washington": 0.015
+  },
+
+  "vending_divisors": {
+    "_note": "From DR-15N page 4 & 5. Used to back out tax from tax-inclusive vending receipts.",
+    "amusement": {
+      "0.060": 1.040,
+      "0.065": 1.045,
+      "0.070": 1.050,
+      "0.075": 1.055,
+      "0.080": 1.060,
+      "0.085": 1.065
+    },
+    "other_vended_items": {
+      "0.060": 1.0659,
+      "0.065": 1.0707,
+      "0.070": 1.0749,
+      "0.075": 1.0791,
+      "0.080": 1.0833,
+      "0.085": 1.0875
+    },
+    "food_and_beverage": {
+      "0.060": 1.0645,
+      "0.065": 1.0686,
+      "0.070": 1.0726,
+      "0.075": 1.0767,
+      "0.080": 1.0808,
+      "0.085": 1.0849
+    }
+  },
+
+  "collection_allowance": {
+    "_note": "Only available when filing AND paying electronically AND on time.",
+    "rate": 0.025,
+    "applies_to_first": 1200,
+    "max_allowance": 30.00
+  },
+
+  "penalty_and_interest": {
+    "late_penalty_percent": 0.10,
+    "minimum_late_penalty": 50.00,
+    "_interest_note": "Florida uses a floating rate updated Jan 1 and Jul 1. Set current daily rate here when needed.",
+    "current_annual_interest_rate": 0.12,
+    "interest_effective_date": "2026-01-01"
+  },
+
+  "estimated_tax": {
+    "_note": "Required if $200,000+ in sales & use tax remitted in prior state fiscal year (Jul 1 - Jun 30).",
+    "threshold_prior_year_tax": 200000,
+    "estimate_percentage": 0.60,
+    "underpayment_penalty_percent": 0.10
+  },
+
+  "filing_frequency": {
+    "_note": "Assigned by FDOR based on annual sales tax collected.",
+    "monthly": {"min_annual_tax": 1000.01, "max_annual_tax": null},
+    "quarterly": {"min_annual_tax": 501, "max_annual_tax": 1000},
+    "semi_annually": {"min_annual_tax": 101, "max_annual_tax": 500},
+    "annually": {"min_annual_tax": 0, "max_annual_tax": 100}
+  },
+
+  "economic_nexus": {
+    "threshold_remote_sales": 100000,
+    "period": "previous_calendar_year",
+    "effective_date": "2021-07-01"
+  },
+
+  "due_dates": {
+    "return_due": "1st of month following reporting period",
+    "late_after": "20th of month following reporting period",
+    "electronic_init_deadline": "5 p.m. ET on business day BEFORE the 20th"
+  }
+}
