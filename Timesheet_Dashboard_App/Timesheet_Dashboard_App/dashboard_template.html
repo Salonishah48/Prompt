@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infinity Globus — Timesheet Efficiency Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f5f6fa;color:#1e293b;min-height:100vh}
+.header{background:linear-gradient(135deg,#0b1a2e,#132e52,#1b4b7a);padding:14px 24px 0;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.logo-area{display:flex;align-items:center;gap:12px}
+.logo-box{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#2563eb);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px}
+.header-title{color:#fff;font-size:17px;font-weight:700}
+.header-sub{color:rgba(255,255,255,.55);font-size:11px;margin-top:1px}
+.header-pills{display:flex;gap:8px}
+.header-pill{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);padding:4px 12px;border-radius:16px;font-size:11px;font-weight:500}
+.header-pill.green{background:rgba(16,185,129,.15);color:#6ee7b7}
+.tabs{display:flex;gap:0}
+.tab{padding:10px 18px;color:rgba(255,255,255,.6);font-size:12.5px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:.15s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tab:hover{color:rgba(255,255,255,.85)}
+.tab.active{color:#fff}
+.tab .badge{background:rgba(255,255,255,.18);padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600}
+.tab[data-tab="0"].active{border-color:#3b82f6}
+.tab[data-tab="1"].active{border-color:#0d9488}
+.tab[data-tab="2"].active{border-color:#d97706}
+.tab[data-tab="3"].active{border-color:#7c3aed}
+.content{padding:16px 20px}
+.tab-content{display:none;animation:fadeUp .3s ease}
+.tab-content.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.kpi-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-card:nth-child(1)::before{background:#1e293b}
+.kpi-card:nth-child(2)::before{background:#15803d}
+.kpi-card:nth-child(3)::before{background:#7c3aed}
+.kpi-card:nth-child(4)::before{background:#b45309}
+.kpi-card:nth-child(5)::before{background:#0d9488}
+.kpi-card:nth-child(6)::before{background:#3b82f6}
+.kpi-label{font-size:10px;text-transform:uppercase;color:#94a3b8;letter-spacing:.7px;font-weight:600}
+.kpi-value{font-size:26px;font-weight:700;font-family:'DM Mono',monospace;margin-top:4px}
+.kpi-value.green{color:#15803d}.kpi-value.purple{color:#7c3aed}.kpi-value.amber{color:#b45309}.kpi-value.teal{color:#0d9488}
+.panel{background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:16px}
+.panel-header{background:#1e293b;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
+.panel-title{color:#fff;font-size:14px;font-weight:700}
+.panel-sub{color:#64748b;font-size:10.5px;margin-top:2px}
+.chips-bar{background:#f8fafc;padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid #e5e7eb}
+.chip{padding:4px 12px;border-radius:16px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid #e2e5ea;background:#fff;color:#64748b;transition:.15s}
+.chip.active{color:#fff;border-color:transparent}
+.btn-export{background:linear-gradient(135deg,#15803d,#22c55e);color:#fff;border:none;padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px}
+.btn-export:hover{filter:brightness(1.1)}
+.btn-xls{background:linear-gradient(135deg,#15803d,#22c55e);color:#fff;border:none;padding:4px 9px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
+.btn-xls:hover{filter:brightness(1.1)}
+table{width:100%;border-collapse:collapse}
+thead th{background:#15803d;color:#dcfce7;font-size:10px;text-transform:uppercase;font-weight:700;letter-spacing:.5px;padding:8px 10px;text-align:left;position:sticky;top:0;z-index:2;cursor:pointer;white-space:nowrap;user-select:none}
+thead th:hover{background:#166534}
+tbody tr{border-bottom:1px solid #f1f5f9}
+tbody tr:nth-child(even){background:#f8fafc}
+tbody tr:hover{background:#eff6ff}
+td{padding:7px 10px;font-size:12.5px;color:#334155}
+td.num{font-family:'DM Mono',monospace;font-size:12px;color:#475569;text-align:right}
+td.clickable{color:#2563eb;font-weight:600;cursor:pointer}
+td.clickable:hover{text-decoration:underline}
+tfoot td{background:#14532d;color:#bbf7d0;font-weight:700;font-size:12px;padding:8px 10px;position:sticky;bottom:0;border-top:2px solid #15803d}
+tfoot td.num{color:#bbf7d0}
+.dept-pill{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;color:#fff;white-space:nowrap}
+.eff-bar{display:inline-flex;align-items:center;gap:6px}
+.eff-track{width:36px;height:4px;background:#e5e7eb;border-radius:2px;overflow:hidden}
+.eff-fill{height:100%;border-radius:2px}
+.eff-pct{font-family:'DM Mono',monospace;font-size:12px;font-weight:700}
+.t1-badge{display:inline-block;background:#0d9488;color:#fff;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;margin-left:4px;vertical-align:middle}
+.zero-badge{display:inline-block;background:#dc2626;color:#fff;padding:1px 6px;border-radius:3px;font-size:9px;font-weight:700;margin-left:4px}
+.person-icon{color:#94a3b8;margin-right:4px;font-size:12px}
+.modal-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,.5);backdrop-filter:blur(3px);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:12px;width:95%;max-width:1180px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,.25)}
+.modal-hdr{background:#1e293b;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:12px 12px 0 0}
+.modal-hdr-left{display:flex;flex-direction:column;gap:2px}
+.modal-hdr .modal-title{color:#fff;font-size:15px;font-weight:700}
+.modal-hdr .breadcrumb{color:#94a3b8;font-size:11px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.breadcrumb .bc-link{color:#60a5fa;cursor:pointer}
+.breadcrumb .bc-link:hover{text-decoration:underline}
+.breadcrumb .dept-tag{background:rgba(59,130,246,.2);color:#60a5fa;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600}
+.modal-hdr-right{display:flex;align-items:center;gap:10px}
+.btn-close{width:30px;height:30px;border-radius:6px;background:transparent;border:1px solid #475569;color:#94a3b8;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.btn-close:hover{background:#dc2626;border-color:#dc2626;color:#fff}
+.modal-body{padding:14px;overflow-y:auto;flex:1}
+.modal-body .kpi-strip{grid-template-columns:repeat(6,1fr)}
+.search-box{width:260px;padding:7px 12px;border:1px solid #e2e5ea;border-radius:6px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px}
+.search-box:focus{border-color:#3b82f6}
+.table-wrap{overflow-x:auto;max-height:55vh;overflow-y:auto;position:relative}
+.dept-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.dept-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;cursor:pointer;transition:.15s}
+.dept-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px)}
+.dept-card-accent{height:4px}
+.dept-card-body{padding:14px 16px}
+.dept-card-name{font-size:13px;font-weight:700;color:#1e293b;margin-bottom:6px}
+.dept-card-eff{font-size:28px;font-weight:700;font-family:'DM Mono',monospace;margin:4px 0}
+.dept-card-bar{width:100%;height:5px;background:#e5e7eb;border-radius:3px;margin:6px 0 10px;overflow:hidden}
+.dept-card-bar-fill{height:100%;border-radius:3px}
+.dept-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.dept-card-stat{text-align:center}
+.dept-card-stat-val{font-size:13px;font-weight:600;font-family:'DM Mono',monospace}
+.dept-card-stat-label{font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:.3px}
+.dept-card-emp{font-size:11px;color:#64748b;margin-bottom:4px}
+.dept-card-link{font-size:11px;color:#2563eb;margin-top:8px;font-weight:600}
+.no-data{text-align:center;padding:40px;color:#94a3b8;font-size:14px}
+@media(max-width:1200px){.kpi-strip{grid-template-columns:repeat(3,1fr)}.dept-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.kpi-strip{grid-template-columns:repeat(2,1fr)}.dept-cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header">
+ <div class="header-top">
+  <div class="logo-area">
+   <div class="logo-box">IG</div>
+   <div><div class="header-title">Infinity Globus — Timesheet Efficiency Dashboard</div>
+   <div class="header-sub">Organization-wide efficiency tracking &amp; analytics</div></div>
+  </div>
+  <div class="header-pills">
+   <div class="header-pill" id="dateRangePill"></div>
+   <div class="header-pill green" id="empCountPill"></div>
+  </div>
+ </div>
+ <div class="tabs" id="tabBar"></div>
+</div>
+<div class="content" id="mainContent"></div>
+<div id="modalRoot"></div>
+
+<script>
+// Data injected by app.py
+const S=__S_DATA__;
+const M=__M_DATA__;
+const DEPT_COLORS=__DEPT_COLORS__;
+const DEPT_SHORT=__DEPT_SHORT__;
+const CORE_DEPTS=__CORE_DEPTS__;
+const T1_RM_MAP=__T1_RM_MAP__;
+
+const n2=(v)=>v!=null?parseFloat(v).toFixed(2):'0.00';
+const dN=(d)=>DEPT_SHORT[d]||d;
+const dC=(d)=>DEPT_COLORS[d]||'#94a3b8';
+const isT1=(rm)=>!!T1_RM_MAP[rm];
+const rmD=(rm)=>T1_RM_MAP[rm]||rm;
+const t1T=(rm)=>isT1(rm)?'<span class="t1-badge">T1</span>':'';
+const dP=(d)=>'<span class="dept-pill" style="background:'+dC(d)+'">'+dN(d)+'</span>';
+const dPs=(ds)=>[...ds].map(d=>dP(d)).join(' ');
+function eBar(v){const p=Math.min(Math.max(v,0),200);const c=v>=80?'#15803d':v>=60?'#b45309':'#dc2626';return '<span class="eff-bar"><span class="eff-track"><span class="eff-fill" style="width:'+Math.min(p,100)+'%;background:'+c+'"></span></span><span class="eff-pct" style="color:'+c+'">'+n2(v)+'%</span></span>';}
+function effColor(v){return v>=80?'#15803d':v>=60?'#b45309':'#dc2626'}
+const mbe={};M.forEach(r=>{const k=r[5];if(!mbe[k])mbe[k]=[];mbe[k].push(r)});
+let activeTab=0;const filters={0:'All',1:'All',2:'All',3:'All'};const sorts={};
+const dates=M.map(r=>r[0]).filter(Boolean);
+document.getElementById('dateRangePill').textContent=(dates.length?dates.reduce((a,b)=>a<b?a:b):'')+' \u2192 '+(dates.length?dates.reduce((a,b)=>a>b?a:b):'');
+document.getElementById('empCountPill').textContent=S.length+' Employees';
+
+function agg(rows,keyFn){const map={};rows.forEach(r=>{const k=keyFn(r);if(!map[k])map[k]={key:k,rows:[],depts:new Set(),eids:new Set()};map[k].rows.push(r);map[k].depts.add(r[0]);map[k].eids.add(r[2])});return Object.values(map).map(g=>{const bill=g.rows.reduce((s,r)=>s+r[5],0);const nb=g.rows.reduce((s,r)=>s+r[6],0);const lv=g.rows.reduce((s,r)=>s+r[7],0);const tot=g.rows.reduce((s,r)=>s+r[8],0);const exp=g.rows.reduce((s,r)=>s+r[9],0);const eff=g.rows.reduce((s,r)=>s+r[10],0);const miss=g.rows.reduce((s,r)=>s+r[14],0);const be=eff>0?(bill/eff)*100:0;return{...g,emps:g.eids.size,bill,nb,lv,tot,exp,eff,miss,be}})}
+function filterRows(rows,dept){if(!dept||dept==='All')return rows;return rows.filter(r=>r[0]===dept)}
+function getDepts(rows){const ds={};rows.forEach(r=>{ds[r[0]]=(ds[r[0]]||0)+1});return Object.entries(ds).sort((a,b)=>a[0].localeCompare(b[0]))}
+
+function renderTabs(){const mc=S.filter(r=>r[14]>1).length;const lc=S.filter(r=>r[7]>0).length;const cc=CORE_DEPTS.reduce((s,d)=>s+S.filter(r=>r[0]===d).length,0);const counts=[S.length,cc,mc,lc];const icons=['\ud83c\udf10','\u2699\ufe0f','\u26a0\ufe0f','\ud83c\udf34'];const labels=['All Departments','Operations','Missing Time Entries','On Leave'];document.getElementById('tabBar').innerHTML=labels.map((l,i)=>'<div class="tab'+(i===activeTab?' active':'')+'" data-tab="'+i+'">'+icons[i]+' '+l+' <span class="badge">'+counts[i]+'</span></div>').join('')}
+
+function chips(tk,rows){const ds=getDepts(rows);const all=rows.length;const af=filters[tk];let h='<div class="chip'+(af==='All'?' active':'')+'" data-filter="All" data-tab="'+tk+'" style="'+(af==='All'?'background:#1e293b;color:#fff':'')+'">All ('+all+')</div>';ds.forEach(([d,c])=>{const act=af===d;h+='<div class="chip'+(act?' active':'')+'" data-filter="'+d+'" data-tab="'+tk+'" style="'+(act?'background:'+dC(d)+';color:#fff':'')+'">'+dN(d)+' ('+c+')</div>'});return '<div class="chips-bar">'+h+'</div>'}
+
+function kpis(rows){const emps=new Set(rows.map(r=>r[2])).size;const bill=rows.reduce((s,r)=>s+r[5],0);const nb=rows.reduce((s,r)=>s+r[6],0);const lv=rows.reduce((s,r)=>s+r[7],0);const eff=rows.reduce((s,r)=>s+r[10],0);const avgBe=eff>0?(bill/eff)*100:0;const cls=['','green','purple','amber','teal',''];const labels=['Employees','Billable Hrs','Non-Bill Hrs','Leave Hrs','Effective Hrs','Avg Bill Efficiency'];const vals=[emps,n2(bill),n2(nb),n2(lv),n2(eff),n2(avgBe)+'%'];return '<div class="kpi-strip">'+labels.map((l,i)=>'<div class="kpi-card"><div class="kpi-label">'+l+'</div><div class="kpi-value '+cls[i]+'" '+(i===5?'style="color:'+effColor(avgBe)+'"':'')+'>'+vals[i]+'</div></div>').join('')+'</div>'}
+
+function sortKey(t,c){return t+'_'+c}function getSort(t,c){return sorts[sortKey(t,c)]||0}function toggleSort(t,c){const k=sortKey(t,c);sorts[k]=sorts[k]===1?-1:1;return sorts[k]}function sortIcon(t,c){const s=getSort(t,c);return '<span style="font-size:9px;opacity:.5;margin-left:3px">'+(s===1?'\u25b2':s===-1?'\u25bc':'\u2195')+'</span>'}
+
+function csvEscape(v){if(v==null)return'';const s=String(v).replace(/"/g,'""');return s.includes(',')||s.includes('"')||s.includes('\n')?'"'+s+'"':s}
+function downloadXls(headers,rows,filename){let csv='\uFEFF'+headers.map(csvEscape).join(',')+'\n';rows.forEach(r=>{csv+=r.map(csvEscape).join(',')+'\n'});const blob=new Blob([csv],{type:'application/vnd.ms-excel'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click()}
+function exT1(t1Name,dept){let rows=S.filter(r=>r[1]===t1Name);if(dept&&dept!=='All')rows=rows.filter(r=>r[0]===dept);const headers=['Emp ID','Employee','Department','T1','RM','Billable','Non-Bill','Leave','Total','Expected','Effective','Bill Eff%','Missing'];const data=rows.map(r=>[r[2],r[3],r[0],r[1],r[4],n2(r[5]),n2(r[6]),n2(r[7]),n2(r[8]),n2(r[9]),n2(r[10]),n2(r[11])+'%',n2(r[14])]);downloadXls(headers,data,'T1_'+t1Name.replace(/[^a-zA-Z0-9]/g,'_')+'.xls')}
+
+function t1Table(tabId,rows){const grouped=agg(rows,r=>r[1]);const sk='t1tbl_'+tabId;for(const[k,dir] of Object.entries(sorts)){if(k.startsWith(sk+'_')){const col=k.split('_').pop();grouped.sort((a,b)=>{let va,vb;switch(col){case'0':va=a.key;vb=b.key;return dir*(va<vb?-1:va>vb?1:0);case'1':va=[...a.depts].join(',');vb=[...b.depts].join(',');return dir*(va<vb?-1:va>vb?1:0);case'2':va=a.emps;vb=b.emps;return dir*(va-vb);case'3':va=a.bill;vb=b.bill;return dir*(va-vb);case'4':va=a.nb;vb=b.nb;return dir*(va-vb);case'5':va=a.lv;vb=b.lv;return dir*(va-vb);case'6':va=a.tot;vb=b.tot;return dir*(va-vb);case'7':va=a.eff;vb=b.eff;return dir*(va-vb);case'8':va=a.be;vb=b.be;return dir*(va-vb);default:return 0}})}}
+const cols=['T1 Manager','Departments','# Emps','Billable','Non-Bill','Leave','Total Hrs','Effective','Bill Eff %','Export'];const tTot={emps:0,bill:0,nb:0,lv:0,tot:0,eff:0};grouped.forEach(g=>{tTot.emps+=g.emps;tTot.bill+=g.bill;tTot.nb+=g.nb;tTot.lv+=g.lv;tTot.tot+=g.tot;tTot.eff+=g.eff});
+let h='<div class="table-wrap"><table><thead><tr>';cols.forEach((c,i)=>{h+='<th data-sort="'+sk+'_'+i+'">'+c+' '+(i<9?sortIcon(sk,String(i)):'')+'</th>'});h+='</tr></thead><tbody>';
+grouped.forEach(g=>{const df=filters[tabId];h+='<tr><td class="clickable" data-t1click="'+g.key+'" data-df="'+df+'"><span class="person-icon">\ud83d\udc64</span>'+g.key+'</td><td>'+dPs(g.depts)+'</td><td class="num">'+g.emps+'</td><td class="num">'+n2(g.bill)+'</td><td class="num">'+n2(g.nb)+'</td><td class="num">'+n2(g.lv)+'</td><td class="num">'+n2(g.tot)+'</td><td class="num">'+n2(g.eff)+'</td><td>'+eBar(g.be)+'</td><td><button class="btn-xls" data-ext1="'+g.key+'" data-exdf="'+df+'">\u2b07 XLS</button></td></tr>'});
+h+='</tbody><tfoot><tr><td>Total</td><td></td><td class="num">'+tTot.emps+'</td><td class="num">'+n2(tTot.bill)+'</td><td class="num">'+n2(tTot.nb)+'</td><td class="num">'+n2(tTot.lv)+'</td><td class="num">'+n2(tTot.tot)+'</td><td class="num">'+n2(tTot.eff)+'</td><td></td><td></td></tr></tfoot></table></div>';return h}
+
+function renderTab0(){const f=filters[0];const rows=filterRows(S,f);return '<div class="panel"><div class="panel-header"><div><div class="panel-title">\ud83d\udcca T1-wise Breakdown \u2014 All Employees</div><div class="panel-sub">Click T1 to drill down \u2192 Reporting Manager \u2192 Employee \u2192 Daily Entries</div></div><button class="btn-export" data-exporttab="0">\u2b07 Export</button></div>'+chips(0,S)+t1Table(0,rows)+'</div>'}
+
+function renderTab1(){const coreRows=S.filter(r=>CORE_DEPTS.includes(r[0]));const f=filters[1];const filtered=f==='All'?coreRows:coreRows.filter(r=>r[0]===f);let h=kpis(coreRows);h+='<div class="dept-cards">';CORE_DEPTS.forEach(d=>{const dr=coreRows.filter(r=>r[0]===d);if(!dr.length)return;const emps=dr.length;const bill=dr.reduce((s,r)=>s+r[5],0);const nb=dr.reduce((s,r)=>s+r[6],0);const lv=dr.reduce((s,r)=>s+r[7],0);const tot=dr.reduce((s,r)=>s+r[8],0);const exp=dr.reduce((s,r)=>s+r[9],0);const eff=dr.reduce((s,r)=>s+r[10],0);const be=eff>0?(bill/eff)*100:0;const miss=dr.filter(r=>r[14]>1).length;const lvc=dr.filter(r=>r[7]>0).length;h+='<div class="dept-card" data-deptcard="'+d+'"><div class="dept-card-accent" style="background:'+dC(d)+'"></div><div class="dept-card-body"><div class="dept-card-name">'+d+'</div><div class="dept-card-emp">'+emps+' employees</div><div class="dept-card-eff" style="color:'+effColor(be)+'">'+n2(be)+'%</div><div class="dept-card-bar"><div class="dept-card-bar-fill" style="width:'+Math.min(be,100)+'%;background:'+effColor(be)+'"></div></div><div class="dept-card-grid"><div class="dept-card-stat"><div class="dept-card-stat-val" style="color:#15803d">'+n2(bill)+'</div><div class="dept-card-stat-label">Billable</div></div><div class="dept-card-stat"><div class="dept-card-stat-val" style="color:#7c3aed">'+n2(nb)+'</div><div class="dept-card-stat-label">Non-Bill</div></div><div class="dept-card-stat"><div class="dept-card-stat-val" style="color:#b45309">'+n2(lv)+'</div><div class="dept-card-stat-label">Leave</div></div><div class="dept-card-stat"><div class="dept-card-stat-val">'+n2(tot)+'</div><div class="dept-card-stat-label">Total</div></div><div class="dept-card-stat"><div class="dept-card-stat-val" style="color:#0d9488">'+n2(eff)+'</div><div class="dept-card-stat-label">Effective</div></div><div class="dept-card-stat"><div class="dept-card-stat-val">'+n2(exp)+'</div><div class="dept-card-stat-label">Expected</div></div></div>'+(miss>0?'<div style="margin-top:6px"><span style="background:#fef3c7;color:#b45309;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600">'+miss+' missing</span></div>':'')+(lvc>0?'<div style="margin-top:4px"><span style="background:#ede9fe;color:#7c3aed;padding:2px 6px;border-radius:3px;font-size:10px;font-weight:600">'+lvc+' on leave</span></div>':'')+'<div class="dept-card-link">View T1 Breakdown \u2192</div></div></div>'});
+h+='</div><div class="panel"><div class="panel-header"><div><div class="panel-title">\u2699\ufe0f T1-wise Operations Breakdown</div><div class="panel-sub">Core departments: US Accounts, US Audit, US Tax, UK Accounts & Tax</div></div><button class="btn-export" data-exporttab="1">\u2b07 Export</button></div>'+chips(1,coreRows)+t1Table(1,filtered)+'</div>';return h}
+
+function renderTab2(){const missing=S.filter(r=>r[14]>1);const f=filters[2];const rows=filterRows(missing,f);let h='<div class="panel"><div class="panel-header"><div><div class="panel-title">\u26a0\ufe0f Missing Time Entries</div><div class="panel-sub">Employees who submitted fewer hours than expected</div></div><button class="btn-export" data-exporttab="2">\u2b07 Export</button></div>'+chips(2,missing)+'<div class="table-wrap"><table><thead><tr><th>Emp ID</th><th>Employee Name</th><th>Department</th><th>T1 Manager</th><th>Reporting Manager</th><th>Total Logged</th><th>Expected Hrs</th><th>Missing Hrs</th></tr></thead><tbody>';rows.forEach(r=>{const isZero=r[8]===0;h+='<tr><td class="num">'+r[2]+'</td><td class="clickable" data-empclick="'+r[3]+'" data-empdf="'+f+'">'+r[3]+(isZero?'<span class="zero-badge">ZERO HRS</span>':'')+'</td><td>'+dP(r[0])+'</td><td>'+r[1]+'</td><td>'+rmD(r[4])+' '+t1T(r[4])+'</td><td class="num">'+n2(r[8])+'</td><td class="num">'+n2(r[9])+'</td><td class="num" style="color:#dc2626;font-weight:700">'+n2(r[14])+'</td></tr>'});const tTot={l:rows.reduce((s,r)=>s+r[8],0),e:rows.reduce((s,r)=>s+r[9],0),m:rows.reduce((s,r)=>s+r[14],0)};h+='</tbody><tfoot><tr><td></td><td>Total ('+rows.length+')</td><td></td><td></td><td></td><td class="num">'+n2(tTot.l)+'</td><td class="num">'+n2(tTot.e)+'</td><td class="num">'+n2(tTot.m)+'</td></tr></tfoot></table></div></div>';return h}
+
+function renderTab3(){const onLeave=S.filter(r=>r[7]>0);const f=filters[3];const rows=filterRows(onLeave,f);let h='<div class="panel"><div class="panel-header"><div><div class="panel-title">\ud83c\udf34 Employees On Leave</div><div class="panel-sub">All employees with leave hours logged</div></div><button class="btn-export" data-exporttab="3">\u2b07 Export</button></div>'+chips(3,onLeave)+'<div class="table-wrap"><table><thead><tr><th>Emp ID</th><th>Employee Name</th><th>Department</th><th>T1 Manager</th><th>Reporting Manager</th><th>Leave Hrs</th><th>Billable Hrs</th><th>Total Hrs</th></tr></thead><tbody>';rows.forEach(r=>{h+='<tr><td class="num">'+r[2]+'</td><td class="clickable" data-empclick="'+r[3]+'" data-empdf="'+f+'">'+r[3]+'</td><td>'+dP(r[0])+'</td><td>'+r[1]+'</td><td>'+rmD(r[4])+' '+t1T(r[4])+'</td><td class="num" style="color:#b45309;font-weight:600">'+n2(r[7])+'</td><td class="num">'+n2(r[5])+'</td><td class="num">'+n2(r[8])+'</td></tr>'});const tTot={lv:rows.reduce((s,r)=>s+r[7],0),b:rows.reduce((s,r)=>s+r[5],0),t:rows.reduce((s,r)=>s+r[8],0)};h+='</tbody><tfoot><tr><td></td><td>Total ('+rows.length+')</td><td></td><td></td><td></td><td class="num">'+n2(tTot.lv)+'</td><td class="num">'+n2(tTot.b)+'</td><td class="num">'+n2(tTot.t)+'</td></tr></tfoot></table></div></div>';return h}
+
+function closeModal(){document.getElementById('modalRoot').innerHTML=''}
+function modalShell(title,breadcrumb,bodyFn){const root=document.getElementById('modalRoot');root.innerHTML='<div class="modal-backdrop" id="modalBg"><div class="modal"><div class="modal-hdr"><div class="modal-hdr-left"><div class="modal-title">'+title+'</div><div class="breadcrumb">'+breadcrumb+'</div></div><div class="modal-hdr-right"><button class="btn-export" id="modalExportBtn">\u2b07 Export XLS</button><button class="btn-close" id="modalCloseBtn">\u2715</button></div></div><div class="modal-body" id="modalBody"></div></div></div>';document.getElementById('modalCloseBtn').onclick=closeModal;document.getElementById('modalBg').onclick=e=>{if(e.target.id==='modalBg')closeModal()};bodyFn(document.getElementById('modalBody'))}
+
+function openT1(t1Name,df){let rows=S.filter(r=>r[1]===t1Name);if(df&&df!=='All')rows=rows.filter(r=>r[0]===df);const rms=new Set(rows.map(r=>r[4]));let skip=rms.size<=1||[...rms].every(rm=>T1_RM_MAP[rm]===t1Name);if(skip){openRM(t1Name,[...rms][0]||'',df,true);return}const bc=t1Name+(df&&df!=='All'?' <span class="dept-tag">'+dN(df)+'</span>':'');modalShell(t1Name+' \u2014 Reporting Managers',bc,body=>{body.innerHTML=kpis(rows);const rmGroups=agg(rows,r=>r[4]);let h='<input class="search-box" placeholder="Search RMs..." id="rmSearch"><div class="table-wrap"><table><thead><tr><th>Reporting Manager</th><th># Emps</th><th>Billable</th><th>Non-Bill</th><th>Leave</th><th>Total</th><th>Effective</th><th>Bill Eff %</th></tr></thead><tbody>';rmGroups.forEach(g=>{h+='<tr data-rmsearch="'+g.key.toLowerCase()+'"><td class="clickable" data-rmclick="'+g.key+'" data-rmt1="'+t1Name+'" data-rmdf="'+(df||'All')+'">'+rmD(g.key)+' '+t1T(g.key)+'</td><td class="num">'+g.emps+'</td><td class="num">'+n2(g.bill)+'</td><td class="num">'+n2(g.nb)+'</td><td class="num">'+n2(g.lv)+'</td><td class="num">'+n2(g.tot)+'</td><td class="num">'+n2(g.eff)+'</td><td>'+eBar(g.be)+'</td></tr>'});h+='</tbody></table></div>';body.innerHTML+=h;const si=document.getElementById('rmSearch');if(si)si.oninput=()=>{const q=si.value.toLowerCase();body.querySelectorAll('[data-rmsearch]').forEach(tr=>{tr.style.display=tr.dataset.rmsearch.includes(q)?'':'none'})}});document.getElementById('modalExportBtn').onclick=()=>{const rmGroups=agg(rows,r=>r[4]);const headers=['RM','Emps','Billable','Non-Bill','Leave','Total','Effective','Bill Eff%'];const data=rmGroups.map(g=>[g.key,g.emps,n2(g.bill),n2(g.nb),n2(g.lv),n2(g.tot),n2(g.eff),n2(g.be)+'%']);downloadXls(headers,data,'T1_'+t1Name+'_RMs.xls')}}
+
+function openRM(t1Name,rmName,df,autoSkipped){let rows=S.filter(r=>r[1]===t1Name);if(!autoSkipped)rows=rows.filter(r=>r[4]===rmName);if(df&&df!=='All')rows=rows.filter(r=>r[0]===df);const title=autoSkipped?t1Name+' \u2014 Employees':rmD(rmName)+' \u2014 Employees';let bc=autoSkipped?t1Name:'<span class="bc-link" data-bct1="'+t1Name+'" data-bcdf="'+(df||'All')+'">'+t1Name+'</span> \u203a '+rmD(rmName)+' '+t1T(rmName);if(df&&df!=='All')bc+=' <span class="dept-tag">'+dN(df)+'</span>';modalShell(title,bc,body=>{body.innerHTML=kpis(rows);let h='<input class="search-box" placeholder="Search employees..." id="empSearch"><div class="table-wrap"><table><thead><tr><th>Emp ID</th><th>Employee Name</th><th>Department</th><th>Billable</th><th>Non-Bill</th><th>Leave</th><th>Total</th><th>Effective</th><th>Bill Eff %</th><th>Missing Hrs</th></tr></thead><tbody>';rows.forEach(r=>{const ms=r[14]>0?'color:#dc2626;font-weight:700':r[14]<0?'color:#15803d;font-weight:600':'';h+='<tr data-empsearch="'+r[3].toLowerCase()+'"><td class="num">'+r[2]+'</td><td class="clickable" data-empclick="'+r[3]+'" data-empdf="'+(df||'All')+'">'+r[3]+'</td><td>'+dP(r[0])+'</td><td class="num">'+n2(r[5])+'</td><td class="num">'+n2(r[6])+'</td><td class="num">'+n2(r[7])+'</td><td class="num">'+n2(r[8])+'</td><td class="num">'+n2(r[10])+'</td><td>'+eBar(r[11])+'</td><td class="num" style="'+ms+'">'+n2(r[14])+'</td></tr>'});const tTot={b:rows.reduce((s,r)=>s+r[5],0),n:rows.reduce((s,r)=>s+r[6],0),l:rows.reduce((s,r)=>s+r[7],0),t:rows.reduce((s,r)=>s+r[8],0),e:rows.reduce((s,r)=>s+r[10],0),m:rows.reduce((s,r)=>s+r[14],0)};h+='</tbody><tfoot><tr><td></td><td>Total ('+rows.length+')</td><td></td><td class="num">'+n2(tTot.b)+'</td><td class="num">'+n2(tTot.n)+'</td><td class="num">'+n2(tTot.l)+'</td><td class="num">'+n2(tTot.t)+'</td><td class="num">'+n2(tTot.e)+'</td><td></td><td class="num">'+n2(tTot.m)+'</td></tr></tfoot></table></div>';body.innerHTML+=h;const si=document.getElementById('empSearch');if(si)si.oninput=()=>{const q=si.value.toLowerCase();body.querySelectorAll('[data-empsearch]').forEach(tr=>{tr.style.display=tr.dataset.empsearch.includes(q)?'':'none'})}});document.querySelectorAll('[data-bct1]').forEach(el=>{el.onclick=()=>openT1(el.dataset.bct1,el.dataset.bcdf)});document.getElementById('modalExportBtn').onclick=()=>{const headers=['Emp ID','Employee','Department','Billable','Non-Bill','Leave','Total','Effective','Bill Eff%','Missing'];const data=rows.map(r=>[r[2],r[3],r[0],n2(r[5]),n2(r[6]),n2(r[7]),n2(r[8]),n2(r[10]),n2(r[11])+'%',n2(r[14])]);downloadXls(headers,data,'Employees.xls')}}
+
+function openEmployee(ename,df){const entries=(mbe[ename]||[]).filter(r=>!df||df==='All'||r[1]===df).sort((a,b)=>a[0].localeCompare(b[0]));const emp=S.find(r=>r[3]===ename);const t1=emp?emp[1]:'';const rm=emp?emp[4]:'';const bc=t1+' \u203a '+rmD(rm)+' '+t1T(rm)+' \u203a '+ename+(df&&df!=='All'?' <span class="dept-tag">'+dN(df)+'</span>':'');modalShell(ename+' \u2014 Daily Entries',bc,body=>{const bill=entries.reduce((s,r)=>s+r[11],0);const nb=entries.reduce((s,r)=>s+r[12],0);const lv=entries.reduce((s,r)=>s+r[14],0);const tot=entries.reduce((s,r)=>s+r[13],0);const eff=emp?emp[10]:0;const labels=['Entries','Billable','Non-Bill','Leave','Total','Effective'];const vals=[entries.length,n2(bill),n2(nb),n2(lv),n2(tot),n2(eff)];const cls=['','green','purple','amber','','teal'];body.innerHTML='<div class="kpi-strip">'+labels.map((l,i)=>'<div class="kpi-card"><div class="kpi-label">'+l+'</div><div class="kpi-value '+cls[i]+'">'+vals[i]+'</div></div>').join('')+'</div>';if(!entries.length){body.innerHTML+='<div class="no-data">No entries found for this employee.</div>';return}let h='<input class="search-box" placeholder="Search entries..." id="entrySearch"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Client</th><th>Project</th><th>Job</th><th>Work Item</th><th>Description</th><th>Billable</th><th>Non-Bill</th><th>Leave</th><th>Total</th></tr></thead><tbody>';const pill=(v,c)=>v&&v>0?'<span style="background:'+c+';color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;font-family:DM Mono,monospace">'+n2(v)+'</span>':'\u2014';entries.forEach(r=>{h+='<tr data-entrysearch="'+[r[0],r[6],r[7],r[8],r[9],r[10]].join(' ').toLowerCase()+'"><td style="font-family:DM Mono,monospace;font-size:11px">'+r[0]+'</td><td style="font-size:11.5px">'+(r[6]||'\u2014')+'</td><td style="font-size:11.5px">'+(r[7]||'\u2014')+'</td><td style="font-size:11.5px">'+(r[8]||'\u2014')+'</td><td style="font-size:11.5px">'+(r[9]||'\u2014')+'</td><td style="font-size:11px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(r[10]||'\u2014')+'</td><td class="num">'+pill(r[11],'#15803d')+'</td><td class="num">'+pill(r[12],'#7c3aed')+'</td><td class="num">'+pill(r[14],'#b45309')+'</td><td class="num">'+pill(r[13],'#3b82f6')+'</td></tr>'});h+='</tbody></table></div>';body.innerHTML+=h;const si=document.getElementById('entrySearch');if(si)si.oninput=()=>{const q=si.value.toLowerCase();body.querySelectorAll('[data-entrysearch]').forEach(tr=>{tr.style.display=tr.dataset.entrysearch.includes(q)?'':'none'})}});document.getElementById('modalExportBtn').onclick=()=>{const headers=['Date','Client','Project','Job','Work Item','Description','Billable','Non-Bill','Leave','Total'];const data=entries.map(r=>[r[0],r[6],r[7],r[8],r[9],r[10],n2(r[11]),n2(r[12]),n2(r[14]),n2(r[13])]);downloadXls(headers,data,'Entries_'+ename.replace(/[^a-zA-Z0-9]/g,'_')+'.xls')}}
+
+function render(){renderTabs();const mc=document.getElementById('mainContent');mc.innerHTML='<div class="tab-content'+(activeTab===0?' active':'')+'" id="tc0"></div><div class="tab-content'+(activeTab===1?' active':'')+'" id="tc1"></div><div class="tab-content'+(activeTab===2?' active':'')+'" id="tc2"></div><div class="tab-content'+(activeTab===3?' active':'')+'" id="tc3"></div>';document.getElementById('tc'+activeTab).innerHTML=[renderTab0,renderTab1,renderTab2,renderTab3][activeTab]()}
+
+document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t&&t.classList.contains('tab')){activeTab=parseInt(t.dataset.tab);render();return}const chip=e.target.closest('.chip');if(chip){filters[parseInt(chip.dataset.tab)]=chip.dataset.filter;render();return}const t1c=e.target.closest('[data-t1click]');if(t1c){openT1(t1c.dataset.t1click,t1c.dataset.df);return}const rmc=e.target.closest('[data-rmclick]');if(rmc){openRM(rmc.dataset.rmt1,rmc.dataset.rmclick,rmc.dataset.rmdf,false);return}const empc=e.target.closest('[data-empclick]');if(empc){openEmployee(empc.dataset.empclick,empc.dataset.empdf);return}const ext1=e.target.closest('[data-ext1]');if(ext1){exT1(ext1.dataset.ext1,ext1.dataset.exdf);return}const sortH=e.target.closest('[data-sort]');if(sortH){const parts=sortH.dataset.sort.split('_');const col=parts.pop();const id=parts.join('_');toggleSort(id,col);render();return}const exTab=e.target.closest('[data-exporttab]');if(exTab){const tab=parseInt(exTab.dataset.exporttab);const f=filters[tab];let rows;if(tab===0)rows=filterRows(S,f);else if(tab===1){rows=S.filter(r=>CORE_DEPTS.includes(r[0]));if(f!=='All')rows=rows.filter(r=>r[0]===f)}else if(tab===2)rows=S.filter(r=>r[14]>1);else rows=S.filter(r=>r[7]>0);if(f!=='All'&&tab>1)rows=rows.filter(r=>r[0]===f);const headers=['Emp ID','Employee','Department','T1','RM','Assigned','Billable','Non-Bill','Leave','Total','Expected','Effective','Bill Eff%','Non-Bill Eff%','Total Eff%','Missing'];const data=rows.map(r=>[r[2],r[3],r[0],r[1],r[4],r[15],n2(r[5]),n2(r[6]),n2(r[7]),n2(r[8]),n2(r[9]),n2(r[10]),n2(r[11])+'%',n2(r[12])+'%',n2(r[13])+'%',n2(r[14])]);downloadXls(headers,data,'Export_Tab'+tab+'.xls');return}const dc=e.target.closest('[data-deptcard]');if(dc){filters[1]=dc.dataset.deptcard;render();return}});
+render();
+</script>
+</body>
+</html>

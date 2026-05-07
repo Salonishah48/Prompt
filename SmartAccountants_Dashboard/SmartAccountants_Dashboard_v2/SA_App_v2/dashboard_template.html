@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Accountants | Timesheet Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b2545;--navy-mid:#133a63;--navy-light:#1a4e82;
+  --teal:#0aa08a;--teal-light:#12c5a8;--teal-pale:rgba(10,160,138,.12);
+  --orange:#f47c20;--orange-pale:rgba(244,124,32,.12);
+  --sky:#2bbfdd;--purple:#6c63ff;--red:#e53e3e;
+  --white:#fff;--off-white:#f4f7fb;
+  --gray-100:#eef2f7;--gray-200:#d8e2f0;--gray-400:#8fa3bf;
+  --text:#1a2d45;--text-muted:#5a7494;--border:#dce8f5;
+  --shadow:0 2px 16px rgba(11,37,69,.08);--shadow-md:0 4px 24px rgba(11,37,69,.13);
+  --radius:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--text);font-size:14px;min-height:100vh;}
+
+/* TOPBAR */
+.topbar{background:var(--navy);padding:0 36px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+.brand{display:flex;align-items:center;gap:13px;}
+.brand-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--teal),var(--teal-light));border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:#fff;}
+.brand-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:#fff;line-height:1.1;}
+.brand-tagline{font-size:10px;color:rgba(255,255,255,.5);font-weight:400;letter-spacing:.04em;}
+.date-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,.8);font-weight:500;}
+
+/* MAIN NAV TABS */
+.main-tabs{background:var(--navy-mid);border-bottom:1px solid rgba(255,255,255,.08);display:flex;gap:0;padding:0 36px;}
+.main-tab{padding:12px 22px;font-size:13px;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+.main-tab:hover{color:rgba(255,255,255,.85);}
+.main-tab.active{color:#fff;border-bottom-color:var(--teal);}
+.main-tab .tab-badge{background:rgba(255,255,255,.15);color:#fff;font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;min-width:22px;text-align:center;}
+.main-tab.missing-tab.active .tab-badge{background:var(--orange);color:#fff;}
+.main-tab.missing-tab .tab-badge{background:rgba(244,124,32,.25);color:#fbb040;}
+
+/* PAGE */
+.page{max-width:1680px;margin:0 auto;padding:26px 34px 48px;}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.section-line{width:4px;height:22px;background:linear-gradient(180deg,var(--teal),var(--navy-light));border-radius:3px;}
+.section-title{font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;color:var(--navy);}
+.section-sub{font-size:12px;color:var(--text-muted);margin-left:auto;}
+
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-bottom:22px;}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer;user-select:none;}
+.kpi:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.kpi-hover-hint{position:absolute;top:10px;right:11px;font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;opacity:0;transition:opacity .2s;padding:2px 7px;border-radius:10px;}
+.kpi:hover .kpi-hover-hint{opacity:1;}
+.kpi:nth-child(1) .kpi-hover-hint{background:rgba(11,37,69,.08);color:var(--navy);}
+.kpi:nth-child(2) .kpi-hover-hint{background:var(--teal-pale);color:var(--teal);}
+.kpi:nth-child(3) .kpi-hover-hint{background:var(--orange-pale);color:var(--orange);}
+.kpi:nth-child(4) .kpi-hover-hint{background:rgba(43,191,221,.1);color:var(--sky);}
+.kpi:nth-child(5) .kpi-hover-hint{background:rgba(108,99,255,.1);color:var(--purple);}
+.kpi::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
+.kpi:nth-child(1)::after{background:linear-gradient(90deg,var(--navy),var(--navy-light));}
+.kpi:nth-child(2)::after{background:linear-gradient(90deg,var(--teal),var(--teal-light));}
+.kpi:nth-child(3)::after{background:linear-gradient(90deg,var(--orange),#fbb040);}
+.kpi:nth-child(4)::after{background:linear-gradient(90deg,var(--sky),#8de8f8);}
+.kpi:nth-child(5)::after{background:linear-gradient(90deg,var(--purple),#a78bfa);}
+.kpi-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:10px;}
+.kpi:nth-child(1) .kpi-icon{background:rgba(11,37,69,.07);}
+.kpi:nth-child(2) .kpi-icon{background:var(--teal-pale);}
+.kpi:nth-child(3) .kpi-icon{background:var(--orange-pale);}
+.kpi:nth-child(4) .kpi-icon{background:rgba(43,191,221,.1);}
+.kpi:nth-child(5) .kpi-icon{background:rgba(108,99,255,.1);}
+.kpi-label{font-size:11px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.kpi-value{font-family:'Poppins',sans-serif;font-size:28px;font-weight:700;line-height:1;}
+.kpi:nth-child(1) .kpi-value{color:var(--navy);}
+.kpi:nth-child(2) .kpi-value{color:var(--teal);}
+.kpi:nth-child(3) .kpi-value{color:var(--orange);}
+.kpi:nth-child(4) .kpi-value{color:var(--sky);}
+.kpi:nth-child(5) .kpi-value{color:var(--purple);}
+.kpi-sub{font-size:11px;color:var(--text-muted);margin-top:4px;}
+
+/* CARD */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);}
+
+/* SUMMARY TABLE */
+.tbl-wrap{overflow-x:auto;}
+table.summary{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap;}
+table.summary thead tr{background:var(--navy);color:#fff;}
+table.summary thead th{padding:11px 13px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-align:right;}
+table.summary thead th:first-child{text-align:left;}
+table.summary tbody tr{border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
+table.summary tbody tr:hover{background:#edf6f4;}
+table.summary tbody tr.grand-total{background:var(--navy);color:#fff;cursor:default;font-weight:700;}
+table.summary tbody tr.grand-total:hover{background:var(--navy-mid);}
+table.summary td{padding:10px 13px;text-align:right;vertical-align:middle;}
+table.summary td:first-child{text-align:left;font-weight:600;}
+.name-btn{background:none;border:none;color:var(--navy-light);font-weight:600;font-size:13px;cursor:pointer;padding:0;text-align:left;font-family:inherit;}
+.name-btn:hover{color:var(--teal);text-decoration:underline;}
+.grand-total .name-btn{color:#fff;cursor:default;pointer-events:none;}
+.eff-bar-wrap{display:flex;gap:2px;height:7px;border-radius:4px;overflow:hidden;background:var(--gray-100);min-width:90px;}
+.eff-seg{height:100%;}
+.seg-bill{background:var(--teal);}.seg-nonb{background:var(--orange);}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-hi{background:rgba(10,160,138,.12);color:var(--teal);}
+.badge-md{background:rgba(244,124,32,.12);color:var(--orange);}
+.badge-lo{background:rgba(255,59,59,.1);color:#e53e3e;}
+.grand-total .badge{background:rgba(255,255,255,.15);color:#fff;}
+
+/* ── MISSING TIME ENTRIES ─────────────────────────────────────────── */
+.missing-header-box{
+  background:linear-gradient(135deg,#1a2e48,#0b2545);
+  border-radius:var(--radius);
+  padding:22px 28px;
+  margin-bottom:18px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:var(--shadow-md);
+}
+.missing-header-left{display:flex;flex-direction:column;gap:4px;}
+.missing-header-title{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:#fff;display:flex;align-items:center;gap:10px;}
+.missing-header-sub{font-size:12px;color:rgba(255,255,255,.5);}
+.missing-header-right{display:flex;gap:16px;}
+.missing-stat{text-align:center;}
+.missing-stat-val{font-family:'Poppins',sans-serif;font-size:26px;font-weight:700;}
+.missing-stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.45);margin-top:2px;}
+
+/* Dept filter pills */
+.dept-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
+.dept-pill{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;border:1.5px solid var(--border);background:#fff;color:var(--text-muted);user-select:none;}
+.dept-pill:hover{border-color:var(--navy-light);color:var(--navy);}
+.dept-pill.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.dept-pill .pill-count{background:rgba(255,255,255,.2);padding:0 6px;border-radius:10px;margin-left:4px;font-size:11px;}
+.dept-pill:not(.active) .pill-count{background:var(--gray-100);color:var(--text-muted);}
+
+/* Missing table */
+table.missing-tbl{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap;}
+table.missing-tbl thead tr{background:linear-gradient(90deg,#1a4e82,#0b2545);color:#fff;}
+table.missing-tbl thead th{padding:11px 14px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-align:left;}
+table.missing-tbl thead th.r{text-align:right;}
+table.missing-tbl tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
+table.missing-tbl tbody tr:hover{background:#fff5f0;}
+table.missing-tbl tbody tr.total-row{background:var(--navy);color:#fff;font-weight:700;}
+table.missing-tbl tbody tr.total-row:hover{background:var(--navy-mid);}
+table.missing-tbl td{padding:10px 14px;vertical-align:middle;}
+table.missing-tbl td.r{text-align:right;font-variant-numeric:tabular-nums;}
+.emp-link{color:var(--navy-light);font-weight:600;cursor:pointer;text-decoration:none;background:none;border:none;font-size:13px;font-family:inherit;padding:0;}
+.emp-link:hover{color:var(--teal);text-decoration:underline;}
+.dept-tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:.02em;}
+.missing-hrs-val{color:var(--red);font-weight:700;font-size:14px;}
+.logged-val{color:var(--text);font-weight:500;}
+.expected-val{color:var(--text-muted);}
+.total-row .missing-hrs-val{color:#ffa0a0;}
+.total-row .logged-val,.total-row .expected-val{color:rgba(255,255,255,.85);}
+.total-row .emp-link{color:#fff;pointer-events:none;}
+.no-missing{text-align:center;padding:60px 20px;color:var(--text-muted);}
+.no-missing-icon{font-size:48px;margin-bottom:12px;}
+
+/* Dept colour palette */
+.dept-marketing{background:#fde8d8;color:#c45e08;}
+.dept-us-accounts{background:#dbeafe;color:#1e4db7;}
+.dept-us-audit{background:#d1fae5;color:#065f46;}
+.dept-us-tax{background:#ede9fe;color:#5b21b6;}
+.dept-operations{background:#fef3c7;color:#92400e;}
+.dept-default{background:var(--gray-100);color:var(--text-muted);}
+
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(11,37,69,.55);backdrop-filter:blur(4px);z-index:500;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:1000px;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(11,37,69,.25);overflow:hidden;animation:slideUp .22s ease;margin:auto;}
+@keyframes slideUp{from{transform:translateY(28px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-header{padding:18px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.modal-title{font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;}
+.modal-sub{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.modal-close{background:var(--gray-100);border:none;color:var(--text-muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0;}
+.modal-close:hover{background:var(--gray-200);}
+.modal-body{overflow-y:auto;max-height:72vh;padding:0 24px 24px;}
+.mh-total{background:var(--navy);color:#fff;}
+.mh-bill{background:linear-gradient(135deg,#0b7a68,var(--teal));color:#fff;}
+.mh-leave{background:linear-gradient(135deg,#1a8ea8,var(--sky));color:#fff;}
+.mh-nonbill{background:linear-gradient(135deg,#c45e08,var(--orange));color:#fff;}
+.mh-total .modal-sub,.mh-bill .modal-sub,.mh-leave .modal-sub,.mh-nonbill .modal-sub{color:rgba(255,255,255,.65);}
+.mh-total .modal-close,.mh-bill .modal-close,.mh-leave .modal-close,.mh-nonbill .modal-close{background:rgba(255,255,255,.15);color:#fff;}
+.mh-total .modal-close:hover,.mh-bill .modal-close:hover,.mh-leave .modal-close:hover,.mh-nonbill .modal-close:hover{background:rgba(255,255,255,.25);}
+.modal-kpis{display:grid;border-bottom:1px solid var(--border);flex-shrink:0;}
+.modal-kpi{padding:12px 18px;border-right:1px solid var(--border);text-align:center;}
+.modal-kpi:last-child{border-right:none;}
+.modal-kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:3px;}
+.modal-kpi-val{font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--navy);}
+.kpi-section-title{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);padding:16px 0 10px;border-bottom:2px solid var(--border);margin-bottom:0;}
+.drill-table{width:100%;border-collapse:collapse;font-size:13px;}
+.drill-table th{padding:9px 12px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);border-bottom:1px solid var(--border);text-align:left;}
+.drill-table th.r{text-align:right;}
+.drill-table td{padding:9px 12px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.drill-table td.r{text-align:right;font-variant-numeric:tabular-nums;}
+.drill-table tr:hover td{background:var(--off-white);}
+.drill-table tr:last-child td{border-bottom:none;}
+.emp-modal-kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);flex-shrink:0;}
+.emp-kpi{padding:13px 16px;border-right:1px solid var(--border);text-align:center;cursor:pointer;transition:background .15s;}
+.emp-kpi:last-child{border-right:none;}
+.emp-kpi:hover{background:var(--off-white);}
+.emp-kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:3px;}
+.emp-kpi-val{font-family:'Poppins',sans-serif;font-size:21px;font-weight:700;}
+.emp-kpi:nth-child(1) .emp-kpi-val{color:var(--teal);}
+.emp-kpi:nth-child(2) .emp-kpi-val{color:var(--sky);}
+.emp-kpi:nth-child(3) .emp-kpi-val{color:var(--orange);}
+.emp-kpi:nth-child(4) .emp-kpi-val{color:var(--navy);}
+.emp-kpi-hint{font-size:9px;color:var(--text-muted);margin-top:2px;letter-spacing:.04em;}
+.emp-kpi.active-filter{outline:2px solid var(--teal);outline-offset:-2px;background:var(--teal-pale);}
+.day-block{margin-bottom:16px;}
+.day-header{display:flex;align-items:center;justify-content:space-between;background:var(--off-white);border:1px solid var(--border);border-radius:8px;padding:8px 13px;margin-bottom:6px;cursor:pointer;user-select:none;}
+.day-label{font-weight:600;color:var(--navy);font-size:13px;}
+.day-totals{display:flex;gap:12px;font-size:12px;color:var(--text-muted);}
+.day-toggle{color:var(--teal);font-size:11px;flex-shrink:0;}
+.entries-table{width:100%;border-collapse:collapse;font-size:12px;}
+.entries-table th{padding:7px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);border-bottom:2px solid var(--border);white-space:nowrap;}
+.entries-table td{padding:8px 10px;border-bottom:1px solid var(--gray-100);vertical-align:top;}
+.entries-table tr:last-child td{border-bottom:none;}
+.entries-table tr:hover td{background:var(--off-white);}
+.cat-pill{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600;}
+.cat-bill{background:rgba(10,160,138,.1);color:var(--teal);}
+.cat-leave{background:rgba(43,191,221,.1);color:var(--sky);}
+.cat-nonb{background:rgba(244,124,32,.1);color:var(--orange);}
+.stat-posted{color:var(--teal);font-weight:600;}
+.stat-released{color:var(--sky);font-weight:600;}
+.stat-unreleased{color:var(--orange);font-weight:600;}
+.note-text{color:var(--text-muted);font-size:11px;line-height:1.45;max-width:260px;white-space:pre-wrap;word-break:break-word;}
+.note-empty{color:var(--gray-400);font-size:11px;font-style:italic;}
+
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:700px){.page{padding:14px;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.emp-modal-kpis{grid-template-columns:repeat(2,1fr);}.main-tabs{padding:0 16px;overflow-x:auto;}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">SA</div>
+    <div>
+      <div class="brand-name">Smart Accountants</div>
+      <div class="brand-tagline">A Leading Global Outsource Accounting Firm</div>
+    </div>
+  </div>
+  <div class="date-chip">📅 {{DATE_RANGE}}</div>
+</header>
+
+<!-- MAIN NAV TABS -->
+<nav class="main-tabs">
+  <div class="main-tab active" onclick="switchTab('timesheet',this)">
+    🕐 Timesheet Summary
+    <span class="tab-badge">{{STAFF_COUNT}}</span>
+  </div>
+  <div class="main-tab missing-tab" onclick="switchTab('missing',this)">
+    ⚠️ Missing Time Entries
+    <span class="tab-badge">{{MISSING_COUNT}}</span>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB 1: TIMESHEET SUMMARY                                  -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="tab-timesheet" class="tab-panel active">
+<div class="page">
+
+  <div class="section-head">
+    <div class="section-line"></div>
+    <div class="section-title">Weekly Overview</div>
+    <div class="section-sub">{{DATE_RANGE}} &nbsp;·&nbsp; {{STAFF_COUNT}} Staff &nbsp;·&nbsp; {{RECORD_COUNT}} Entries &nbsp;·&nbsp; <em>Click any tile to drill down</em></div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi" onclick="openKpiModal('total')">
+      <div class="kpi-hover-hint">View Details</div>
+      <div class="kpi-icon">⏱</div>
+      <div class="kpi-label">Total Hours</div>
+      <div class="kpi-value">{{GT_TOTAL}}</div>
+      <div class="kpi-sub">all staff combined</div>
+    </div>
+    <div class="kpi" onclick="openKpiModal('billable')">
+      <div class="kpi-hover-hint">View Details</div>
+      <div class="kpi-icon">✅</div>
+      <div class="kpi-label">Billable Hours</div>
+      <div class="kpi-value">{{GT_BILLABLE}}</div>
+      <div class="kpi-sub">{{BILL_PCT}}% of total</div>
+    </div>
+    <div class="kpi" onclick="openKpiModal('leave')">
+      <div class="kpi-hover-hint">View Details</div>
+      <div class="kpi-icon">🏖</div>
+      <div class="kpi-label">Leave Hours</div>
+      <div class="kpi-value">{{GT_LEAVE}}</div>
+      <div class="kpi-sub">{{LEAVE_COUNT}} employees on leave</div>
+    </div>
+    <div class="kpi" onclick="openKpiModal('nonbill')">
+      <div class="kpi-hover-hint">View Details</div>
+      <div class="kpi-icon">📋</div>
+      <div class="kpi-label">Non-Billable</div>
+      <div class="kpi-value">{{GT_NONBILL}}</div>
+      <div class="kpi-sub">admin &amp; overhead</div>
+    </div>
+    <div class="kpi" onclick="openKpiModal('total')">
+      <div class="kpi-hover-hint">View Details</div>
+      <div class="kpi-icon">👥</div>
+      <div class="kpi-label">Active Staff</div>
+      <div class="kpi-value">{{STAFF_COUNT}}</div>
+      <div class="kpi-sub">team members</div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <div class="section-line"></div>
+    <div class="section-title">Employee Timesheet Summary</div>
+    <div class="section-sub">Click any row for daily drill-down</div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div class="tbl-wrap">
+      <table class="summary">
+        <thead>
+          <tr>
+            <th style="text-align:left;min-width:165px">Employee Name</th>
+            <th>Billable Hrs</th><th>Leave Hrs</th><th>Non-Bill Hrs</th>
+            <th>Total Hrs</th><th>Effective Hrs</th>
+            <th style="min-width:110px">Utilisation</th>
+            <th>Bill. Eff.</th><th>Non-Bill Eff.</th><th>Total Eff.</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="summaryBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div><!-- /tab-timesheet -->
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB 2: MISSING TIME ENTRIES                               -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="tab-missing" class="tab-panel">
+<div class="page">
+
+  <!-- Header box -->
+  <div class="missing-header-box">
+    <div class="missing-header-left">
+      <div class="missing-header-title">⚠️ Missing Time Entries</div>
+      <div class="missing-header-sub">Employees who submitted fewer hours than expected &nbsp;·&nbsp; {{DATE_RANGE}}</div>
+    </div>
+    <div class="missing-header-right" id="missingHeaderStats"></div>
+  </div>
+
+  <!-- Dept filter pills -->
+  <div class="dept-filters" id="deptFilters"></div>
+
+  <!-- Table -->
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div class="tbl-wrap">
+      <table class="missing-tbl">
+        <thead>
+          <tr>
+            <th>Emp ID</th>
+            <th style="min-width:200px">Employee Name</th>
+            <th>Department</th>
+            <th style="min-width:180px">T1 Manager</th>
+            <th style="min-width:180px">Reporting Manager</th>
+            <th class="r">Total Logged</th>
+            <th class="r">Expected Hrs</th>
+            <th class="r">Missing Hrs</th>
+          </tr>
+        </thead>
+        <tbody id="missingBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div><!-- /tab-missing -->
+
+<!-- KPI MODAL -->
+<div class="modal-overlay" id="kpiOverlay">
+  <div class="modal">
+    <div class="modal-header" id="kpiHeader">
+      <div><div class="modal-title" id="kpiTitle"></div><div class="modal-sub" id="kpiSub"></div></div>
+      <button class="modal-close" onclick="closeKpiModal()">✕</button>
+    </div>
+    <div class="modal-kpis" id="kpiSubKpis"></div>
+    <div class="modal-body" id="kpiBody"></div>
+  </div>
+</div>
+
+<!-- EMPLOYEE MODAL -->
+<div class="modal-overlay" id="empOverlay">
+  <div class="modal">
+    <div class="modal-header mh-total">
+      <div><div class="modal-title" id="empTitle"></div><div class="modal-sub">{{DATE_RANGE}} · Daily Timesheet Entries</div></div>
+      <button class="modal-close" onclick="closeEmpModal()">✕</button>
+    </div>
+    <div class="emp-modal-kpis" id="empKpis"></div>
+    <div class="modal-body" id="empBody"></div>
+  </div>
+</div>
+
+<footer style="text-align:center;padding:18px;font-size:11px;color:var(--text-muted);border-top:1px solid var(--border);background:#fff;">
+  Smart Accountants &nbsp;·&nbsp; Confidential Internal Report &nbsp;·&nbsp; {{DATE_RANGE}}
+</footer>
+
+<script>
+const SUMMARY      = {{SUMMARY_JS}};
+const DAILY        = {{DAILY_JS}};
+const KPI_BILL     = {{KPI_BILL_JS}};
+const KPI_LEAVE    = {{KPI_LEAVE_JS}};
+const KPI_NONBILL  = {{KPI_NONBILL_JS}};
+const KPI_TOTAL    = {{KPI_TOTAL_JS}};
+const MISSING_DATA = {{MISSING_JS}};
+const GT = {
+  billable:{{GT_BILLABLE}}, leave:{{GT_LEAVE}}, non_billable:{{GT_NONBILL}},
+  total:{{GT_TOTAL}}, effective:{{GT_EFFECTIVE}},
+  bill_eff:{{GT_BE}}, nonbill_eff:{{GT_NE}}, total_eff:{{GT_TE}}
+};
+
+// Dynamic day-name lookup
+const DAY_NAMES = {};
+const DAY_LABELS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+Object.keys(DAILY).forEach(emp => {
+  Object.keys(DAILY[emp]).forEach(d => {
+    if (!DAY_NAMES[d]) {
+      const dt = new Date(d + 'T00:00:00');
+      DAY_NAMES[d] = DAY_LABELS[dt.getDay()] + ', ' +
+        dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    }
+  });
+});
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function fmt(n){ const v=Math.round(n*10)/10; return v%1===0?v.toFixed(0):v.toFixed(1); }
+function fmtPct(n){ return Math.round(n)+'%'; }
+
+// Dept colour
+function deptClass(dept){
+  const d = (dept||'').toLowerCase();
+  if(d.includes('market')) return 'dept-marketing';
+  if(d.includes('account')) return 'dept-us-accounts';
+  if(d.includes('audit'))   return 'dept-us-audit';
+  if(d.includes('tax'))     return 'dept-us-tax';
+  if(d.includes('operat'))  return 'dept-operations';
+  return 'dept-default';
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────────
+function switchTab(name, el){
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── SUMMARY TABLE ─────────────────────────────────────────────────────────────
+(function renderSummaryTable(){
+  const tbody = document.getElementById('summaryBody');
+  SUMMARY.forEach(s => {
+    const be=s.bill_eff, badge=be>=95?'badge-hi':be>=85?'badge-md':'badge-lo';
+    const badgeLbl=be>=95?'Excellent':be>=85?'Good':'Needs Attn';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><button class="name-btn" onclick="openEmpModal('${s.name}')">${s.name}</button></td>
+      <td>${fmt(s.billable)}</td><td>${fmt(s.leave)}</td><td>${fmt(s.non_billable)}</td>
+      <td style="font-weight:600">${fmt(s.total)}</td><td>${fmt(s.effective)}</td>
+      <td><div class="eff-bar-wrap">
+        <div class="eff-seg seg-bill" style="width:${s.bill_eff}%"></div>
+        <div class="eff-seg seg-nonb" style="width:${s.nonbill_eff}%"></div>
+      </div></td>
+      <td style="color:var(--teal);font-weight:600">${fmtPct(s.bill_eff)}</td>
+      <td style="color:var(--orange)">${fmtPct(s.nonbill_eff)}</td>
+      <td style="font-weight:600">${fmtPct(s.total_eff)}</td>
+      <td><span class="badge ${badge}">${badgeLbl}</span></td>`;
+    tr.addEventListener('click', e => { if(e.target.tagName!=='BUTTON') openEmpModal(s.name); });
+    tbody.appendChild(tr);
+  });
+  const gtr=document.createElement('tr'); gtr.className='grand-total';
+  gtr.innerHTML=`
+    <td><button class="name-btn">GRAND TOTAL</button></td>
+    <td>${fmt(GT.billable)}</td><td>${fmt(GT.leave)}</td><td>${fmt(GT.non_billable)}</td>
+    <td>${fmt(GT.total)}</td><td>${fmt(GT.effective)}</td>
+    <td><div class="eff-bar-wrap" style="background:rgba(255,255,255,.2)">
+      <div class="eff-seg seg-bill" style="width:${GT.bill_eff}%"></div>
+      <div class="eff-seg seg-nonb" style="width:${GT.nonbill_eff}%"></div>
+    </div></td>
+    <td>${fmtPct(GT.bill_eff)}</td><td>${fmtPct(GT.nonbill_eff)}</td>
+    <td>${fmtPct(GT.total_eff)}</td><td><span class="badge">—</span></td>`;
+  tbody.appendChild(gtr);
+})();
+
+// ── MISSING TIME ENTRIES ──────────────────────────────────────────────────────
+let activeDept = 'all';
+
+(function renderMissing(){
+  const entries = MISSING_DATA.entries || [];
+
+  // Header stats
+  document.getElementById('missingHeaderStats').innerHTML = `
+    <div class="missing-stat">
+      <div class="missing-stat-val" style="color:#ffa366">${MISSING_DATA.count}</div>
+      <div class="missing-stat-lbl">Employees</div>
+    </div>
+    <div class="missing-stat" style="margin-left:8px">
+      <div class="missing-stat-val" style="color:#ff6b6b">${fmt(MISSING_DATA.total_missing)}</div>
+      <div class="missing-stat-lbl">Total Missing Hrs</div>
+    </div>
+    <div class="missing-stat" style="margin-left:8px">
+      <div class="missing-stat-val" style="color:rgba(255,255,255,.7)">${fmt(MISSING_DATA.total_logged)}</div>
+      <div class="missing-stat-lbl">Total Logged Hrs</div>
+    </div>`;
+
+  // Dept filter pills
+  buildDeptFilters(entries);
+
+  // Render table
+  renderMissingTable(entries);
+})();
+
+function buildDeptFilters(entries){
+  const container = document.getElementById('deptFilters');
+  const depts = MISSING_DATA.depts || [];
+  const counts = {};
+  entries.forEach(e => { counts[e.dept] = (counts[e.dept]||0)+1; });
+
+  let html = `<div class="dept-pill active" onclick="filterDept('all',this)">
+    🌐 All <span class="pill-count">${entries.length}</span></div>`;
+  depts.forEach(d => {
+    html += `<div class="dept-pill" onclick="filterDept('${d}',this)">
+      ${d} <span class="pill-count">${counts[d]||0}</span></div>`;
+  });
+  container.innerHTML = html;
+}
+
+function filterDept(dept, el){
+  activeDept = dept;
+  document.querySelectorAll('.dept-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  const entries = MISSING_DATA.entries || [];
+  const filtered = dept === 'all' ? entries : entries.filter(e => e.dept === dept);
+  renderMissingTable(filtered);
+}
+
+function renderMissingTable(entries){
+  const tbody = document.getElementById('missingBody');
+  tbody.innerHTML = '';
+
+  if(entries.length === 0){
+    tbody.innerHTML = `<tr><td colspan="8">
+      <div class="no-missing">
+        <div class="no-missing-icon">✅</div>
+        <div style="font-weight:600;color:var(--teal);font-size:15px">No missing entries!</div>
+        <div style="margin-top:6px;font-size:13px">All employees have met their expected hours.</div>
+      </div></td></tr>`;
+    return;
+  }
+
+  entries.forEach(e => {
+    const tr = document.createElement('tr');
+    const dClass = deptClass(e.dept);
+    // Check if employee is in timesheet data (for clickable link)
+    const hasTimesheet = DAILY.hasOwnProperty(e.emp_name);
+    const nameCell = hasTimesheet
+      ? `<button class="emp-link" onclick="openEmpModal('${e.emp_name}')">${e.emp_name}</button>`
+      : `<span style="font-weight:600;color:var(--navy)">${e.emp_name}</span>`;
+
+    tr.innerHTML = `
+      <td style="color:var(--text-muted);font-weight:500">${e.emp_id}</td>
+      <td>${nameCell}</td>
+      <td>${e.dept !== '—' ? `<span class="dept-tag ${dClass}">${e.dept}</span>` : '<span style="color:var(--gray-400)">—</span>'}</td>
+      <td style="color:var(--text-muted)">${e.t1_manager}</td>
+      <td style="color:var(--text-muted)">${e.reporting_manager}</td>
+      <td class="r logged-val">${fmt(e.total_logged)}</td>
+      <td class="r expected-val">${fmt(e.expected)}</td>
+      <td class="r missing-hrs-val">${fmt(e.missing)}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Totals row
+  const totalLogged   = entries.reduce((a,e)=>a+e.total_logged,0);
+  const totalExpected = entries.reduce((a,e)=>a+e.expected,0);
+  const totalMissing  = entries.reduce((a,e)=>a+e.missing,0);
+
+  const ttr = document.createElement('tr');
+  ttr.className = 'total-row';
+  ttr.innerHTML = `
+    <td colspan="5" style="font-weight:700;color:#fff">Total (${entries.length})</td>
+    <td class="r logged-val">${fmt(totalLogged)}</td>
+    <td class="r expected-val">${fmt(totalExpected)}</td>
+    <td class="r missing-hrs-val">${fmt(totalMissing)}</td>`;
+  tbody.appendChild(ttr);
+}
+
+// ── KPI MODAL ─────────────────────────────────────────────────────────────────
+function openKpiModal(type){
+  const hdr=document.getElementById('kpiHeader'),title=document.getElementById('kpiTitle'),
+        sub=document.getElementById('kpiSub'),skpis=document.getElementById('kpiSubKpis'),
+        body=document.getElementById('kpiBody');
+  hdr.className='modal-header'; body.innerHTML=''; skpis.innerHTML='';
+
+  if(type==='total'){
+    hdr.classList.add('mh-total'); title.textContent='Total Hours — All Staff';
+    sub.textContent='Weekly Summary';
+    skpis.style.gridTemplateColumns='repeat(4,1fr)';
+    skpis.innerHTML=`
+      <div class="modal-kpi"><div class="modal-kpi-label">Total Hours</div><div class="modal-kpi-val">${fmt(GT.total)}</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">Billable</div><div class="modal-kpi-val" style="color:var(--teal)">${fmt(GT.billable)}</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">Leave</div><div class="modal-kpi-val" style="color:var(--sky)">${fmt(GT.leave)}</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">Non-Billable</div><div class="modal-kpi-val" style="color:var(--orange)">${fmt(GT.non_billable)}</div></div>`;
+    body.innerHTML='<div class="kpi-section-title">All Staff — Hours Breakdown</div>';
+    const t=document.createElement('table'); t.className='drill-table';
+    t.innerHTML=`<thead><tr><th>Employee</th><th class="r">Billable</th><th class="r">Leave</th><th class="r">Non-Billable</th><th class="r">Total</th><th class="r">Bill. Eff.</th></tr></thead><tbody>${
+      KPI_TOTAL.map(s=>`<tr>
+        <td style="font-weight:600;color:var(--navy)">${s.name}</td>
+        <td class="r" style="color:var(--teal)">${fmt(s.billable)}</td>
+        <td class="r" style="color:var(--sky)">${fmt(s.leave)}</td>
+        <td class="r" style="color:var(--orange)">${fmt(s.non_billable)}</td>
+        <td class="r" style="font-weight:700">${fmt(s.total)}</td>
+        <td class="r">${s.total>0?fmtPct(s.billable/(s.total-s.leave)*100):'—'}</td>
+      </tr>`).join('')
+    }</tbody>`;
+    body.appendChild(t);
+
+  } else if(type==='billable'){
+    hdr.classList.add('mh-bill'); title.textContent='Billable Hours — Staff Breakdown';
+    sub.textContent=`${fmt(GT.billable)} total billable hours`;
+    skpis.style.gridTemplateColumns='repeat(3,1fr)';
+    const avg=Math.round(GT.billable/SUMMARY.length*10)/10;
+    skpis.innerHTML=`
+      <div class="modal-kpi"><div class="modal-kpi-label">Total Billable</div><div class="modal-kpi-val" style="color:var(--teal)">${fmt(GT.billable)} hrs</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">% of Total</div><div class="modal-kpi-val" style="color:var(--teal)">${fmtPct(GT.billable/GT.total*100)}</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">Avg per Staff</div><div class="modal-kpi-val" style="color:var(--teal)">${fmt(avg)} hrs</div></div>`;
+    body.innerHTML='<div class="kpi-section-title">Billable Hours per Employee</div>';
+    KPI_BILL.forEach(emp=>{
+      const sec=document.createElement('div'); sec.style.marginBottom='18px';
+      sec.innerHTML=`<div style="display:flex;justify-content:space-between;padding:9px 12px;background:var(--off-white);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;">
+        <span style="font-weight:700;color:var(--navy)">${emp.name}</span>
+        <span style="font-weight:700;color:var(--teal)">${fmt(emp.total)} hrs</span></div>
+        <table class="drill-table"><thead><tr><th>Date</th><th class="r">Hours</th></tr></thead><tbody>
+        ${Object.entries(emp.by_day).sort().map(([d,h])=>`<tr><td>${DAY_NAMES[d]||d}</td><td class="r" style="color:var(--teal);font-weight:600">${fmt(h)}</td></tr>`).join('')}
+        </tbody></table>`;
+      body.appendChild(sec);
+    });
+
+  } else if(type==='leave'){
+    hdr.classList.add('mh-leave'); title.textContent='Leave Hours — Staff Breakdown';
+    sub.textContent=`${KPI_LEAVE.length} employees on leave`;
+    skpis.style.gridTemplateColumns='repeat(3,1fr)';
+    skpis.innerHTML=`
+      <div class="modal-kpi"><div class="modal-kpi-label">Total Leave</div><div class="modal-kpi-val" style="color:var(--sky)">${fmt(GT.leave)} hrs</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">On Leave</div><div class="modal-kpi-val" style="color:var(--sky)">${KPI_LEAVE.length}</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">% of Total</div><div class="modal-kpi-val" style="color:var(--sky)">${fmtPct(GT.leave/GT.total*100)}</div></div>`;
+    body.innerHTML='<div class="kpi-section-title">Leave Entries — By Employee</div>';
+    const t=document.createElement('table'); t.className='drill-table';
+    t.innerHTML=`<thead><tr><th>Employee</th><th>Date</th><th>Leave Type</th><th class="r">Hours</th><th>Note</th></tr></thead><tbody>${
+      KPI_LEAVE.flatMap(emp=>emp.entries.map(e=>`<tr>
+        <td style="font-weight:600;color:var(--navy)">${emp.name}</td>
+        <td>${DAY_NAMES[e.date]||e.date}</td>
+        <td><span class="cat-pill cat-leave">${e.service}</span></td>
+        <td class="r" style="color:var(--sky);font-weight:600">${fmt(e.hours)}</td>
+        <td class="note-text">${e.note||'<span class="note-empty">—</span>'}</td>
+      </tr>`)).join('')
+    }</tbody>`;
+    body.appendChild(t);
+
+  } else if(type==='nonbill'){
+    hdr.classList.add('mh-nonbill'); title.textContent='Non-Billable Hours — Staff Breakdown';
+    sub.textContent='Admin, Billing, Meetings & Training';
+    skpis.style.gridTemplateColumns='repeat(3,1fr)';
+    skpis.innerHTML=`
+      <div class="modal-kpi"><div class="modal-kpi-label">Total Non-Billable</div><div class="modal-kpi-val" style="color:var(--orange)">${fmt(GT.non_billable)} hrs</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">Employees</div><div class="modal-kpi-val" style="color:var(--orange)">${KPI_NONBILL.length}</div></div>
+      <div class="modal-kpi"><div class="modal-kpi-label">% of Effective</div><div class="modal-kpi-val" style="color:var(--orange)">${fmtPct(GT.non_billable/GT.effective*100)}</div></div>`;
+    body.innerHTML='<div class="kpi-section-title">Non-Billable Entries — By Employee</div>';
+    const t=document.createElement('table'); t.className='drill-table';
+    t.innerHTML=`<thead><tr><th>Employee</th><th>Date</th><th>Activity</th><th class="r">Hours</th><th>Note</th></tr></thead><tbody>${
+      KPI_NONBILL.flatMap(emp=>emp.entries.map(e=>`<tr>
+        <td style="font-weight:600;color:var(--navy)">${emp.name}</td>
+        <td>${DAY_NAMES[e.date]||e.date}</td>
+        <td><span class="cat-pill cat-nonb">${e.service}</span></td>
+        <td class="r" style="color:var(--orange);font-weight:600">${fmt(e.hours)}</td>
+        <td class="note-text">${e.note||'<span class="note-empty">—</span>'}</td>
+      </tr>`)).join('')
+    }</tbody>`;
+    body.appendChild(t);
+  }
+  document.getElementById('kpiOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeKpiModal(){ document.getElementById('kpiOverlay').classList.remove('open'); document.body.style.overflow=''; }
+
+// ── EMPLOYEE MODAL ────────────────────────────────────────────────────────────
+let empFilter=null;
+function openEmpModal(name,filter){
+  empFilter=(filter===undefined)?null:filter;
+  const s=SUMMARY.find(x=>x.name===name);
+  const entries=DAILY[name]||{};
+  document.getElementById('empTitle').textContent=name;
+  document.getElementById('empKpis').innerHTML=`
+    <div class="emp-kpi ${empFilter==='billable'?'active-filter':''}" onclick="openEmpModal('${name}','billable')">
+      <div class="emp-kpi-label">Billable</div><div class="emp-kpi-val">${fmt(s.billable)} hrs</div>
+      <div class="emp-kpi-hint">Click to filter</div></div>
+    <div class="emp-kpi ${empFilter==='leave'?'active-filter':''}" onclick="openEmpModal('${name}','leave')">
+      <div class="emp-kpi-label">Leave</div><div class="emp-kpi-val">${fmt(s.leave)} hrs</div>
+      <div class="emp-kpi-hint">Click to filter</div></div>
+    <div class="emp-kpi ${empFilter==='non_billable'?'active-filter':''}" onclick="openEmpModal('${name}','non_billable')">
+      <div class="emp-kpi-label">Non-Billable</div><div class="emp-kpi-val">${fmt(s.non_billable)} hrs</div>
+      <div class="emp-kpi-hint">Click to filter</div></div>
+    <div class="emp-kpi ${empFilter===null?'active-filter':''}" onclick="openEmpModal('${name}',null)">
+      <div class="emp-kpi-label">All Entries</div><div class="emp-kpi-val">${fmt(s.total)} hrs</div>
+      <div class="emp-kpi-hint">Show all</div></div>`;
+  const body=document.getElementById('empBody'); body.innerHTML='';
+  Object.keys(entries).sort().forEach(dateKey=>{
+    let rows=entries[dateKey];
+    if(empFilter) rows=rows.filter(r=>r.category===empFilter);
+    if(!rows.length) return;
+    const totHrs=rows.reduce((a,r)=>a+r.hours,0);
+    const billHrs=rows.filter(r=>r.category==='billable').reduce((a,r)=>a+r.hours,0);
+    const lvHrs=rows.filter(r=>r.category==='leave').reduce((a,r)=>a+r.hours,0);
+    const nbHrs=rows.filter(r=>r.category==='non_billable').reduce((a,r)=>a+r.hours,0);
+    const block=document.createElement('div'); block.className='day-block';
+    block.innerHTML=`
+      <div class="day-header" onclick="toggleDay(this)">
+        <span class="day-label">📅 ${DAY_NAMES[dateKey]||dateKey}</span>
+        <div class="day-totals">
+          <span>Total: <b>${fmt(totHrs)} hrs</b></span>
+          ${billHrs>0?`<span style="color:var(--teal)">Billable: ${fmt(billHrs)}</span>`:''}
+          ${lvHrs>0?`<span style="color:var(--sky)">Leave: ${fmt(lvHrs)}</span>`:''}
+          ${nbHrs>0?`<span style="color:var(--orange)">Non-Bill: ${fmt(nbHrs)}</span>`:''}
+        </div>
+        <span class="day-toggle">▲</span>
+      </div>
+      <div class="day-entries">
+        <table class="entries-table">
+          <thead><tr><th>Client</th><th>Service</th><th>Hrs</th><th>Category</th><th>Status</th><th>Invoice Description</th><th>Internal Note</th></tr></thead>
+          <tbody>${rows.map(r=>`<tr>
+            <td style="font-weight:600;color:var(--navy);white-space:nowrap">${r.client}</td>
+            <td style="color:var(--text-muted);white-space:nowrap">${r.service}</td>
+            <td style="font-weight:700;white-space:nowrap">${fmt(r.hours)}</td>
+            <td><span class="cat-pill cat-${r.category==='billable'?'bill':r.category==='leave'?'leave':'nonb'}">${r.category.replace('_',' ')}</span></td>
+            <td class="stat-${r.status.toLowerCase()}">${r.status}</td>
+            <td>${r.inv_desc?`<span class="note-text">${r.inv_desc}</span>`:'<span class="note-empty">—</span>'}</td>
+            <td>${r.int_note?`<span class="note-text">${r.int_note}</span>`:'<span class="note-empty">—</span>'}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+    body.appendChild(block);
+  });
+  if(!body.innerHTML) body.innerHTML=`<div style="padding:32px;text-align:center;color:var(--text-muted);">No entries found.</div>`;
+  document.getElementById('empOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeEmpModal(){ document.getElementById('empOverlay').classList.remove('open'); document.body.style.overflow=''; empFilter=null; }
+function toggleDay(hdr){ const e=hdr.nextElementSibling,a=hdr.querySelector('.day-toggle'),open=e.style.display!=='none'; e.style.display=open?'none':''; a.textContent=open?'▼':'▲'; }
+
+document.getElementById('kpiOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('kpiOverlay'))closeKpiModal();});
+document.getElementById('empOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('empOverlay'))closeEmpModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeKpiModal();closeEmpModal();}});
+</script>
+</body>
+</html>
