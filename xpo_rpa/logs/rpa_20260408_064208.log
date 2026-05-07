@@ -1,0 +1,420 @@
+[2026-04-08 06:42:08] [INFO] ============================================================
+[2026-04-08 06:42:08] [INFO] XPO Billing RPA - Starting
+[2026-04-08 06:42:08] [INFO] ============================================================
+[2026-04-08 06:42:08] [INFO] Step 1/4 — Setting up browser
+[2026-04-08 06:42:08] [INFO] Download folder: Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08
+[2026-04-08 06:42:09] [INFO] Browser ready.
+[2026-04-08 06:42:09] [INFO] Step 2/4 — Logging in
+[2026-04-08 06:42:09] [INFO] Opening: https://ext-web.ltl-xpo.com/app/home/shipments
+[2026-04-08 06:42:46] [INFO] Username entered.
+[2026-04-08 06:42:46] [INFO] Password entered.
+[2026-04-08 06:42:47] [INFO] Login submitted.
+[2026-04-08 06:42:52] [INFO] Logged in. URL: https://ext-web.ltl-xpo.com/auth#id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjJEQTBEMzgxMjNENjI3QUI2OUU3QTIzMjE4MEYxODE0NDYxMDEwM0MiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJMYURUZ1NQV0o2dHA1Nkl5R0E4WUZFWVFFRHcifQ.eyJuYmYiOjE3NzU2NTU3NjgsImV4cCI6MTc3NTY1NjA2OCwiaXNzIjoiaHR0cHM6Ly9pZC54cG8uY29tIiwiYXVkIjoibHRsLWV4dC13ZWIiLCJub25jZSI6IjEwZWM3YTA0ZDM2MTQ0NDI5ODY1YjAzZmNlOGU4MTQ0IiwiaWF0IjoxNzc1NjU1NzY4LCJhdF9oYXNoIjoiblRDT2hJemNPcTZXZWFrYmtDYzhtZyIsInNfaGFzaCI6IlpLeW9peWpWczIyYXRIOUU2WGNuWVEiLCJzaWQiOiIyR25HR1lDSDVkN2N1S3FaZlQ0emZnIiwic3ViIjoidHNueWRlcjpvaWRjLWxkYXAtdGl2IiwiYXV0aF90aW1lIjoxNzc1NjU1NzY4LCJpZHAiOiJvaWRjLWxkYXAtdGl2IiwiYW1yIjpbImV4dGVybmFsIl19.Pv1kdGWp0rS0E3Wby7F2yPtks-v1qq3Og6iHJTQ0Qu-auzUnEnQFe6PtC39dEiD3t2QC4y3m5qYmsyjNbrZLCtqhyXdz-Jw1PxMU-veX3aoz54sbseAaSDupYvts_7jRLvZL8lUcgwfNV7x1k_5eqOWm3_QC5J7F53I-I2nTkrDpALzXnmHGys6y06xtacWGW8AnIV6hRWUYNfhl60RiBpDXSEI0TZ2W_whcglrm94ew4M1U0VvrL4V_tNeLJNQaAjO-EpnhBFkUV5ChoYH7UGtqfXBweZCovpOgOd1rzuwAe4owwzO5o2XvAtPnX-4Xjt8rJ2hL2eRLI0VRMVTiVQ&access_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjJEQTBEMzgxMjNENjI3QUI2OUU3QTIzMjE4MEYxODE0NDYxMDEwM0MiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJMYURUZ1NQV0o2dHA1Nkl5R0E4WUZFWVFFRHcifQ.eyJuYmYiOjE3NzU2NTU3NjgsImV4cCI6MTc3NTY2Mjk2OCwiaXNzIjoiaHR0cHM6Ly9pZC54cG8uY29tIiwiYXVkIjpbImh0dHBzOi8vaWQueHBvLmNvbS9yZXNvdXJjZXMiLCJ4cG8tYXV0aC1hcGkiLCJsdGwtY29ubmVjdC1hcGkiLCJsdGwtd2ViLWRvdG5ldC1hcGkiLCJ4cG8tcGFydG5lci1tYXN0ZXItYXBpIiwibHRsLXdlYi1wdWItaHJjIl0sImNsaWVudF9pZCI6Imx0bC1leHQtd2ViIiwic3ViIjoidHNueWRlcjpvaWRjLWxkYXAtdGl2IiwiYXV0aF90aW1lIjoxNzc1NjU1NzY4LCJpZHAiOiJvaWRjLWxkYXAtdGl2IiwidXBuIjoidHNueWRlciIsImV4dGVybmFsX2lkZW50aWZpZXIiOiJ0c255ZGVyIiwibmFtZSI6IlRhbnlhIFNueWRlciIsInNjb3BlIjpbIm9wZW5pZCIsImVtYWlsIiwibmFtZSIsInhwby1hdXRoLWFwaSIsImx0bC1jb25uZWN0LWFwaSIsImx0bC13ZWItZG90bmV0LWFwaSIsInhwby1wYXJ0bmVyLW1hc3Rlci1hcGkiLCJsdGwtd2ViLXB1Yi1ocmMiXSwiYW1yIjpbImV4dGVybmFsIl19.Wccj_PTLe3larevSqobLybskSXXkGJppg-bbaUMrPZdq2PLlbHH-fx0Sccu47D5zsNMBVCgUGoC_noCF3wtG5zLTVGyxkRsDPsQdFa0I8qMjskmCJ2-B-UUqumhusRT9xf8LossN5f-cKxdasAvwpWghOKbqE9tGXNQa94Xrqzv_91-eNmw58oKsYm935Ee99Z0l7XhG83VQOJTcDe3cIaY7pS7IRSB8dmZUVwdHr0tyHYRF6n_J3USaIEF4vpUMcg4h9sCBHVMMHjeb5nygAkcRh_dzJLzpQGONKIftZ2V6ipkY-8RbcAZERuGQotx9DeSEDlYJiCGBBSlR1fwfqA&token_type=Bearer&expires_in=7200&scope=openid%20email%20name%20xpo-auth-api%20ltl-connect-api%20ltl-web-dotnet-api%20xpo-partner-master-api%20ltl-web-pub-hrc&state=87fa8cfe2de149789967e708175644b7&session_state=wVDHJCoFF5t0YPUXEl7R2JyDzkcSQsk4VaHxNBa-kgw.iMvKCCiUmCSsN_pCjdopnw
+[2026-04-08 06:42:52] [INFO] Popup watcher started.
+[2026-04-08 06:42:54] [INFO] Step 3/4 — Navigating to Billing
+[2026-04-08 06:42:54] [INFO] Navigating to Billing page...
+[2026-04-08 06:42:58] [INFO]   [popup] Dismissed: 'Not Now'
+[2026-04-08 06:44:27] [INFO] Waiting for invoices to load...
+[2026-04-08 06:44:34] [INFO]   [popup] Dismissed: 'Not Now'
+[2026-04-08 06:44:35] [INFO]   50 rows loaded after 8s
+[2026-04-08 06:44:37] [INFO] Billing ready. URL: https://ext-web.ltl-xpo.com/app/billing
+[2026-04-08 06:44:37] [INFO] Step 4/4 — Downloading all invoices
+[2026-04-08 06:44:37] [INFO] 
+=== Page 1 ===
+[2026-04-08 06:44:38] [INFO] Reading invoice rows...
+[2026-04-08 06:44:38] [INFO] Found 50 rows.
+[2026-04-08 06:44:39] [INFO] Parsed 50 bills.
+[2026-04-08 06:44:39] [INFO]   50 invoices on page 1
+[2026-04-08 06:44:39] [INFO] 
+--- Batch 1 | rows 1–10 ---
+[2026-04-08 06:44:39] [INFO] Batch 1: ticking 10 checkboxes...
+[2026-04-08 06:44:39] [INFO]   ✓ 687308834
+[2026-04-08 06:44:40] [INFO]   ✓ 687309276
+[2026-04-08 06:44:40] [INFO]   ✓ 687309162
+[2026-04-08 06:44:41] [INFO]   ✓ 687309103
+[2026-04-08 06:44:41] [INFO]   ✓ 987986521
+[2026-04-08 06:44:42] [INFO]   ✓ 987986764
+[2026-04-08 06:44:42] [INFO]   ✓ 987986786
+[2026-04-08 06:44:42] [INFO]   ✓ 987986650
+[2026-04-08 06:44:43] [INFO]   ✓ 687309140
+[2026-04-08 06:44:43] [INFO]   ✓ 687309350
+[2026-04-08 06:44:43] [INFO]   10/10 checked.
+[2026-04-08 06:44:45] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:44:45] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:44:47] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:44:48] [INFO]   Waiting for download...
+[2026-04-08 06:44:48] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:46:18] [WARNING]   Timed out after 90s.
+[2026-04-08 06:46:18] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: []
+[2026-04-08 06:46:18] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 06:46:18] [INFO]   0 file(s) received.
+[2026-04-08 06:46:18] [INFO]     0/10 downloaded | running total: 0
+[2026-04-08 06:46:19] [INFO] 
+--- Batch 2 | rows 11–20 ---
+[2026-04-08 06:46:20] [INFO] Batch 2: ticking 10 checkboxes...
+[2026-04-08 06:46:20] [INFO]   ✓ 687309372
+[2026-04-08 06:46:21] [INFO]   ✓ 987986672
+[2026-04-08 06:46:21] [INFO]   ✓ 987986683
+[2026-04-08 06:46:21] [INFO]   ✓ 987986720
+[2026-04-08 06:46:22] [INFO]   ✓ 987986882
+[2026-04-08 06:46:22] [INFO]   ✓ 687309431
+[2026-04-08 06:46:23] [INFO]   ✓ 687309475
+[2026-04-08 06:46:23] [INFO]   ✓ 687309512
+[2026-04-08 06:46:23] [INFO]   ✓ 687308580
+[2026-04-08 06:46:24] [INFO]   ✓ 687309291
+[2026-04-08 06:46:24] [INFO]   10/10 checked.
+[2026-04-08 06:46:25] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:46:25] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:46:27] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:46:28] [INFO]   Waiting for download...
+[2026-04-08 06:46:28] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:46:44] [INFO]   File(s) received: ['Invoices 04-08-2026.zip']
+[2026-04-08 06:46:45] [INFO]   1 file(s) received.
+[2026-04-08 06:46:45] [INFO]     1/10 downloaded | running total: 1
+[2026-04-08 06:46:46] [INFO] 
+--- Batch 3 | rows 21–30 ---
+[2026-04-08 06:46:47] [INFO] Batch 3: ticking 10 checkboxes...
+[2026-04-08 06:46:47] [INFO]   ✓ 687309136
+[2026-04-08 06:46:48] [INFO]   ✓ 987986775
+[2026-04-08 06:46:48] [INFO]   ✓ 687309265
+[2026-04-08 06:46:49] [INFO]   ✓ 687309302
+[2026-04-08 06:46:49] [INFO]   ✓ 987986904
+[2026-04-08 06:46:49] [INFO]   ✓ 687309501
+[2026-04-08 06:46:50] [INFO]   ✓ 687309280
+[2026-04-08 06:46:50] [INFO]   ✓ 687309486
+[2026-04-08 06:46:51] [INFO]   ✓ 687309442
+[2026-04-08 06:46:51] [INFO]   ✓ 687309464
+[2026-04-08 06:46:51] [INFO]   10/10 checked.
+[2026-04-08 06:46:52] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:46:52] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:46:55] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:46:56] [INFO]   Waiting for download...
+[2026-04-08 06:46:56] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:48:26] [WARNING]   Timed out after 90s.
+[2026-04-08 06:48:26] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 06:48:26] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 06:48:26] [INFO]   0 file(s) received.
+[2026-04-08 06:48:26] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 06:48:27] [INFO] 
+--- Batch 4 | rows 31–40 ---
+[2026-04-08 06:48:28] [INFO] Batch 4: ticking 10 checkboxes...
+[2026-04-08 06:48:28] [INFO]   ✓ 687309173
+[2026-04-08 06:48:28] [INFO]   ✓ 687309346
+[2026-04-08 06:48:29] [INFO]   ✓ 987986694
+[2026-04-08 06:48:29] [INFO]   ✓ 687309195
+[2026-04-08 06:48:30] [INFO]   ✓ 987986801
+[2026-04-08 06:48:30] [INFO]   ✓ 687309453
+[2026-04-08 06:48:31] [INFO]   ✓ 687309416
+[2026-04-08 06:48:31] [INFO]   ✓ 987986716
+[2026-04-08 06:48:31] [INFO]   ✓ 687309335
+[2026-04-08 06:48:32] [INFO]   ✓ 687309490
+[2026-04-08 06:48:32] [INFO]   10/10 checked.
+[2026-04-08 06:48:33] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:48:33] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:48:35] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:48:36] [INFO]   Waiting for download...
+[2026-04-08 06:48:36] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:50:06] [WARNING]   Timed out after 90s.
+[2026-04-08 06:50:06] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 06:50:06] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 06:50:06] [INFO]   0 file(s) received.
+[2026-04-08 06:50:06] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 06:50:07] [INFO] 
+--- Batch 5 | rows 41–50 ---
+[2026-04-08 06:50:08] [INFO] Batch 5: ticking 10 checkboxes...
+[2026-04-08 06:50:08] [INFO]   ✓ 687309420
+[2026-04-08 06:50:09] [INFO]   ✓ 987986893
+[2026-04-08 06:50:09] [INFO]   ✓ 987986860
+[2026-04-08 06:50:10] [INFO]   ✓ 687309125
+[2026-04-08 06:50:10] [INFO]   ✓ 687309221
+[2026-04-08 06:50:11] [INFO]   ✓ 987986425
+[2026-04-08 06:50:11] [INFO]   ✓ 687308904
+[2026-04-08 06:50:11] [INFO]   ✓ 687309151
+[2026-04-08 06:50:12] [INFO]   ✓ 687309070
+[2026-04-08 06:50:12] [INFO]   ✓ 687309383
+[2026-04-08 06:50:12] [INFO]   10/10 checked.
+[2026-04-08 06:50:14] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:50:14] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:50:16] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:50:17] [INFO]   Waiting for download...
+[2026-04-08 06:50:17] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:51:47] [WARNING]   Timed out after 90s.
+[2026-04-08 06:51:47] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 06:51:47] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 06:51:47] [INFO]   0 file(s) received.
+[2026-04-08 06:51:47] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 06:51:48] [INFO] Page 1 done.
+[2026-04-08 06:51:48] [INFO]   ✓ Next page.
+[2026-04-08 06:51:52] [INFO]   50 rows loaded after 2s
+[2026-04-08 06:51:55] [INFO] 
+=== Page 2 ===
+[2026-04-08 06:51:56] [INFO] Reading invoice rows...
+[2026-04-08 06:51:56] [INFO] Found 50 rows.
+[2026-04-08 06:51:57] [INFO] Parsed 50 bills.
+[2026-04-08 06:51:57] [INFO]   50 invoices on page 2
+[2026-04-08 06:51:57] [INFO] 
+--- Batch 6 | rows 1–10 ---
+[2026-04-08 06:51:58] [INFO] Batch 6: ticking 10 checkboxes...
+[2026-04-08 06:51:58] [INFO]   ✓ 687309394
+[2026-04-08 06:51:59] [INFO]   ✓ 687309092
+[2026-04-08 06:51:59] [INFO]   ✓ 687309033
+[2026-04-08 06:51:59] [INFO]   ✓ 687308790
+[2026-04-08 06:52:00] [INFO]   ✓ 687309324
+[2026-04-08 06:52:00] [INFO]   ✓ 987986856
+[2026-04-08 06:52:01] [INFO]   ✓ 987986731
+[2026-04-08 06:52:01] [INFO]   ✓ 687309405
+[2026-04-08 06:52:01] [INFO]   ✓ 687309066
+[2026-04-08 06:52:02] [INFO]   ✓ 687309044
+[2026-04-08 06:52:02] [INFO]   10/10 checked.
+[2026-04-08 06:52:03] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:52:03] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:52:05] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:52:06] [INFO]   Waiting for download...
+[2026-04-08 06:52:06] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:53:37] [WARNING]   Timed out after 90s.
+[2026-04-08 06:53:37] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 06:53:37] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 06:53:37] [INFO]   0 file(s) received.
+[2026-04-08 06:53:37] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 06:53:38] [INFO] 
+--- Batch 7 | rows 11–20 ---
+[2026-04-08 06:53:38] [INFO] Batch 7: ticking 10 checkboxes...
+[2026-04-08 06:53:39] [INFO]   ✓ 687309243
+[2026-04-08 06:53:39] [INFO]   ✓ 987986753
+[2026-04-08 06:53:39] [INFO]   ✓ 987986495
+[2026-04-08 06:53:40] [INFO]   ✓ 687309011
+[2026-04-08 06:53:40] [INFO]   ✓ 987986624
+[2026-04-08 06:53:41] [INFO]   ✓ 987986705
+[2026-04-08 06:53:41] [INFO]   ✓ 687309313
+[2026-04-08 06:53:41] [INFO]   ✓ 987986812
+[2026-04-08 06:53:42] [INFO]   ✓ 687309022
+[2026-04-08 06:53:42] [INFO]   ✓ 687309000
+[2026-04-08 06:53:42] [INFO]   10/10 checked.
+[2026-04-08 06:53:44] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:53:44] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:53:46] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:53:47] [INFO]   Waiting for download...
+[2026-04-08 06:53:47] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:55:17] [WARNING]   Timed out after 90s.
+[2026-04-08 06:55:17] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 06:55:17] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 06:55:17] [INFO]   0 file(s) received.
+[2026-04-08 06:55:17] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 06:55:18] [INFO] 
+--- Batch 8 | rows 21–30 ---
+[2026-04-08 06:55:18] [INFO] Batch 8: ticking 10 checkboxes...
+[2026-04-08 06:55:19] [INFO]   ✓ 987986646
+[2026-04-08 06:55:19] [INFO]   ✓ 687309232
+[2026-04-08 06:55:20] [INFO]   ✓ 687308845
+[2026-04-08 06:55:20] [INFO]   ✓ 687309361
+[2026-04-08 06:55:21] [INFO]   ✓ 987986845
+[2026-04-08 06:55:21] [INFO]   ✓ 987986834
+[2026-04-08 06:55:21] [INFO]   ✓ 987986823
+[2026-04-08 06:55:22] [INFO]   ✓ 987986742
+[2026-04-08 06:55:22] [INFO]   ✓ 687309206
+[2026-04-08 06:55:23] [INFO]   ✓ 987986602
+[2026-04-08 06:55:23] [INFO]   10/10 checked.
+[2026-04-08 06:55:24] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:55:24] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:55:26] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:55:27] [INFO]   Waiting for download...
+[2026-04-08 06:55:27] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:56:57] [WARNING]   Timed out after 90s.
+[2026-04-08 06:56:57] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 06:56:57] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 06:56:57] [INFO]   0 file(s) received.
+[2026-04-08 06:56:57] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 06:56:58] [INFO] 
+--- Batch 9 | rows 31–40 ---
+[2026-04-08 06:56:59] [INFO] Batch 9: ticking 10 checkboxes...
+[2026-04-08 06:56:59] [INFO]   ✓ 987986613
+[2026-04-08 06:57:00] [INFO]   ✓ 687309210
+[2026-04-08 06:57:00] [INFO]   ✓ 687309184
+[2026-04-08 06:57:00] [INFO]   ✓ 687309254
+[2026-04-08 06:57:01] [INFO]   ✓ 987986580
+[2026-04-08 06:57:01] [INFO]   ✓ 687309114
+[2026-04-08 06:57:02] [INFO]   ✓ 987986591
+[2026-04-08 06:57:02] [INFO]   ✓ 987986510
+[2026-04-08 06:57:03] [INFO]   ✓ 687308963
+[2026-04-08 06:57:03] [INFO]   ✓ 687308436
+[2026-04-08 06:57:03] [INFO]   10/10 checked.
+[2026-04-08 06:57:04] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:57:04] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:57:06] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:57:07] [INFO]   Waiting for download...
+[2026-04-08 06:57:07] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 06:58:38] [WARNING]   Timed out after 90s.
+[2026-04-08 06:58:38] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 06:58:38] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 06:58:38] [INFO]   0 file(s) received.
+[2026-04-08 06:58:38] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 06:58:39] [INFO] 
+--- Batch 10 | rows 41–50 ---
+[2026-04-08 06:58:39] [INFO] Batch 10: ticking 10 checkboxes...
+[2026-04-08 06:58:40] [INFO]   ✓ 687308296
+[2026-04-08 06:58:40] [INFO]   ✓ 687308786
+[2026-04-08 06:58:40] [INFO]   ✓ 987986016
+[2026-04-08 06:58:41] [INFO]   ✓ 987986230
+[2026-04-08 06:58:41] [INFO]   ✓ 687307095
+[2026-04-08 06:58:42] [INFO]   ✓ 987979915
+[2026-04-08 06:58:42] [INFO]   ✓ 987979871
+[2026-04-08 06:58:42] [INFO]   ✓ 987979860
+[2026-04-08 06:58:43] [INFO]   ✓ 987979786
+[2026-04-08 06:58:43] [INFO]   ✓ 726206246
+[2026-04-08 06:58:43] [INFO]   10/10 checked.
+[2026-04-08 06:58:45] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 06:58:45] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 06:58:47] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 06:58:48] [INFO]   Waiting for download...
+[2026-04-08 06:58:48] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 07:00:18] [WARNING]   Timed out after 90s.
+[2026-04-08 07:00:18] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 07:00:18] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 07:00:18] [INFO]   0 file(s) received.
+[2026-04-08 07:00:18] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 07:00:19] [INFO] Page 2 done.
+[2026-04-08 07:00:19] [INFO]   ✓ Next page.
+[2026-04-08 07:00:23] [INFO]   50 rows loaded after 2s
+[2026-04-08 07:00:26] [INFO] 
+=== Page 3 ===
+[2026-04-08 07:00:27] [INFO] Reading invoice rows...
+[2026-04-08 07:00:27] [INFO] Found 50 rows.
+[2026-04-08 07:00:28] [INFO] Parsed 50 bills.
+[2026-04-08 07:00:28] [INFO]   50 invoices on page 3
+[2026-04-08 07:00:28] [INFO] 
+--- Batch 11 | rows 1–10 ---
+[2026-04-08 07:00:29] [INFO] Batch 11: ticking 10 checkboxes...
+[2026-04-08 07:00:29] [INFO]   ✓ 726206250
+[2026-04-08 07:00:29] [INFO]   ✓ 726206165
+[2026-04-08 07:00:30] [INFO]   ✓ 726206235
+[2026-04-08 07:00:30] [INFO]   ✓ 726206180
+[2026-04-08 07:00:31] [INFO]   ✓ 987979882
+[2026-04-08 07:00:31] [INFO]   ✓ 987979845
+[2026-04-08 07:00:31] [INFO]   ✓ 987979812
+[2026-04-08 07:00:32] [INFO]   ✓ 987979823
+[2026-04-08 07:00:32] [INFO]   ✓ 726206106
+[2026-04-08 07:00:33] [INFO]   ✓ 726206202
+[2026-04-08 07:00:33] [INFO]   10/10 checked.
+[2026-04-08 07:00:34] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 07:00:34] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 07:00:36] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 07:00:37] [INFO]   Waiting for download...
+[2026-04-08 07:00:37] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 07:02:07] [WARNING]   Timed out after 90s.
+[2026-04-08 07:02:07] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 07:02:07] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 07:02:07] [INFO]   0 file(s) received.
+[2026-04-08 07:02:07] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 07:02:08] [INFO] 
+--- Batch 12 | rows 11–20 ---
+[2026-04-08 07:02:09] [INFO] Batch 12: ticking 10 checkboxes...
+[2026-04-08 07:02:09] [INFO]   ✓ 726206305
+[2026-04-08 07:02:10] [INFO]   ✓ 726206154
+[2026-04-08 07:02:10] [INFO]   ✓ 987979716
+[2026-04-08 07:02:11] [INFO]   ✓ 726205922
+[2026-04-08 07:02:11] [INFO]   ✓ 726206014
+[2026-04-08 07:02:11] [INFO]   ✓ 726206051
+[2026-04-08 07:02:12] [INFO]   ✓ 987979775
+[2026-04-08 07:02:12] [INFO]   ✓ 726206084
+[2026-04-08 07:02:13] [INFO]   ✓ 726206191
+[2026-04-08 07:02:13] [INFO]   ✓ 987979764
+[2026-04-08 07:02:13] [INFO]   10/10 checked.
+[2026-04-08 07:02:14] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 07:02:14] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 07:02:16] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 07:02:17] [INFO]   Waiting for download...
+[2026-04-08 07:02:17] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 07:03:48] [WARNING]   Timed out after 90s.
+[2026-04-08 07:03:48] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 07:03:48] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 07:03:48] [INFO]   0 file(s) received.
+[2026-04-08 07:03:48] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 07:03:49] [INFO] 
+--- Batch 13 | rows 21–30 ---
+[2026-04-08 07:03:49] [INFO] Batch 13: ticking 10 checkboxes...
+[2026-04-08 07:03:50] [INFO]   ✓ 726206110
+[2026-04-08 07:03:50] [INFO]   ✓ 726206213
+[2026-04-08 07:03:51] [INFO]   ✓ 987979672
+[2026-04-08 07:03:51] [INFO]   ✓ 987979646
+[2026-04-08 07:03:51] [INFO]   ✓ 987979694
+[2026-04-08 07:03:52] [INFO]   ✓ 726206132
+[2026-04-08 07:03:52] [INFO]   ✓ 987979683
+[2026-04-08 07:03:53] [INFO]   ✓ 987979742
+[2026-04-08 07:03:53] [INFO]   ✓ 987979650
+[2026-04-08 07:03:53] [INFO]   ✓ 726206095
+[2026-04-08 07:03:53] [INFO]   10/10 checked.
+[2026-04-08 07:03:55] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 07:03:55] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 07:03:57] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 07:03:58] [INFO]   Waiting for download...
+[2026-04-08 07:03:58] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 07:05:28] [WARNING]   Timed out after 90s.
+[2026-04-08 07:05:28] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 07:05:28] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 07:05:28] [INFO]   0 file(s) received.
+[2026-04-08 07:05:28] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 07:05:29] [INFO] 
+--- Batch 14 | rows 31–40 ---
+[2026-04-08 07:05:30] [INFO] Batch 14: ticking 10 checkboxes...
+[2026-04-08 07:05:30] [INFO]   ✓ 726206036
+[2026-04-08 07:05:31] [INFO]   ✓ 987979521
+[2026-04-08 07:05:31] [INFO]   ✓ 726206025
+[2026-04-08 07:05:31] [INFO]   ✓ 726206040
+[2026-04-08 07:05:32] [INFO]   ✓ 726206003
+[2026-04-08 07:05:32] [INFO]   ✓ 726205933
+[2026-04-08 07:05:33] [INFO]   ✓ 987979661
+[2026-04-08 07:05:33] [INFO]   ✓ 987979532
+[2026-04-08 07:05:33] [INFO]   ✓ 274511580
+[2026-04-08 07:05:34] [INFO]   ✓ 726206073
+[2026-04-08 07:05:34] [INFO]   10/10 checked.
+[2026-04-08 07:05:35] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 07:05:35] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 07:05:37] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 07:05:38] [INFO]   Waiting for download...
+[2026-04-08 07:05:38] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 07:07:09] [WARNING]   Timed out after 90s.
+[2026-04-08 07:07:09] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 07:07:09] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 07:07:09] [INFO]   0 file(s) received.
+[2026-04-08 07:07:09] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 07:07:10] [INFO] 
+--- Batch 15 | rows 41–50 ---
+[2026-04-08 07:07:10] [INFO] Batch 15: ticking 10 checkboxes...
+[2026-04-08 07:07:10] [INFO]   ✓ 726206062
+[2026-04-08 07:07:11] [INFO]   ✓ 987979753
+[2026-04-08 07:07:11] [INFO]   ✓ 987979591
+[2026-04-08 07:07:12] [INFO]   ✓ 987979731
+[2026-04-08 07:07:12] [INFO]   ✓ 962030650
+[2026-04-08 07:07:13] [INFO]   ✓ 987979554
+[2026-04-08 07:07:13] [INFO]   ✓ 987979635
+[2026-04-08 07:07:13] [INFO]   ✓ 726205981
+[2026-04-08 07:07:14] [INFO]   ✓ 726205992
+[2026-04-08 07:07:14] [INFO]   ✓ 726205900
+[2026-04-08 07:07:14] [INFO]   10/10 checked.
+[2026-04-08 07:07:15] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 07:07:16] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 07:07:18] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 07:07:19] [INFO]   Waiting for download...
+[2026-04-08 07:07:19] [INFO]   Watching folders: ['Z:\\xpo_rpa_v8\\xpo_rpa\\downloads\\2026-04-08', 'C:\\Users\\Rnd\\Downloads']
+[2026-04-08 07:08:49] [WARNING]   Timed out after 90s.
+[2026-04-08 07:08:49] [WARNING]   Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08: ['Invoices 04-08-2026.zip']
+[2026-04-08 07:08:49] [WARNING]   C:\Users\Rnd\Downloads: ['WIP_Dashboard_W4_7.html', 'WIP_Dashboard_W4_8.html', 'xpo_rpa_FINAL.zip', 'xpo_rpa_v8_final.zip', 'xpo_rpa_v9.zip']
+[2026-04-08 07:08:49] [INFO]   0 file(s) received.
+[2026-04-08 07:08:49] [INFO]     0/10 downloaded | running total: 1
+[2026-04-08 07:08:50] [INFO] Page 3 done.
+[2026-04-08 07:09:15] [INFO] No more pages.
+[2026-04-08 07:09:15] [INFO] 
+All pages done. Total downloaded: 1
+[2026-04-08 07:09:15] [INFO] Step 5/4 — Generating Excel report
+[2026-04-08 07:09:16] [INFO] Excel report saved: Z:\xpo_rpa_v8\xpo_rpa\downloads\Bills_Report_2026-04-08.xlsx
+[2026-04-08 07:09:16] [INFO] 
+=======================================================
+[2026-04-08 07:09:16] [INFO] COMPLETED
+[2026-04-08 07:09:16] [INFO]   Total invoices : 150
+[2026-04-08 07:09:16] [INFO]   Downloaded     : 1
+[2026-04-08 07:09:16] [INFO]   Failed         : 149
+[2026-04-08 07:09:16] [INFO]   Saved to       : Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08
+[2026-04-08 07:09:16] [INFO]   Excel report   : Z:\xpo_rpa_v8\xpo_rpa\downloads\Bills_Report_2026-04-08.xlsx
+[2026-04-08 07:09:16] [INFO] =======================================================
+[2026-04-08 07:09:18] [INFO] Browser closed.
+[2026-04-08 07:09:18] [INFO] RPA completed successfully.

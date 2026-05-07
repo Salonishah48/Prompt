@@ -1,0 +1,561 @@
+[2026-04-08 04:51:40] [INFO] ============================================================
+[2026-04-08 04:51:40] [INFO] XPO Billing RPA - Starting
+[2026-04-08 04:51:40] [INFO] ============================================================
+[2026-04-08 04:51:40] [INFO] Step 1/5 — Setting up browser
+[2026-04-08 04:51:40] [INFO] Download folder: Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08
+[2026-04-08 04:51:42] [INFO] Browser ready.
+[2026-04-08 04:51:42] [INFO] Step 2/5 — Logging in
+[2026-04-08 04:51:42] [INFO] Opening https://ext-web.ltl-xpo.com/app/home/shipments
+[2026-04-08 04:52:17] [INFO] Username entered.
+[2026-04-08 04:52:17] [INFO] Password entered.
+[2026-04-08 04:52:17] [INFO] Login submitted.
+[2026-04-08 04:52:23] [INFO] After login: https://ext-web.ltl-xpo.com/auth#id_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjJEQTBEMzgxMjNENjI3QUI2OUU3QTIzMjE4MEYxODE0NDYxMDEwM0MiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJMYURUZ1NQV0o2dHA1Nkl5R0E4WUZFWVFFRHcifQ.eyJuYmYiOjE3NzU2NDkxMzksImV4cCI6MTc3NTY0OTQzOSwiaXNzIjoiaHR0cHM6Ly9pZC54cG8uY29tIiwiYXVkIjoibHRsLWV4dC13ZWIiLCJub25jZSI6IjMyYzg4NTUxMzJjODRhY2I4Njc3ZDBmMGU2YmM4YjMyIiwiaWF0IjoxNzc1NjQ5MTM5LCJhdF9oYXNoIjoidlhadHFvYk8tejJMeVl1dzY1UjNJdyIsInNfaGFzaCI6ImhWWUhGaGxLT3NzSmx3X3RGdXdxTFEiLCJzaWQiOiJFS1BsTWFwcE4tMGR0ZHozbGJXYTZnIiwic3ViIjoidHNueWRlcjpvaWRjLWxkYXAtdGl2IiwiYXV0aF90aW1lIjoxNzc1NjQ5MTM5LCJpZHAiOiJvaWRjLWxkYXAtdGl2IiwiYW1yIjpbImV4dGVybmFsIl19.JS9FA6Rult5LB8VGIrVmJFMHCeADr28xmJSlntGMcR9eljv5dwrbmgQBBOsPolwmMzP3JvDLMhWx4OU2nm4mN-lF-tggGfsVOnOQnm1Vi6ANqqdg5CwxFOtYHHKDASU_UTkgqV0QhoPn-4pQdL4KrmpdLdJrgAtaFRv98qvA3eLFm7S6KBCH8iaV5tXZF0J-3dswR6U3TXceB-dBU3QyJgGV3MjdWGddgTZkFI1TQLV1NpzyLST2nU-A_PTGE7R5kg_qXPp-P_Eqfx3nrW5NWIkfMI7IaCFD_vZHn8e9AMeIlECypnGbNjMEG55Kf82F9P5fusUBvjpQIhEpqMShdQ&access_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjJEQTBEMzgxMjNENjI3QUI2OUU3QTIzMjE4MEYxODE0NDYxMDEwM0MiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJMYURUZ1NQV0o2dHA1Nkl5R0E4WUZFWVFFRHcifQ.eyJuYmYiOjE3NzU2NDkxMzksImV4cCI6MTc3NTY1NjMzOSwiaXNzIjoiaHR0cHM6Ly9pZC54cG8uY29tIiwiYXVkIjpbImh0dHBzOi8vaWQueHBvLmNvbS9yZXNvdXJjZXMiLCJ4cG8tYXV0aC1hcGkiLCJsdGwtY29ubmVjdC1hcGkiLCJsdGwtd2ViLWRvdG5ldC1hcGkiLCJ4cG8tcGFydG5lci1tYXN0ZXItYXBpIiwibHRsLXdlYi1wdWItaHJjIl0sImNsaWVudF9pZCI6Imx0bC1leHQtd2ViIiwic3ViIjoidHNueWRlcjpvaWRjLWxkYXAtdGl2IiwiYXV0aF90aW1lIjoxNzc1NjQ5MTM5LCJpZHAiOiJvaWRjLWxkYXAtdGl2IiwidXBuIjoidHNueWRlciIsImV4dGVybmFsX2lkZW50aWZpZXIiOiJ0c255ZGVyIiwibmFtZSI6IlRhbnlhIFNueWRlciIsInNjb3BlIjpbIm9wZW5pZCIsImVtYWlsIiwibmFtZSIsInhwby1hdXRoLWFwaSIsImx0bC1jb25uZWN0LWFwaSIsImx0bC13ZWItZG90bmV0LWFwaSIsInhwby1wYXJ0bmVyLW1hc3Rlci1hcGkiLCJsdGwtd2ViLXB1Yi1ocmMiXSwiYW1yIjpbImV4dGVybmFsIl19.Q2OyuYoTTKfPWwkJJPgKJFPemGCvd68ena1z3uAzjiXweF67lyBBGR6ZbxFuqoF63I9XVgvMul_HasETA2duQWvxQgdq75O6hEmLn-dSV_aa-uOq5w6ZCnRPJ0ggYRi4ESNVxu9_hjWihlWNmvn3jxKdAVP3fYNc-P-70rZgIemhHQ9Wuj75Vu6ZICwMGmqAoA8WVulvIHr6QW7Ahr4OAwUFIv0gdhJ9JiywrVQ2qH11ACwShYHWPUb2nzkdgcoxV4CohdxQ_s4v1LQ_XT35fBeBtfWB8ffIJwiVtcncu-nWaMHbZCNTU4NyvZ5tM8Wy-UN_jp8OhhHxX2dlz3jAoA&token_type=Bearer&expires_in=7200&scope=openid%20email%20name%20xpo-auth-api%20ltl-connect-api%20ltl-web-dotnet-api%20xpo-partner-master-api%20ltl-web-pub-hrc&state=6fd5bef16f11463cb4ec144db5f313d2&session_state=qBpnaSXq0watU8hcYSfJ38_o75gzy3CnDBFpS4SCM6U.m2jYanrSzDKCV4eJKsUPWQ
+[2026-04-08 04:52:23] [INFO] Popup watcher started.
+[2026-04-08 04:52:25] [INFO] Step 3/5 — Navigating to Billing
+[2026-04-08 04:52:25] [INFO] Navigating to Billing...
+[2026-04-08 04:52:27] [INFO]   [POPUP] Dismissed: 'Not Now'
+[2026-04-08 04:54:02] [INFO] Waiting for invoice list...
+[2026-04-08 04:54:04] [INFO]   [POPUP] Dismissed: 'Not Now'
+[2026-04-08 04:54:06] [INFO]   ✓ 50 invoice rows loaded after 4s
+[2026-04-08 04:54:07] [INFO] Billing ready: https://ext-web.ltl-xpo.com/app/billing
+[2026-04-08 04:54:07] [INFO] Step 4/5 — Downloading ALL invoices in batches of 10
+[2026-04-08 04:54:07] [INFO] 
+=== Page 1 ===
+[2026-04-08 04:54:08] [INFO] Reading invoice rows...
+[2026-04-08 04:54:08] [INFO] Found 50 invoice rows.
+[2026-04-08 04:54:09] [INFO] Parsed 50 bills.
+[2026-04-08 04:54:09] [INFO]   50 invoices on page 1
+[2026-04-08 04:54:09] [INFO] 
+--- Batch 1 | invoices 1–10 of page 1 ---
+[2026-04-08 04:54:10] [INFO] Batch 1: ticking 10 checkboxes...
+[2026-04-08 04:54:10] [INFO]   ✓ 687308834
+[2026-04-08 04:54:11] [INFO]   ✓ 687309276
+[2026-04-08 04:54:11] [INFO]   ✓ 687309162
+[2026-04-08 04:54:11] [INFO]   ✓ 687309103
+[2026-04-08 04:54:12] [INFO]   ✓ 987986521
+[2026-04-08 04:54:12] [INFO]   ✓ 987986764
+[2026-04-08 04:54:13] [INFO]   ✓ 987986786
+[2026-04-08 04:54:13] [INFO]   ✓ 987986650
+[2026-04-08 04:54:14] [INFO]   ✓ 687309350
+[2026-04-08 04:54:14] [INFO]   ✓ 687309140
+[2026-04-08 04:54:14] [INFO]   10/10 checked.
+[2026-04-08 04:54:16] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 04:54:17] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 04:55:19] [WARNING] Download timed out after 60s.
+[2026-04-08 04:55:19] [INFO]   0 file(s) downloaded.
+[2026-04-08 04:55:19] [INFO]     Batch result: 0/10 downloaded | Total so far: 0
+[2026-04-08 04:55:21] [INFO] 
+--- Batch 2 | invoices 11–20 of page 1 ---
+[2026-04-08 04:55:22] [INFO] Batch 2: ticking 10 checkboxes...
+[2026-04-08 04:55:22] [INFO]   ✓ 687309431
+[2026-04-08 04:55:22] [INFO]   ✓ 687309475
+[2026-04-08 04:55:23] [INFO]   ✓ 687309512
+[2026-04-08 04:55:23] [INFO]   ✓ 987986882
+[2026-04-08 04:55:24] [INFO]   ✓ 987986683
+[2026-04-08 04:55:24] [INFO]   ✓ 987986720
+[2026-04-08 04:55:25] [INFO]   ✓ 687309372
+[2026-04-08 04:55:25] [INFO]   ✓ 987986672
+[2026-04-08 04:55:26] [INFO]   ✓ 687309136
+[2026-04-08 04:55:26] [INFO]   ✓ 987986775
+[2026-04-08 04:55:26] [INFO]   10/10 checked.
+[2026-04-08 04:55:28] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 04:55:29] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 04:56:31] [WARNING] Download timed out after 60s.
+[2026-04-08 04:56:31] [INFO]   0 file(s) downloaded.
+[2026-04-08 04:56:31] [INFO]     Batch result: 0/10 downloaded | Total so far: 0
+[2026-04-08 04:56:33] [INFO] 
+--- Batch 3 | invoices 21–30 of page 1 ---
+[2026-04-08 04:56:33] [INFO] Batch 3: ticking 10 checkboxes...
+[2026-04-08 04:56:34] [INFO]   ✓ 687309291
+[2026-04-08 04:56:34] [INFO]   ✓ 687309265
+[2026-04-08 04:56:35] [INFO]   ✓ 687309302
+[2026-04-08 04:56:35] [INFO]   ✓ 687309501
+[2026-04-08 04:56:36] [INFO]   ✓ 987986904
+[2026-04-08 04:56:36] [INFO]   ✓ 687308580
+[2026-04-08 04:56:37] [INFO]   ✓ 687309280
+[2026-04-08 04:56:37] [INFO]   ✓ 687309486
+[2026-04-08 04:56:38] [INFO]   ✓ 687309464
+[2026-04-08 04:56:38] [INFO]   ✓ 687309442
+[2026-04-08 04:56:38] [INFO]   10/10 checked.
+[2026-04-08 04:56:39] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 04:56:41] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 04:57:43] [WARNING] Download timed out after 60s.
+[2026-04-08 04:57:43] [INFO]   0 file(s) downloaded.
+[2026-04-08 04:57:43] [INFO]     Batch result: 0/10 downloaded | Total so far: 0
+[2026-04-08 04:57:45] [INFO] 
+--- Batch 4 | invoices 31–40 of page 1 ---
+[2026-04-08 04:57:45] [INFO] Batch 4: ticking 10 checkboxes...
+[2026-04-08 04:57:45] [WARNING]   Error on 687309346: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 687309173: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 687309195: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 987986694: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 687309453: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 687309416: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 987986716: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 687309335: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 987986801: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [WARNING]   Error on 987986893: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:45] [INFO]   0/10 checked.
+[2026-04-08 04:57:45] [ERROR]   Nothing checked — skipping batch.
+[2026-04-08 04:57:45] [INFO]     Batch result: 0/10 downloaded | Total so far: 0
+[2026-04-08 04:57:46] [INFO] 
+--- Batch 5 | invoices 41–50 of page 1 ---
+[2026-04-08 04:57:46] [INFO] Batch 5: ticking 10 checkboxes...
+[2026-04-08 04:57:46] [WARNING]   Error on 987986860: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 687309490: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 687309420: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 687309125: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 687309221: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 987986425: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 687308904: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 687309151: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 687309070: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [WARNING]   Error on 687309394: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
+[2026-04-08 04:57:46] [INFO]   0/10 checked.
+[2026-04-08 04:57:46] [ERROR]   Nothing checked — skipping batch.
+[2026-04-08 04:57:46] [INFO]     Batch result: 0/10 downloaded | Total so far: 0
+[2026-04-08 04:57:48] [INFO] Page 1 complete. Checking for next page...
+[2026-04-08 04:57:50] [INFO] Browser closed.
+[2026-04-08 04:57:50] [ERROR] RPA failed: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+Traceback (most recent call last):
+  File "Z:\xpo_rpa_v8\xpo_rpa\main.py", line 29, in main
+    runner.run()
+    ~~~~~~~~~~^^
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\runner.py", line 49, in run
+    self._download_all()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\runner.py", line 161, in _download_all
+    if not self.browser.load_more_or_next_page():
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\browser.py", line 442, in load_more_or_next_page
+    btn = WebDriverWait(self.driver, 4).until(EC.element_to_be_clickable(sel))
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\support\wait.py", line 112, in until
+    value = method(self._driver)
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 514, in _predicate
+    target = driver.find_element(*target)  # grab element at locator
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 816, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 446, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+

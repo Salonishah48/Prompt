@@ -1,0 +1,103 @@
+[2026-04-08 04:34:22] [INFO] ============================================================
+[2026-04-08 04:34:22] [INFO] XPO Billing RPA - Starting
+[2026-04-08 04:34:22] [INFO] ============================================================
+[2026-04-08 04:34:22] [INFO] Step 1/6 — Setting up browser
+[2026-04-08 04:34:22] [INFO] Download folder: Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08
+[2026-04-08 04:34:24] [INFO] Browser ready.
+[2026-04-08 04:34:24] [INFO] Step 2/6 — Logging in
+[2026-04-08 04:34:24] [INFO] Opening https://ext-web.ltl-xpo.com/app/home/shipments
+[2026-04-08 04:35:01] [INFO] Username entered.
+[2026-04-08 04:35:02] [INFO] Password entered.
+[2026-04-08 04:35:02] [INFO] Login submitted.
+[2026-04-08 04:35:07] [INFO] Looking for popup...
+[2026-04-08 04:35:12] [INFO]   ✓ Dismissed popup: 'Not Now'
+[2026-04-08 04:35:13] [INFO] After login: https://ext-web.ltl-xpo.com/app/home/shipments
+[2026-04-08 04:35:13] [INFO] Popup watcher started (checks every 2s).
+[2026-04-08 04:35:13] [INFO] Step 3/6 — Navigating to Billing
+[2026-04-08 04:35:13] [INFO] Navigating to Billing...
+[2026-04-08 04:35:13] [INFO] Looking for popup...
+[2026-04-08 04:35:44] [INFO]   No popup found.
+[2026-04-08 04:37:18] [INFO] Waiting for invoice list to load...
+[2026-04-08 04:37:18] [INFO] Waiting for invoice-item rows...
+[2026-04-08 04:37:24] [INFO]   [POPUP WATCHER] Dismissed: 'close'
+[2026-04-08 04:37:29] [INFO]   ✓ 50 invoice rows found after 10s
+[2026-04-08 04:37:30] [INFO] Looking for popup...
+[2026-04-08 04:38:01] [INFO]   No popup found.
+[2026-04-08 04:38:01] [INFO] Billing ready: https://ext-web.ltl-xpo.com/app/billing
+[2026-04-08 04:38:01] [INFO] Step 4/6 — Sorting by latest date
+[2026-04-08 04:38:01] [INFO] Sorting by Date Due descending...
+[2026-04-08 04:38:04] [INFO] Browser closed.
+[2026-04-08 04:38:04] [ERROR] RPA failed: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=146.0.7680.178); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbdb2d]
+	chromedriver!(No symbol) [0x7ff78bcc5ab1]
+	chromedriver!(No symbol) [0x7ff78bcc8bc5]
+	chromedriver!(No symbol) [0x7ff78bcc8c8f]
+	chromedriver!(No symbol) [0x7ff78bd18e60]
+	chromedriver!(No symbol) [0x7ff78bd0b0ef]
+	chromedriver!(No symbol) [0x7ff78bd3ff8a]
+	chromedriver!(No symbol) [0x7ff78bd0aa06]
+	chromedriver!(No symbol) [0x7ff78bd63b9b]
+	chromedriver!(No symbol) [0x7ff78bd09298]
+	chromedriver!(No symbol) [0x7ff78bd0a183]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!GetHandleVerifier [0x7ff78bf63634+1e3f4]
+	chromedriver!GetHandleVerifier [0x7ff78bf637e6+1e5a6]
+	chromedriver!GetHandleVerifier [0x7ff78bf47e37+2bf7]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+Traceback (most recent call last):
+  File "Z:\xpo_rpa_v8\xpo_rpa\main.py", line 29, in main
+    runner.run()
+    ~~~~~~~~~~^^
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\runner.py", line 46, in run
+    self.browser.sort_by_latest_date()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\browser.py", line 211, in sort_by_latest_date
+    hdr.click(); time.sleep(1)
+    ~~~~~~~~~^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 114, in click
+    self._execute(Command.CLICK_ELEMENT)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webelement.py", line 508, in _execute
+    return self._parent.execute(command, params)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 446, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.StaleElementReferenceException: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=146.0.7680.178); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbdb2d]
+	chromedriver!(No symbol) [0x7ff78bcc5ab1]
+	chromedriver!(No symbol) [0x7ff78bcc8bc5]
+	chromedriver!(No symbol) [0x7ff78bcc8c8f]
+	chromedriver!(No symbol) [0x7ff78bd18e60]
+	chromedriver!(No symbol) [0x7ff78bd0b0ef]
+	chromedriver!(No symbol) [0x7ff78bd3ff8a]
+	chromedriver!(No symbol) [0x7ff78bd0aa06]
+	chromedriver!(No symbol) [0x7ff78bd63b9b]
+	chromedriver!(No symbol) [0x7ff78bd09298]
+	chromedriver!(No symbol) [0x7ff78bd0a183]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!GetHandleVerifier [0x7ff78bf63634+1e3f4]
+	chromedriver!GetHandleVerifier [0x7ff78bf637e6+1e5a6]
+	chromedriver!GetHandleVerifier [0x7ff78bf47e37+2bf7]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+

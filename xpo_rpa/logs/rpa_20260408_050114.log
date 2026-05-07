@@ -1,0 +1,130 @@
+[2026-04-08 05:01:14] [INFO] ============================================================
+[2026-04-08 05:01:14] [INFO] XPO Billing RPA - Starting
+[2026-04-08 05:01:14] [INFO] ============================================================
+[2026-04-08 05:01:14] [INFO] Step 1/5 — Setting up browser
+[2026-04-08 05:01:14] [INFO] Download folder: Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08
+[2026-04-08 05:01:15] [INFO] Browser ready.
+[2026-04-08 05:01:15] [INFO] Step 2/5 — Logging in
+[2026-04-08 05:01:15] [INFO] Opening https://ext-web.ltl-xpo.com/app/home/shipments
+[2026-04-08 05:01:52] [INFO] Username entered.
+[2026-04-08 05:01:52] [INFO] Password entered.
+[2026-04-08 05:01:57] [INFO] Login submitted.
+[2026-04-08 05:02:02] [INFO] After login: https://ext-web.ltl-xpo.com/app/home/shipments
+[2026-04-08 05:02:02] [INFO] Popup watcher started.
+[2026-04-08 05:02:04] [INFO] Step 3/5 — Navigating to Billing
+[2026-04-08 05:02:04] [INFO] Navigating to Billing...
+[2026-04-08 05:02:04] [INFO]   [POPUP] Dismissed: 'Not Now'
+[2026-04-08 05:03:37] [INFO] Waiting for invoice list...
+[2026-04-08 05:03:45] [INFO]   [POPUP] Dismissed: 'Not Now'
+[2026-04-08 05:03:46] [INFO]   ✓ 50 invoice rows loaded after 8s
+[2026-04-08 05:03:47] [INFO] Billing ready: https://ext-web.ltl-xpo.com/app/billing
+[2026-04-08 05:03:47] [INFO] Step 4/5 — Downloading ALL invoices in batches of 10
+[2026-04-08 05:03:47] [INFO] 
+=== Page 1 ===
+[2026-04-08 05:03:48] [INFO] Reading invoice rows...
+[2026-04-08 05:03:48] [INFO] Found 50 invoice rows.
+[2026-04-08 05:03:49] [INFO] Parsed 50 bills.
+[2026-04-08 05:03:49] [INFO]   50 invoices on page 1
+[2026-04-08 05:03:49] [INFO] 
+--- Batch 1 | invoices 1–10 of page 1 ---
+[2026-04-08 05:03:49] [INFO] Batch 1: ticking 10 checkboxes...
+[2026-04-08 05:03:50] [INFO]   ✓ 687308834
+[2026-04-08 05:03:50] [INFO]   ✓ 687309276
+[2026-04-08 05:03:51] [INFO]   ✓ 687309162
+[2026-04-08 05:03:51] [INFO]   ✓ 687309103
+[2026-04-08 05:03:52] [INFO]   ✓ 987986521
+[2026-04-08 05:03:52] [INFO]   ✓ 987986764
+[2026-04-08 05:03:53] [INFO]   ✓ 987986786
+[2026-04-08 05:03:53] [INFO]   ✓ 987986650
+[2026-04-08 05:03:53] [INFO]   ✓ 687309140
+[2026-04-08 05:03:54] [INFO]   ✓ 687309350
+[2026-04-08 05:03:54] [INFO]   10/10 checked.
+[2026-04-08 05:03:55] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 05:03:55] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 05:03:57] [INFO]   Found confirm button: 'Download'
+[2026-04-08 05:03:57] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 05:05:01] [WARNING]   Download timed out after 60s.
+[2026-04-08 05:05:01] [WARNING]   Checked folder: Z:\xpo_rpa_v8\xpo_rpa\downloads\2026-04-08
+[2026-04-08 05:05:01] [WARNING]   Files in folder: []
+[2026-04-08 05:05:01] [INFO]   0 file(s) downloaded.
+[2026-04-08 05:05:01] [INFO]     Batch result: 0/10 downloaded | Total so far: 0
+[2026-04-08 05:05:02] [INFO] 
+--- Batch 2 | invoices 11–20 of page 1 ---
+[2026-04-08 05:05:03] [INFO] Batch 2: ticking 10 checkboxes...
+[2026-04-08 05:05:03] [INFO]   ✓ 687309372
+[2026-04-08 05:05:04] [INFO]   ✓ 987986672
+[2026-04-08 05:05:04] [INFO]   ✓ 987986683
+[2026-04-08 05:05:05] [INFO]   ✓ 987986720
+[2026-04-08 05:05:05] [INFO]   ✓ 687309431
+[2026-04-08 05:05:06] [INFO]   ✓ 687309475
+[2026-04-08 05:05:06] [INFO]   ✓ 687309512
+[2026-04-08 05:05:06] [INFO]   ✓ 987986882
+[2026-04-08 05:05:07] [INFO]   ✓ 687309291
+[2026-04-08 05:05:07] [INFO]   ✓ 687309136
+[2026-04-08 05:05:07] [INFO]   10/10 checked.
+[2026-04-08 05:05:09] [INFO]   ✓ Clicked 'Download Invoices'.
+[2026-04-08 05:05:09] [INFO]   Waiting for confirmation dialog...
+[2026-04-08 05:05:11] [INFO]   Found confirm button: 'Download'
+[2026-04-08 05:05:11] [INFO]   ✓ Confirmed dialog — clicked 'Download'.
+[2026-04-08 05:05:40] [INFO] Browser closed.
+[2026-04-08 05:05:40] [ERROR] RPA failed: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+Traceback (most recent call last):
+  File "Z:\xpo_rpa_v8\xpo_rpa\main.py", line 29, in main
+    runner.run()
+    ~~~~~~~~~~^^
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\runner.py", line 49, in run
+    self._download_all()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\runner.py", line 149, in _download_all
+    batch_results = self.browser.download_batch_via_checkboxes(chunk, batch_num)
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\browser.py", line 244, in download_batch_via_checkboxes
+    new_files = self._wait_for_downloads(files_before, timeout=self.DOWNLOAD_TIMEOUT)
+  File "Z:\xpo_rpa_v8\xpo_rpa\rpa\browser.py", line 496, in _wait_for_downloads
+    current_handles = set(self.driver.window_handles)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 584, in window_handles
+    return self.execute(Command.W3C_GET_WINDOW_HANDLES)["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 446, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\Rnd\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#invalidsessionidexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff78c2329c5+2ed785]
+	chromedriver!GetHandleVerifier [0x7ff78bf5a0d0+14e90]
+	chromedriver!(No symbol) [0x7ff78bcbd916]
+	chromedriver!(No symbol) [0x7ff78bd08313]
+	chromedriver!(No symbol) [0x7ff78bd3fe92]
+	chromedriver!(No symbol) [0x7ff78bd3a011]
+	chromedriver!(No symbol) [0x7ff78bd392c3]
+	chromedriver!(No symbol) [0x7ff78bc86565]
+	chromedriver!GetHandleVerifier [0x7ff78c25de0d+318bcd]
+	chromedriver!GetHandleVerifier [0x7ff78c258588+313348]
+	chromedriver!GetHandleVerifier [0x7ff78c279d7a+334b3a]
+	chromedriver!GetHandleVerifier [0x7ff78bf76785+31545]
+	chromedriver!GetHandleVerifier [0x7ff78bf7facc+3a88c]
+	chromedriver!(No symbol) [0x7ff78bc8532a]
+	chromedriver!GetHandleVerifier [0x7ff78c3b4b48+46f908]
+	KERNEL32!BaseThreadInitThunk [0x7ffe7030e8d7+17]
+	ntdll!RtlUserThreadStart [0x7ffe70eec48c+2c]
+
