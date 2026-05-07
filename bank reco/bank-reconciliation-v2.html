@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bank Reconciliation — QuickBooks-Style</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#2d6a2e;--green-light:#4a9b4b;--green-pale:#f0faf0;
+  --blue:#1a6fd4;--blue-light:#2c7be5;--blue-pale:#edf4ff;
+  --teal:#0f766e;--teal-pale:#f0fdfa;
+  --amber:#92400e;--amber-pale:#fffbeb;--amber-border:#fcd34d;
+  --red:#b91c1c;--red-pale:#fef2f2;--red-border:#fca5a5;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;
+  --gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;
+  --border:1px solid var(--gray-200);
+  --radius:6px;--radius-lg:10px;
+  --shadow:0 1px 3px rgba(0,0,0,0.08);
+}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:13px;background:#f1f3f5;color:var(--gray-800);line-height:1.4}
+
+/* TOP NAV */
+.topnav{background:#2d6a2e;color:white;height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:100}
+.topnav-logo{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.topnav-logo span{color:#a3e6a4}
+.topnav-links{display:flex;gap:4px}
+.topnav-links a{color:rgba(255,255,255,.8);text-decoration:none;padding:6px 12px;border-radius:4px;font-size:12px;cursor:pointer;transition:.15s}
+.topnav-links a:hover,.topnav-links a.active{background:rgba(255,255,255,.15);color:white}
+.topnav-right{font-size:12px;opacity:.7}
+
+/* PAGE HEADER */
+.page-hdr{background:white;border-bottom:var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.page-hdr h1{font-size:19px;font-weight:600;color:var(--gray-800)}
+.page-hdr .sub{font-size:12px;color:var(--gray-500);margin-top:2px}
+.hdr-actions{display:flex;gap:8px;align-items:center}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--radius);font-size:12px;font-weight:500;cursor:pointer;border:none;transition:.15s;white-space:nowrap}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:var(--blue-light);color:white}.btn-primary:hover:not(:disabled){background:#1a6fd4}
+.btn-green{background:#2d6a2e;color:white;font-size:13px;padding:8px 18px}.btn-green:hover:not(:disabled){background:#235222}
+.btn-ghost{background:white;color:var(--gray-600);border:var(--border)}.btn-ghost:hover{background:var(--gray-50)}
+.btn-danger-sm{background:white;color:var(--red);border:1px solid #fca5a5;padding:3px 8px;font-size:11px}.btn-danger-sm:hover{background:var(--red-pale)}
+.btn-clear{background:var(--blue-pale);color:var(--blue-light);border:1px solid #bcd2f7;padding:4px 10px;font-size:11px;font-weight:600}.btn-clear:hover{background:#dbeafe}
+.btn-unclear{background:var(--gray-50);color:var(--gray-500);border:var(--border);padding:4px 10px;font-size:11px}
+.btn-link{background:none;border:none;color:var(--blue-light);text-decoration:underline;padding:0;font-size:12px;cursor:pointer}
+.btn-icon{background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:4px;color:var(--gray-400);font-size:14px;line-height:1}
+.btn-icon:hover{background:var(--gray-100);color:var(--gray-700)}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:320px 1fr;height:calc(100vh - 48px - 57px);overflow:hidden}
+
+/* LEFT PANEL */
+.left{background:white;border-right:var(--border);display:flex;flex-direction:column;overflow:hidden}
+.section{padding:14px 16px;border-bottom:var(--border)}
+.section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gray-400);margin-bottom:10px}
+
+.field{margin-bottom:10px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:4px}
+.field select,.field input[type=text],.field input[type=date],.field input[type=number]{width:100%;padding:6px 9px;border:var(--border);border-radius:var(--radius);font-size:12px;color:var(--gray-800);background:white;outline:none;transition:.15s}
+.field select:focus,.field input:focus{border-color:var(--blue-light);box-shadow:0 0 0 2px rgba(44,123,229,.15)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.begin-bal-warn{background:#fffbeb;border:1px solid #fcd34d;border-radius:var(--radius);padding:8px 10px;font-size:11px;color:#92400e;margin-bottom:10px;display:none}
+
+/* SUMMARY CARDS */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.scard{background:var(--gray-50);border:var(--border);border-radius:var(--radius);padding:9px 11px}
+.scard .lbl{font-size:10px;color:var(--gray-500);margin-bottom:3px}
+.scard .val{font-size:14px;font-weight:700;color:var(--gray-800);font-variant-numeric:tabular-nums}
+.scard.green{background:var(--green-pale);border-color:#bbf7c0}.scard.green .val{color:#166534}
+.scard.blue{background:var(--blue-pale);border-color:#bcd2f7}.scard.blue .val{color:#1e40af}
+.scard.full{grid-column:span 2}
+
+.diff-box{border-radius:var(--radius);padding:11px 13px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.diff-box.zero{background:var(--green-pale);border:1px solid #86efac}.diff-box.zero .diff-lbl{color:#166534}.diff-box.zero .diff-val{color:#166534}
+.diff-box.nonzero{background:var(--red-pale);border:1px solid var(--red-border)}.diff-box.nonzero .diff-lbl{color:var(--red)}.diff-box.nonzero .diff-val{color:var(--red)}
+.diff-lbl{font-size:11px;margin-bottom:2px}
+.diff-val{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.diff-icon{font-size:20px}
+
+.progress-wrap{margin-bottom:4px}
+.progress-track{height:5px;background:var(--gray-200);border-radius:3px;overflow:hidden;margin:6px 0 4px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue-light),#00b37e);border-radius:3px;transition:width .4s}
+.progress-lbl{font-size:10px;color:var(--gray-500);text-align:right}
+
+/* HISTORY LIST */
+.history-item{padding:8px 10px;border:var(--border);border-radius:var(--radius);margin-bottom:6px;cursor:pointer;transition:.15s}
+.history-item:hover{background:var(--blue-pale)}
+.history-item .hi-date{font-weight:600;font-size:12px}
+.history-item .hi-bal{font-size:11px;color:var(--gray-500)}
+.history-item .hi-badge{font-size:10px;background:var(--green-pale);color:#166534;border:1px solid #86efac;border-radius:10px;padding:1px 7px;float:right;margin-top:1px}
+
+/* MAIN */
+.main{display:flex;flex-direction:column;overflow:hidden}
+.toolbar{background:white;border-bottom:var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:9}
+.tabs{display:flex;gap:0}
+.tab{padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--gray-500);transition:.15s;user-select:none}
+.tab.active{border-bottom-color:var(--blue-light);color:var(--blue-light)}
+.tab:hover:not(.active){color:var(--gray-700)}
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;background:var(--blue-pale);color:var(--blue-light);font-size:10px;font-weight:700;border-radius:10px;padding:1px 6px;margin-left:5px;min-width:18px}
+.tab-badge.none{background:var(--gray-100);color:var(--gray-400)}
+
+.filter-area{display:flex;align-items:center;gap:8px}
+.search-box{display:flex;align-items:center;border:var(--border);border-radius:var(--radius);overflow:hidden;background:white}
+.search-box input{padding:6px 10px;border:none;outline:none;font-size:12px;width:180px;background:transparent;color:var(--gray-800)}
+.search-box .search-icon{padding:0 8px;color:var(--gray-400);font-size:13px}
+.filter-select{padding:6px 8px;border:var(--border);border-radius:var(--radius);font-size:12px;outline:none;background:white;color:var(--gray-700);cursor:pointer}
+.filter-select:focus{border-color:var(--blue-light)}
+
+/* BULK BAR */
+.bulk-bar{background:#eff6ff;border:1px solid #bcd2f7;border-radius:var(--radius);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin:10px 16px 0;font-size:12px;color:var(--blue-light);font-weight:500}
+.bulk-bar.hidden{display:none}
+
+/* TABLE */
+.table-wrap{flex:1;overflow:auto;padding:12px 16px}
+.txn-table{background:white;border:var(--border);border-radius:var(--radius-lg);overflow:hidden;width:100%;border-collapse:collapse}
+.txn-table thead tr{background:var(--gray-50)}
+.txn-table th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gray-500);border-bottom:var(--border);white-space:nowrap;cursor:pointer;user-select:none;transition:.1s}
+.txn-table th:hover{color:var(--gray-800)}
+.txn-table th .sort-arrow{margin-left:3px;opacity:.4}
+.txn-table th.sorted .sort-arrow{opacity:1;color:var(--blue-light)}
+.txn-table td{padding:10px 12px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+.txn-table tbody tr{transition:background .1s;cursor:default}
+.txn-table tbody tr:last-child td{border-bottom:none}
+.txn-table tbody tr:hover{background:#f8faff}
+.txn-table tbody tr.row-cleared{background:#f0fdf4}
+.txn-table tbody tr.row-cleared:hover{background:#dcfce7}
+.txn-table tbody tr.row-selected{background:#eff6ff}
+
+.col-chk{width:34px;text-align:center}
+.col-chk input{accent-color:var(--blue-light);width:14px;height:14px;cursor:pointer}
+.col-date{white-space:nowrap;color:var(--gray-600);font-size:12px}
+.col-type{font-size:11px;text-transform:capitalize;font-weight:500;color:var(--gray-500)}
+.col-payee .payee{font-weight:500;color:var(--gray-800)}
+.col-payee .memo{font-size:11px;color:var(--gray-400);margin-top:1px}
+.col-ref{font-size:11px;color:var(--gray-500);font-variant-numeric:tabular-nums}
+.col-amt{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.debit{color:#b91c1c}.credit{color:#166534}.neutral{color:var(--gray-400)}
+.col-status{white-space:nowrap}
+.col-action{text-align:right;white-space:nowrap}
+
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px}
+.badge-cleared{background:#dcfce7;color:#166534;border:1px solid #86efac}
+.badge-pending{background:#fef9c3;color:#a16207;border:1px solid #fde047}
+.badge-matched{background:var(--blue-pale);color:var(--blue-light);border:1px solid #bcd2f7}
+.badge-reconciled{background:#ede9fe;color:#7c3aed;border:1px solid #c4b5fd}
+
+/* FOOTER BAR */
+.footer-bar{background:white;border-top:var(--border);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.footer-totals{display:flex;gap:20px}
+.footer-total span{font-weight:700;margin-left:4px}
+.debit-total{color:var(--red)}.credit-total{color:#166534}
+
+/* EMPTY */
+.empty{padding:40px;text-align:center;color:var(--gray-400)}
+.empty-icon{font-size:30px;margin-bottom:8px}
+.empty p{font-size:13px}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:white;border-radius:var(--radius-lg);padding:24px;min-width:420px;max-width:560px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-hdr h2{font-size:16px;font-weight:600}
+.modal-body{}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:var(--border)}
+
+/* REPORT VIEW */
+.report{padding:24px;max-width:800px;margin:0 auto}
+.report-hdr{text-align:center;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--gray-200)}
+.report-hdr h2{font-size:20px;font-weight:700;color:var(--gray-800)}
+.report-hdr p{font-size:13px;color:var(--gray-500);margin-top:4px}
+.report-section{background:white;border:var(--border);border-radius:var(--radius-lg);margin-bottom:16px;overflow:hidden}
+.report-section-hdr{background:var(--gray-50);padding:10px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gray-600);border-bottom:var(--border)}
+.report-row{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1px solid #f3f4f6;font-size:13px}
+.report-row:last-child{border-bottom:none}
+.report-row.total{font-weight:700;background:var(--gray-50)}
+.report-row.subtotal{font-weight:600;color:var(--gray-700)}
+
+/* DISCREPANCY */
+.disc-item{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border:1px solid #fca5a5;border-radius:var(--radius);background:#fef2f2;margin-bottom:6px}
+.disc-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.disc-text{font-size:12px;color:var(--red)}
+.disc-text strong{display:block;font-size:13px;margin-bottom:2px;color:#7f1d1d}
+
+/* ADJUSTING ENTRY */
+.adj-box{background:#fffbeb;border:1px solid #fcd34d;border-radius:var(--radius);padding:12px 14px;margin-bottom:14px}
+.adj-box h4{font-size:13px;font-weight:600;color:#92400e;margin-bottom:6px}
+.adj-box p{font-size:12px;color:#78350f;line-height:1.5}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;padding:11px 18px;border-radius:var(--radius);font-size:12px;font-weight:600;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;max-width:300px}
+.toast.show{opacity:1}
+.toast.info{background:#1f2937;color:white}
+.toast.success{background:#166534;color:white}
+.toast.error{background:#7f1d1d;color:white}
+.toast.warn{background:#92400e;color:white}
+
+/* CONFIRM DIALOG */
+.confirm-dialog .modal{max-width:400px}
+.confirm-dialog h3{font-size:15px;font-weight:600;margin-bottom:10px}
+.confirm-dialog p{font-size:13px;color:var(--gray-600);line-height:1.5}
+
+/* STEP WIZARD */
+.wizard-steps{display:flex;align-items:center;gap:0;margin-bottom:20px}
+.step{display:flex;align-items:center;gap:6px;flex:1}
+.step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.step.done .step-num{background:#166534;color:white}
+.step.active .step-num{background:var(--blue-light);color:white}
+.step.wait .step-num{background:var(--gray-200);color:var(--gray-500)}
+.step-lbl{font-size:11px;font-weight:500;color:var(--gray-600)}
+.step.active .step-lbl{color:var(--blue-light);font-weight:600}
+.step-sep{flex:1;height:1px;background:var(--gray-200);margin:0 4px}
+
+/* UNDO MODAL */
+.undo-list .undo-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:var(--border);border-radius:var(--radius);margin-bottom:6px}
+.undo-item .ui-info{font-size:12px}
+.undo-item .ui-date{font-weight:600}
+.undo-item .ui-bal{color:var(--gray-500);margin-top:2px}
+
+/* IMPORT TABLE PREVIEW */
+.import-preview{font-size:11px;border-collapse:collapse;width:100%;margin-top:10px}
+.import-preview th{background:var(--gray-50);padding:5px 8px;text-align:left;border:var(--border);font-weight:600;color:var(--gray-600)}
+.import-preview td{padding:5px 8px;border:var(--border);color:var(--gray-700)}
+.import-preview tr:hover td{background:#f8faff}
+
+/* RESPONSIVE tweaks */
+@media(max-width:900px){.layout{grid-template-columns:1fr}.left{display:none}}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="topnav">
+  <div class="topnav-logo">Quick<span>Books</span> <span style="font-size:11px;font-weight:400;opacity:.6">Online</span></div>
+  <div class="topnav-links">
+    <a>Dashboard</a><a>Banking</a><a class="active">Reconcile</a><a>Reports</a><a>Chart of Accounts</a>
+  </div>
+  <div class="topnav-right">Acme Corp | FY 2025</div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-hdr">
+  <div>
+    <h1 id="pageTitle">Reconcile Account</h1>
+    <div class="sub" id="pageSubtitle">Step 1 of 3 — Set up reconciliation parameters</div>
+  </div>
+  <div class="hdr-actions" id="hdrActions">
+    <button class="btn btn-ghost" onclick="showHistory()">📋 History by Account</button>
+    <button class="btn btn-ghost" onclick="openUndoModal()">↩ Undo Reconciliation</button>
+    <button class="btn btn-ghost" onclick="saveForLater()">💾 Save for Later</button>
+    <button class="btn btn-ghost" onclick="showDiscrepancyReport()">⚠ Locate Discrepancies</button>
+    <button class="btn btn-ghost" id="importBtn" onclick="openImportModal()">📥 Import Statement</button>
+    <button class="btn btn-ghost" id="autoMatchBtn" onclick="autoMatch()" style="display:none">✨ Auto-Match</button>
+    <button class="btn btn-green" id="finishBtn" onclick="tryFinish()" disabled>✔ Finish Now</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout" id="mainLayout">
+
+  <!-- LEFT PANEL -->
+  <div class="left" id="leftPanel">
+    <!-- STEP 1: Account setup (shown before Start Reconciling) -->
+    <div class="section" id="setupSection">
+      <div class="section-title">Account Setup</div>
+      <div id="beginBalWarn" class="begin-bal-warn">⚠ Beginning balance has changed since last reconciliation. <button class="btn-link" onclick="showDiscrepancyReport()">Fix it</button></div>
+      <div class="field">
+        <label>Account to Reconcile</label>
+        <select id="accountSelect" onchange="onAccountChange()">
+          <option value="checking">Checking — Chase ••4892</option>
+          <option value="savings">Savings — Chase ••2341</option>
+          <option value="credit">Credit Card — Amex ••9012</option>
+          <option value="paypal">PayPal Business Account</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Last Statement Ending Date</label>
+        <input type="text" value="02/28/2025" readonly style="background:var(--gray-50);color:var(--gray-500)">
+      </div>
+      <div class="field">
+        <label>Beginning Balance</label>
+        <input type="text" id="beginBal" value="$31,420.00" readonly style="background:var(--gray-50);color:var(--gray-500)">
+      </div>
+      <div style="height:1px;background:var(--gray-200);margin:12px 0"></div>
+      <div class="field">
+        <label>Statement Ending Date</label>
+        <input type="date" id="stmtDate" value="2025-03-31" onchange="onSetupChange()">
+      </div>
+      <div class="field">
+        <label>Statement Ending Balance ($)</label>
+        <input type="number" id="stmtBalance" value="41343.70" step="0.01" onchange="onSetupChange()">
+      </div>
+      <div style="height:1px;background:var(--gray-200);margin:12px 0"></div>
+      <div class="section-title" style="margin-bottom:8px">Service Charge / Interest</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Service Charge</label>
+          <input type="number" id="svcCharge" value="25.00" step="0.01" min="0" onchange="onSetupChange()">
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="svcDate" value="2025-03-31">
+        </div>
+      </div>
+      <div class="field">
+        <label>Expense Account</label>
+        <select id="svcAccount">
+          <option>Bank Service Charges</option>
+          <option>Bank Fees</option>
+          <option>Miscellaneous Expense</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Interest Earned</label>
+          <input type="number" id="intEarned" value="19.20" step="0.01" min="0" onchange="onSetupChange()">
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="intDate" value="2025-03-31">
+        </div>
+      </div>
+      <div class="field">
+        <label>Income Account</label>
+        <select id="intAccount">
+          <option>Interest Income</option>
+          <option>Other Income</option>
+        </select>
+      </div>
+      <button class="btn btn-green" style="width:100%;margin-top:6px;justify-content:center" onclick="startReconciling()">Start Reconciling →</button>
+    </div>
+
+    <!-- STEP 2+: Summary (shown after Start Reconciling) -->
+    <div class="section" id="summarySection" style="display:none">
+      <div class="section-title">Reconciliation Summary</div>
+      <div class="summary-grid">
+        <div class="scard"><div class="lbl">Beginning Balance</div><div class="val" id="sBeginBal">$31,420.00</div></div>
+        <div class="scard blue"><div class="lbl">Statement Balance</div><div class="val" id="sStmtBal">$41,343.70</div></div>
+        <div class="scard green"><div class="lbl">Deposits Cleared</div><div class="val" id="sDeposits">$0.00</div></div>
+        <div class="scard"><div class="lbl">Payments Cleared</div><div class="val" id="sPayments">$0.00</div></div>
+      </div>
+      <div class="scard full" style="margin-bottom:10px">
+        <div class="lbl">Cleared Balance (Books)</div>
+        <div class="val" id="sClearedBal" style="font-size:18px">$31,420.00</div>
+        <div style="font-size:10px;color:var(--gray-400);margin-top:2px">= Beginning + Deposits − Payments</div>
+      </div>
+      <div class="diff-box nonzero" id="diffBox">
+        <div>
+          <div class="diff-lbl">Difference</div>
+          <div class="diff-val" id="diffVal">$0.00</div>
+          <div style="font-size:10px;margin-top:2px" id="diffHint">Clear transactions to reach $0.00</div>
+        </div>
+        <div class="diff-icon" id="diffIcon">⚠</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+        <div class="progress-lbl" id="progLbl">0 of 0 items cleared</div>
+      </div>
+      <button class="btn btn-ghost" style="width:100%;justify-content:center;font-size:11px;margin-top:6px" onclick="backToSetup()">← Edit Statement Info</button>
+    </div>
+
+    <!-- SCROLLABLE LOWER: Outstanding / History -->
+    <div class="section" style="flex:1;overflow-y:auto" id="outstandingSection">
+      <div id="outstandingView">
+        <div class="section-title">Outstanding Items</div>
+        <div id="outstandingList"><div style="font-size:11px;color:var(--gray-400);font-style:italic">Start reconciling to see outstanding items</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN PANEL -->
+  <div class="main" id="mainPanel">
+
+    <!-- STEP 1: START SCREEN -->
+    <div id="startScreen" style="flex:1;display:flex;align-items:center;justify-content:center;background:var(--gray-50)">
+      <div style="text-align:center;max-width:420px;padding:40px">
+        <div style="font-size:48px;margin-bottom:16px">🏦</div>
+        <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;color:var(--gray-800)">Ready to Reconcile</h2>
+        <p style="font-size:13px;color:var(--gray-500);line-height:1.6;margin-bottom:24px">Enter your statement details in the left panel, then click <strong>Start Reconciling</strong> to begin matching transactions.</p>
+        <div style="background:white;border:var(--border);border-radius:var(--radius-lg);padding:16px;text-align:left">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--gray-400);margin-bottom:10px">What you'll need</div>
+          <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--gray-600)">
+            <div>📄 Bank or credit card statement</div>
+            <div>💰 Statement ending balance</div>
+            <div>📅 Statement ending date</div>
+            <div>🔢 Any service charges or interest earned</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding:12px;background:var(--blue-pale);border:1px solid #bcd2f7;border-radius:var(--radius);font-size:11px;color:var(--blue-light);text-align:left">
+          <strong>Tip:</strong> Import a CSV or OFX file to auto-populate transactions for faster matching.
+          <button class="btn-link" style="font-size:11px;margin-left:4px" onclick="openImportModal()">Import now →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2+: TRANSACTION TABLE -->
+    <div id="reconcileScreen" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div class="toolbar">
+        <div class="tabs">
+          <div class="tab active" data-tab="all" onclick="switchTab('all',this)">All <span class="tab-badge" id="tabAll">0</span></div>
+          <div class="tab" data-tab="payments" onclick="switchTab('payments',this)">Payments <span class="tab-badge" id="tabPay">0</span></div>
+          <div class="tab" data-tab="deposits" onclick="switchTab('deposits',this)">Deposits <span class="tab-badge" id="tabDep">0</span></div>
+          <div class="tab" data-tab="uncleared" onclick="switchTab('uncleared',this)">Uncleared <span class="tab-badge" id="tabUncleared">0</span></div>
+          <div class="tab" data-tab="cleared" onclick="switchTab('cleared',this)">Cleared <span class="tab-badge" id="tabCleared">0</span></div>
+        </div>
+        <div class="filter-area">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchQ" placeholder="Search payee, ref, amount…" oninput="renderTable()">
+          </div>
+          <select class="filter-select" id="dateFilter" onchange="renderTable()">
+            <option value="">All Dates</option>
+            <option value="before">Before Statement Date</option>
+            <option value="ondate">On Statement Date</option>
+          </select>
+          <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="clearFilters()">Clear Filters</button>
+        </div>
+      </div>
+
+      <div class="bulk-bar hidden" id="bulkBar">
+        <span id="bulkCount">0 selected</span>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-clear" onclick="bulkClear()">✔ Mark All Cleared</button>
+          <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="bulkUnclear()">Unclear Selected</button>
+          <button class="btn btn-danger-sm" onclick="clearSelection()">✕ Deselect</button>
+        </div>
+      </div>
+
+      <div class="table-wrap" id="tableWrap">
+        <table class="txn-table" id="txnTable">
+          <thead>
+            <tr>
+              <th class="col-chk"><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" title="Select all visible"></th>
+              <th onclick="sortBy('date')">Date <span class="sort-arrow">↕</span></th>
+              <th onclick="sortBy('type')">Type <span class="sort-arrow">↕</span></th>
+              <th onclick="sortBy('payee')">Payee / Description <span class="sort-arrow">↕</span></th>
+              <th onclick="sortBy('ref')">Ref / Check # <span class="sort-arrow">↕</span></th>
+              <th onclick="sortBy('amount')" style="text-align:right">Payment <span class="sort-arrow">↕</span></th>
+              <th onclick="sortBy('amount')" style="text-align:right">Deposit <span class="sort-arrow">↕</span></th>
+              <th>Status</th>
+              <th style="text-align:right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="txnBody"></tbody>
+        </table>
+      </div>
+
+      <div class="footer-bar">
+        <div style="font-size:12px;color:var(--gray-500)">Showing <strong id="showCount">0</strong> of <strong id="totalCount">0</strong> transactions</div>
+        <div class="footer-totals">
+          <div class="footer-total">Payments: <span id="ftPayments" class="debit-total">$0.00</span></div>
+          <div class="footer-total">Deposits: <span id="ftDeposits" class="credit-total">$0.00</span></div>
+          <div class="footer-total">Net: <span id="ftNet">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT VIEW -->
+    <div id="reportScreen" style="display:none;flex:1;overflow-y:auto;background:var(--gray-50)"></div>
+
+    <!-- HISTORY VIEW -->
+    <div id="historyScreen" style="display:none;flex:1;overflow-y:auto;background:var(--gray-50)"></div>
+  </div>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- ADD/EDIT TRANSACTION -->
+<div class="overlay" id="txnModal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2 id="txnModalTitle">Add Transaction</h2>
+      <button class="btn-icon" onclick="closeTxnModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-row">
+        <div class="field"><label>Date *</label><input type="date" id="tnDate"></div>
+        <div class="field"><label>Type *</label>
+          <select id="tnType">
+            <option value="payment">Payment</option><option value="deposit">Deposit</option>
+            <option value="check">Check</option><option value="transfer">Transfer</option>
+            <option value="fee">Bank Fee</option><option value="interest">Interest</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Payee / Description *</label><input type="text" id="tnPayee" placeholder="e.g. Amazon Web Services"></div>
+      <div class="field-row">
+        <div class="field"><label>Reference / Check #</label><input type="text" id="tnRef" placeholder="Optional"></div>
+        <div class="field"><label>Amount ($) *</label><input type="number" id="tnAmount" placeholder="0.00" step="0.01" min="0.01"></div>
+      </div>
+      <div class="field"><label>Account / Category</label>
+        <select id="tnAccount">
+          <option>Operating Expenses</option><option>Office Supplies</option><option>Rent Expense</option>
+          <option>Payroll Expense</option><option>Bank Service Charges</option><option>Interest Income</option>
+          <option>Accounts Receivable</option><option>Sales Revenue</option><option>Uncategorized</option>
+        </select>
+      </div>
+      <div class="field"><label>Memo / Notes</label><input type="text" id="tnMemo" placeholder="Optional"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeTxnModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTxnModal()">Save Transaction</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMPORT CSV/OFX -->
+<div class="overlay" id="importModal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>Import Bank Statement</h2>
+      <button class="btn-icon" onclick="closeImportModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <button class="btn btn-ghost" id="tabCSV" onclick="switchImportTab('csv')" style="flex:1;justify-content:center;border-color:var(--blue-light);color:var(--blue-light)">📊 CSV / Excel</button>
+        <button class="btn btn-ghost" id="tabOFX" onclick="switchImportTab('ofx')" style="flex:1;justify-content:center">🏦 OFX / QFX / QBO</button>
+      </div>
+      <div id="csvImportArea">
+        <div style="border:2px dashed var(--gray-300);border-radius:var(--radius-lg);padding:24px;text-align:center;cursor:pointer;transition:.2s;margin-bottom:12px" id="dropZone" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event)" onclick="document.getElementById('fileInput').click()">
+          <div style="font-size:28px;margin-bottom:8px">📂</div>
+          <div style="font-size:13px;font-weight:500;color:var(--gray-700)">Drop CSV file here or click to browse</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:4px">Supports .csv, .tsv files from any bank</div>
+          <input type="file" id="fileInput" accept=".csv,.tsv,.txt" style="display:none" onchange="handleFileUpload(event)">
+        </div>
+        <div id="importPreviewArea" style="display:none">
+          <div style="font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:6px">Preview (first 5 rows):</div>
+          <div style="overflow-x:auto;margin-bottom:10px"><table class="import-preview" id="importPreviewTable"></table></div>
+          <div style="background:var(--green-pale);border:1px solid #86efac;border-radius:var(--radius);padding:8px 12px;font-size:12px;color:#166534" id="importStats"></div>
+        </div>
+        <div style="background:var(--gray-50);border:var(--border);border-radius:var(--radius);padding:10px 12px;margin-top:10px">
+          <div style="font-size:11px;font-weight:600;color:var(--gray-600);margin-bottom:6px">Expected CSV format:</div>
+          <code style="font-size:10px;color:var(--gray-700);line-height:1.6;display:block">Date, Type, Description, Reference, Amount, Balance</code>
+          <div style="font-size:10px;color:var(--gray-400);margin-top:4px">Positive amount = credit/deposit, Negative = debit/payment</div>
+        </div>
+      </div>
+      <div id="ofxImportArea" style="display:none">
+        <div style="border:2px dashed var(--gray-300);border-radius:var(--radius-lg);padding:24px;text-align:center;cursor:pointer" onclick="document.getElementById('ofxInput').click()">
+          <div style="font-size:28px;margin-bottom:8px">🏦</div>
+          <div style="font-size:13px;font-weight:500;color:var(--gray-700)">Drop OFX / QFX / QBO file here</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:4px">Download directly from your bank's website</div>
+          <input type="file" id="ofxInput" accept=".ofx,.qfx,.qbo" style="display:none" onchange="handleOFXUpload(event)">
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:var(--gray-500)">OFX parsing will extract date, amount, description, and reference number automatically.</div>
+      </div>
+      <div id="importedParsed" style="display:none;margin-top:10px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeImportModal()">Cancel</button>
+      <button class="btn btn-primary" id="importConfirmBtn" onclick="confirmImport()" disabled>Import Transactions</button>
+    </div>
+  </div>
+</div>
+
+<!-- UNDO RECONCILIATION -->
+<div class="overlay" id="undoModal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>Undo Reconciliation</h2>
+      <button class="btn-icon" onclick="closeUndoModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--red-pale);border:1px solid var(--red-border);border-radius:var(--radius);padding:10px 12px;margin-bottom:14px;font-size:12px;color:var(--red)">
+        ⚠ <strong>Warning:</strong> Undoing a reconciliation will mark all transactions from that period as uncleared. This cannot be easily reversed.
+      </div>
+      <div class="undo-list" id="undoList"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeUndoModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADJUSTING ENTRY DIALOG -->
+<div class="overlay confirm-dialog" id="adjustModal">
+  <div class="modal">
+    <div class="modal-hdr"><h2>Finish with Adjustment?</h2><button class="btn-icon" onclick="closeAdjustModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="adj-box">
+        <h4>⚠ Difference is not zero</h4>
+        <p>The difference between your statement and cleared balance is <strong id="adjDiffDisplay">$0.00</strong>. QuickBooks will create an adjusting journal entry to bring the difference to zero.</p>
+      </div>
+      <p style="font-size:12px;color:var(--gray-600);line-height:1.6">This entry will be posted to <strong>Reconciliation Discrepancies</strong>. Use this only if the amount is small and you're confident it's a minor error. Consult your accountant before proceeding.</p>
+      <div class="field" style="margin-top:12px">
+        <label>Adjustment Account</label>
+        <select><option>Reconciliation Discrepancies</option><option>Suspense Account</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeAdjustModal()">Cancel — Keep Working</button>
+      <button class="btn btn-primary" onclick="finishWithAdjustment()">Create Adjustment & Finish</button>
+    </div>
+  </div>
+</div>
+
+<!-- DISCREPANCY REPORT -->
+<div class="overlay" id="discModal">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-hdr"><h2>Reconciliation Discrepancy Report</h2><button class="btn-icon" onclick="document.getElementById('discModal').classList.remove('open')">✕</button></div>
+    <div class="modal-body" id="discModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('discModal').classList.remove('open')">Close</button>
+      <button class="btn btn-primary" onclick="printReport()">🖨 Print Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== DATA ====================
+const ACCOUNTS = {
+  checking: { name:'Checking — Chase ••4892', beginBal:31420.00, lastDate:'02/28/2025' },
+  savings:  { name:'Savings — Chase ••2341', beginBal:8200.50, lastDate:'02/28/2025' },
+  credit:   { name:'Credit Card — Amex ••9012', beginBal:-4120.30, lastDate:'02/28/2025' },
+  paypal:   { name:'PayPal Business', beginBal:1540.00, lastDate:'02/28/2025' }
+};
+
+const PREV_RECONCILIATIONS = [
+  { period:'February 2025', date:'2025-02-28', endBal:31420.00, txnCount:18, by:'Admin' },
+  { period:'January 2025',  date:'2025-01-31', endBal:28950.75, txnCount:21, by:'Admin' },
+  { period:'December 2024', date:'2024-12-31', endBal:30100.00, txnCount:24, by:'Admin' },
+  { period:'November 2024', date:'2024-11-30', endBal:27400.50, txnCount:19, by:'Admin' },
+];
+
+let transactions = [
+  {id:1,  date:'2025-03-03', type:'deposit',  payee:'Client Payment — Acme Industries', ref:'DEP-001', amount:15000.00, account:'Accounts Receivable', memo:'Invoice #2024-089', cleared:false, matched:false, reconciled:false},
+  {id:2,  date:'2025-03-05', type:'payment',  payee:'Amazon Web Services',              ref:'TRF-4421', amount:2340.50,  account:'Operating Expenses',  memo:'Cloud infrastructure - March', cleared:false, matched:false, reconciled:false},
+  {id:3,  date:'2025-03-07', type:'check',    payee:'Johnson & Associates',             ref:'CHK-1042', amount:850.00,   account:'Legal & Professional', memo:'Legal consultation', cleared:false, matched:false, reconciled:false},
+  {id:4,  date:'2025-03-10', type:'payment',  payee:'Rent — 123 Commerce St',           ref:'TRF-4455', amount:4200.00,  account:'Rent Expense',         memo:'March office rent', cleared:false, matched:false, reconciled:false},
+  {id:5,  date:'2025-03-12', type:'deposit',  payee:'Client Payment — Beta Corp',       ref:'DEP-002', amount:8500.00,   account:'Accounts Receivable',  memo:'Invoice #2024-091', cleared:false, matched:false, reconciled:false},
+  {id:6,  date:'2025-03-14', type:'payment',  payee:'Payroll Processing',               ref:'ACH-9981', amount:12500.00, account:'Payroll Expense',      memo:'Bi-weekly payroll', cleared:false, matched:false, reconciled:false},
+  {id:7,  date:'2025-03-17', type:'payment',  payee:'Google Workspace',                 ref:'TRF-4477', amount:180.00,   account:'Software Subscriptions',memo:'Monthly subscription', cleared:false, matched:false, reconciled:false},
+  {id:8,  date:'2025-03-19', type:'deposit',  payee:'Client Payment — Gamma LLC',       ref:'DEP-003', amount:3200.00,   account:'Accounts Receivable',  memo:'Invoice #2024-095', cleared:false, matched:false, reconciled:false},
+  {id:9,  date:'2025-03-21', type:'check',    payee:'Staples — Office Supplies',        ref:'CHK-1043', amount:127.40,   account:'Office Supplies',      memo:'Printer ink & paper', cleared:false, matched:false, reconciled:false},
+  {id:10, date:'2025-03-24', type:'payment',  payee:'Slack Technologies',               ref:'TRF-4490', amount:87.50,    account:'Software Subscriptions',memo:'Team communication', cleared:false, matched:false, reconciled:false},
+  {id:11, date:'2025-03-26', type:'deposit',  payee:'Interest Income',                  ref:'INT-0326', amount:45.12,    account:'Interest Income',      memo:'Monthly interest', cleared:false, matched:false, reconciled:false},
+  {id:12, date:'2025-03-28', type:'payment',  payee:'Insurance Premium',                ref:'TRF-4512', amount:620.00,   account:'Insurance Expense',    memo:'Business liability Q1', cleared:false, matched:false, reconciled:false},
+  {id:13, date:'2025-03-29', type:'check',    payee:'Freelancer — Mike Chen',           ref:'CHK-1044', amount:1800.00,  account:'Contractor Expense',   memo:'Design work Feb–Mar', cleared:false, matched:false, reconciled:false},
+  {id:14, date:'2025-03-30', type:'deposit',  payee:'Client Payment — Delta Inc',       ref:'DEP-004', amount:6200.00,   account:'Accounts Receivable',  memo:'Invoice #2024-098', cleared:false, matched:false, reconciled:false},
+  {id:15, date:'2025-03-31', type:'payment',  payee:'Utilities — Electric',             ref:'ACH-1143', amount:310.22,   account:'Utilities Expense',    memo:'March electricity', cleared:false, matched:false, reconciled:false},
+  {id:16, date:'2025-03-31', type:'fee',      payee:'Bank Service Charge',              ref:'SVC-001',  amount:25.00,    account:'Bank Service Charges', memo:'Monthly maintenance fee', cleared:false, matched:false, reconciled:false},
+  {id:17, date:'2025-03-31', type:'interest', payee:'Interest Earned',                  ref:'INT-031',  amount:19.20,    account:'Interest Income',      memo:'Monthly interest earned', cleared:false, matched:false, reconciled:false},
+];
+
+let state = {
+  step: 1,            // 1=setup, 2=reconciling, 3=done
+  currentTab: 'all',
+  sortKey: 'date',
+  sortDir: 1,
+  selectedIds: new Set(),
+  editingId: null,
+  parsedImport: [],
+  importTab: 'csv',
+  finishedPeriods: [...PREV_RECONCILIATIONS]
+};
+
+// ==================== HELPERS ====================
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtSigned = n => (n<0?'-$':'$')+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function toast(msg, type='info', dur=2800) {
+  const t = $('toast');
+  t.textContent = msg; t.className = `toast show ${type}`;
+  setTimeout(()=>{ t.className='toast'; }, dur);
+}
+
+function isDeposit(t){ return ['deposit','interest'].includes(t.type); }
+
+function getStmtBal(){ return parseFloat($('stmtBalance').value)||0; }
+function getSvcCharge(){ return parseFloat($('svcCharge').value)||0; }
+function getIntEarned(){ return parseFloat($('intEarned').value)||0; }
+function getBeginBal(){ const acct = $('accountSelect').value; return ACCOUNTS[acct]?.beginBal || 0; }
+
+// ==================== ACCOUNT CHANGE ====================
+function onAccountChange() {
+  const acct = $('accountSelect').value;
+  const info = ACCOUNTS[acct];
+  $('beginBal').value = fmt(info.beginBal);
+  // simulate begin balance warning for credit card
+  $('beginBalWarn').style.display = acct === 'credit' ? 'block' : 'none';
+  toast(`Switched to ${info.name}`);
+}
+
+function onSetupChange() {
+  $('stmtBalDisplay') && updateSummary();
+}
+
+// ==================== START RECONCILING ====================
+function startReconciling() {
+  const stmtBal = getStmtBal();
+  const stmtDate = $('stmtDate').value;
+  if(!stmtDate){ toast('Please enter statement ending date','error'); return; }
+  if(isNaN(stmtBal)){ toast('Please enter statement ending balance','error'); return; }
+
+  state.step = 2;
+  $('setupSection').style.display = 'none';
+  $('summarySection').style.display = '';
+  $('startScreen').style.display = 'none';
+  $('reconcileScreen').style.display = 'flex';
+  $('autoMatchBtn').style.display = '';
+  $('addTxnBtn').style.display = '';
+  $('pageTitle').textContent = 'Reconcile: Checking — Chase ••4892';
+  $('pageSubtitle').textContent = `Step 2 of 3 — Clearing transactions through ${stmtDate}`;
+
+  updateSummary();
+  renderTable();
+  toast('Reconciliation started. Match transactions and click Clear.','success');
+}
+
+function backToSetup() {
+  state.step = 1;
+  $('setupSection').style.display = '';
+  $('summarySection').style.display = 'none';
+  $('startScreen').style.display = 'flex';
+  $('reconcileScreen').style.display = 'none';
+  $('autoMatchBtn').style.display = 'none';
+  $('addTxnBtn').style.display = 'none';
+  $('pageTitle').textContent = 'Reconcile Account';
+  $('pageSubtitle').textContent = 'Step 1 of 3 — Set up reconciliation parameters';
+}
+
+// ==================== SUMMARY UPDATE ====================
+function updateSummary() {
+  const beginBal = getBeginBal();
+  const stmtBal  = getStmtBal();
+  const svcCharge = getSvcCharge();
+  const intEarned = getIntEarned();
+
+  let deposits = 0, payments = 0;
+  transactions.forEach(t => {
+    if(!t.cleared) return;
+    if(isDeposit(t)) deposits += t.amount;
+    else payments += t.amount;
+  });
+
+  const clearedBal = beginBal + deposits - payments;
+  const effectiveStmt = stmtBal; // service charge & interest are already in txn list
+  const diff = effectiveStmt - clearedBal;
+
+  if($('sBeginBal')) $('sBeginBal').textContent = fmt(beginBal);
+  if($('sStmtBal'))  $('sStmtBal').textContent  = fmt(stmtBal);
+  if($('sDeposits')) $('sDeposits').textContent = fmt(deposits);
+  if($('sPayments')) $('sPayments').textContent = fmt(payments);
+  if($('sClearedBal')) $('sClearedBal').textContent = fmt(clearedBal);
+  if($('diffVal'))   $('diffVal').textContent  = fmt(Math.abs(diff));
+
+  const isZero = Math.abs(diff) < 0.01;
+  const box = $('diffBox');
+  if(box){ box.className = 'diff-box ' + (isZero?'zero':'nonzero'); }
+  if($('diffIcon')) $('diffIcon').textContent = isZero ? '✔' : '⚠';
+  if($('diffHint')) $('diffHint').textContent = isZero ? 'Ready to finish!' : (diff>0?'Statement is higher — clear more deposits':'Statement is lower — clear more payments');
+
+  const cleared = transactions.filter(t=>t.cleared).length;
+  const total   = transactions.length;
+  const pct     = total>0?(cleared/total*100):0;
+  if($('progFill'))  $('progFill').style.width = pct+'%';
+  if($('progLbl'))   $('progLbl').textContent = `${cleared} of ${total} items cleared`;
+
+  $('finishBtn').disabled = !isZero;
+
+  // tab counts
+  const allT = transactions.length;
+  const pays = transactions.filter(t=>!isDeposit(t)).length;
+  const deps = transactions.filter(t=>isDeposit(t)).length;
+  const unc  = transactions.filter(t=>!t.cleared).length;
+  const cl   = transactions.filter(t=>t.cleared).length;
+  $('tabAll').textContent      = allT;
+  $('tabPay').textContent      = pays;
+  $('tabDep').textContent      = deps;
+  $('tabUncleared').textContent= unc;
+  $('tabCleared').textContent  = cl;
+  [$('tabAll'),$('tabPay'),$('tabDep'),$('tabUncleared'),$('tabCleared')].forEach(el=>{
+    if(el) el.className = parseInt(el.textContent)>0 ? 'tab-badge' : 'tab-badge none';
+  });
+
+  updateOutstanding();
+}
+
+// ==================== OUTSTANDING ====================
+function updateOutstanding() {
+  const list = $('outstandingList');
+  if(!list) return;
+  const uncleared = transactions.filter(t=>!t.cleared);
+  if(!uncleared.length){ list.innerHTML='<div style="font-size:11px;color:var(--gray-400);font-style:italic">All transactions cleared!</div>'; return; }
+  let html = `<div style="font-size:10px;color:var(--gray-400);margin-bottom:6px">Outstanding (${uncleared.length} items)</div>`;
+  uncleared.slice(0,8).forEach(t=>{
+    const sign = isDeposit(t)?'+':'-';
+    const col  = isDeposit(t)?'#166534':'#b91c1c';
+    html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:11px">
+      <div>
+        <div style="font-weight:500;color:var(--gray-700)">${t.payee.length>26?t.payee.slice(0,26)+'…':t.payee}</div>
+        <div style="color:var(--gray-400)">${t.date} · ${t.type}</div>
+      </div>
+      <div style="font-weight:600;color:${col}">${sign}${fmt(t.amount)}</div>
+    </div>`;
+  });
+  if(uncleared.length>8) html+=`<div style="font-size:10px;color:var(--gray-400);padding-top:6px">+${uncleared.length-8} more…</div>`;
+  list.innerHTML=html;
+}
+
+// ==================== TABLE RENDER ====================
+function getFiltered() {
+  const q     = $('searchQ').value.toLowerCase();
+  const df    = $('dateFilter').value;
+  const stmtD = $('stmtDate').value;
+  return transactions.filter(t => {
+    if(state.currentTab==='payments' && isDeposit(t)) return false;
+    if(state.currentTab==='deposits' && !isDeposit(t)) return false;
+    if(state.currentTab==='uncleared' && t.cleared) return false;
+    if(state.currentTab==='cleared' && !t.cleared) return false;
+    if(df==='before' && t.date >= stmtD) return false;
+    if(df==='ondate' && t.date !== stmtD) return false;
+    if(q && !t.payee.toLowerCase().includes(q) &&
+            !t.ref.toLowerCase().includes(q) &&
+            !String(t.amount).includes(q) &&
+            !(t.memo||'').toLowerCase().includes(q)) return false;
+    return true;
+  }).sort((a,b) => {
+    let av=a[state.sortKey], bv=b[state.sortKey];
+    if(state.sortKey==='date'){av=new Date(av);bv=new Date(bv);}
+    if(state.sortKey==='amount'){av=a.amount;bv=b.amount;}
+    return av<bv?-state.sortDir:av>bv?state.sortDir:0;
+  });
+}
+
+function renderTable() {
+  if(state.step<2) return;
+  const filtered = getFiltered();
+  const body = $('txnBody');
+  body.innerHTML='';
+
+  let totPay=0, totDep=0;
+  const frag = document.createDocumentFragment();
+
+  if(!filtered.length){
+    const tr = document.createElement('tr');
+    tr.innerHTML=`<td colspan="9"><div class="empty"><div class="empty-icon">🔍</div><p>No transactions match filters</p></div></td>`;
+    frag.appendChild(tr); body.appendChild(frag);
+    $('showCount').textContent=0; $('totalCount').textContent=transactions.length;
+    $('ftPayments').textContent='$0.00'; $('ftDeposits').textContent='$0.00'; $('ftNet').textContent='$0.00';
+    return;
+  }
+
+  filtered.forEach(t => {
+    if(isDeposit(t)) totDep+=t.amount; else totPay+=t.amount;
+    const sel = state.selectedIds.has(t.id);
+    const tr  = document.createElement('tr');
+    if(t.cleared) tr.classList.add('row-cleared');
+    if(sel) tr.classList.add('row-selected');
+
+    const statusBadge = t.reconciled
+      ? `<span class="badge badge-reconciled">◈ Reconciled</span>`
+      : t.cleared
+        ? `<span class="badge badge-cleared">✔ Cleared</span>`
+        : t.matched
+          ? `<span class="badge badge-matched">≈ Matched</span>`
+          : `<span class="badge badge-pending">○ Pending</span>`;
+
+    const payCell = !isDeposit(t) ? `<span class="col-amt debit">${fmt(t.amount)}</span>` : `<span class="neutral">—</span>`;
+    const depCell =  isDeposit(t) ? `<span class="col-amt credit">${fmt(t.amount)}</span>` : `<span class="neutral">—</span>`;
+    const actionBtn = t.cleared
+      ? `<button class="btn btn-unclear" onclick="toggleClear(${t.id})">Unclear</button>`
+      : `<button class="btn btn-clear" onclick="toggleClear(${t.id})">Clear</button>`;
+
+    tr.innerHTML=`
+      <td class="col-chk"><input type="checkbox" ${sel?'checked':''} onchange="toggleSelect(${t.id},this)"></td>
+      <td class="col-date">${t.date}</td>
+      <td class="col-type">${t.type}</td>
+      <td class="col-payee"><div class="payee">${t.payee}</div>${t.memo?`<div class="memo">${t.memo}</div>`:''}</td>
+      <td class="col-ref">${t.ref}</td>
+      <td style="text-align:right">${payCell}</td>
+      <td style="text-align:right">${depCell}</td>
+      <td class="col-status">${statusBadge}</td>
+      <td class="col-action">
+        <div style="display:flex;align-items:center;gap:4px;justify-content:flex-end">
+          ${actionBtn}
+          <button class="btn-icon" title="Edit" onclick="editTxn(${t.id})">✎</button>
+          <button class="btn-icon" title="Delete" onclick="deleteTxn(${t.id})" style="color:#fca5a5">✕</button>
+        </div>
+      </td>`;
+    frag.appendChild(tr);
+  });
+
+  body.appendChild(frag);
+  $('showCount').textContent  = filtered.length;
+  $('totalCount').textContent = transactions.length;
+  $('ftPayments').textContent = fmt(totPay);
+  $('ftDeposits').textContent = fmt(totDep);
+  const net = totDep - totPay;
+  const netEl = $('ftNet');
+  netEl.textContent = fmtSigned(net);
+  netEl.style.color = net>=0?'#166534':'#b91c1c';
+
+  // update select-all checkbox state
+  const allChk = $('selectAll');
+  if(allChk){
+    const visIds = filtered.map(t=>t.id);
+    const allSel = visIds.length>0 && visIds.every(id=>state.selectedIds.has(id));
+    allChk.checked = allSel;
+    allChk.indeterminate = !allSel && visIds.some(id=>state.selectedIds.has(id));
+  }
+
+  // bulk bar
+  const bulkBar = $('bulkBar');
+  if(state.selectedIds.size>0){
+    bulkBar.classList.remove('hidden');
+    $('bulkCount').textContent=`${state.selectedIds.size} transaction${state.selectedIds.size>1?'s':''} selected`;
+  } else {
+    bulkBar.classList.add('hidden');
+  }
+
+  updateSummary();
+}
+
+// ==================== CLEAR / UNCLEAR ====================
+function toggleClear(id) {
+  const t = transactions.find(x=>x.id===id);
+  if(!t) return;
+  t.cleared = !t.cleared;
+  if(t.matched && t.cleared) t.matched=false;
+  renderTable();
+  toast(t.cleared?'Transaction cleared':'Transaction uncleared', t.cleared?'success':'info');
+}
+
+function toggleSelect(id, cb) {
+  if(cb.checked) state.selectedIds.add(id); else state.selectedIds.delete(id);
+  renderTable();
+}
+
+function toggleSelectAll(cb) {
+  const filtered = getFiltered();
+  if(cb.checked) filtered.forEach(t=>state.selectedIds.add(t.id));
+  else state.selectedIds.clear();
+  renderTable();
+}
+
+function bulkClear() {
+  const cnt = state.selectedIds.size;
+  state.selectedIds.forEach(id=>{ const t=transactions.find(x=>x.id===id); if(t) t.cleared=true; });
+  state.selectedIds.clear();
+  renderTable();
+  toast(`${cnt} transaction${cnt>1?'s':''} cleared`,'success');
+}
+
+function bulkUnclear() {
+  state.selectedIds.forEach(id=>{ const t=transactions.find(x=>x.id===id); if(t) t.cleared=false; });
+  state.selectedIds.clear();
+  renderTable();
+  toast('Transactions uncleared','info');
+}
+
+function clearSelection() { state.selectedIds.clear(); renderTable(); }
+
+// ==================== SORT & FILTERS ====================
+function sortBy(key) {
+  if(state.sortKey===key) state.sortDir*=-1; else { state.sortKey=key; state.sortDir=1; }
+  document.querySelectorAll('.txn-table th').forEach(th=>{
+    th.classList.remove('sorted');
+    const arrow = th.querySelector('.sort-arrow');
+    if(arrow) arrow.textContent='↕';
+  });
+  renderTable();
+}
+
+function switchTab(tab, el) {
+  state.currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  state.selectedIds.clear();
+  renderTable();
+}
+
+function clearFilters() {
+  $('searchQ').value='';
+  $('dateFilter').value='';
+  renderTable();
+}
+
+// ==================== ADD / EDIT TXN ====================
+function openAddTxn() {
+  state.editingId = null;
+  $('txnModalTitle').textContent = 'Add Transaction';
+  $('tnDate').value = $('stmtDate').value;
+  $('tnType').value = 'payment';
+  $('tnPayee').value=''; $('tnRef').value=''; $('tnAmount').value=''; $('tnMemo').value='';
+  $('txnModal').classList.add('open');
+}
+
+function editTxn(id) {
+  const t = transactions.find(x=>x.id===id);
+  if(!t) return;
+  state.editingId = id;
+  $('txnModalTitle').textContent = 'Edit Transaction';
+  $('tnDate').value   = t.date;
+  $('tnType').value   = t.type;
+  $('tnPayee').value  = t.payee;
+  $('tnRef').value    = t.ref;
+  $('tnAmount').value = t.amount;
+  $('tnMemo').value   = t.memo||'';
+  $('txnModal').classList.add('open');
+}
+
+function saveTxnModal() {
+  const date   = $('tnDate').value;
+  const type   = $('tnType').value;
+  const payee  = $('tnPayee').value.trim();
+  const ref    = $('tnRef').value.trim();
+  const amount = parseFloat($('tnAmount').value);
+  const memo   = $('tnMemo').value.trim();
+  const account= $('tnAccount').value;
+
+  if(!date||!payee||isNaN(amount)||amount<=0){ toast('Please fill in date, payee and amount','error'); return; }
+
+  if(state.editingId){
+    const t = transactions.find(x=>x.id===state.editingId);
+    Object.assign(t,{date,type,payee,ref:ref||'MANUAL',amount,memo,account});
+    toast('Transaction updated','success');
+  } else {
+    const newId = Math.max(0,...transactions.map(t=>t.id))+1;
+    transactions.push({id:newId,date,type,payee,ref:ref||'MANUAL',amount,account,memo,cleared:false,matched:false,reconciled:false});
+    toast('Transaction added','success');
+  }
+  closeTxnModal();
+  renderTable();
+}
+
+function deleteTxn(id) {
+  const t = transactions.find(x=>x.id===id);
+  if(!t) return;
+  if(t.reconciled){ toast('Cannot delete a reconciled transaction','error'); return; }
+  if(!confirm(`Delete "${t.payee}"?`)) return;
+  transactions = transactions.filter(x=>x.id!==id);
+  state.selectedIds.delete(id);
+  renderTable();
+  toast('Transaction deleted','warn');
+}
+
+function closeTxnModal(){ $('txnModal').classList.remove('open'); }
+
+// ==================== AUTO-MATCH ====================
+function autoMatch() {
+  let matched=0;
+  transactions.forEach(t=>{
+    if(!t.cleared && !t.matched && Math.random()>0.3){ t.matched=true; matched++; }
+  });
+  renderTable();
+  toast(`Auto-match complete: ${matched} transaction${matched!==1?'s':''} suggested`,'success');
+}
+
+// ==================== IMPORT ====================
+function openImportModal(){ $('importModal').classList.add('open'); }
+function closeImportModal(){ $('importModal').classList.remove('open'); state.parsedImport=[]; $('importConfirmBtn').disabled=true; $('importPreviewArea').style.display='none'; }
+
+function switchImportTab(tab) {
+  state.importTab=tab;
+  $('csvImportArea').style.display=tab==='csv'?'':'none';
+  $('ofxImportArea').style.display=tab==='ofx'?'':'none';
+  $('tabCSV').style.borderColor=tab==='csv'?'var(--blue-light)':'';
+  $('tabCSV').style.color=tab==='csv'?'var(--blue-light)':'';
+  $('tabOFX').style.borderColor=tab==='ofx'?'var(--blue-light)':'';
+  $('tabOFX').style.color=tab==='ofx'?'var(--blue-light)':'';
+}
+
+function dzOver(e){ e.preventDefault(); $('dropZone').style.borderColor='var(--blue-light)'; $('dropZone').style.background='var(--blue-pale)'; }
+function dzLeave(e){ $('dropZone').style.borderColor=''; $('dropZone').style.background=''; }
+function dzDrop(e){ e.preventDefault(); dzLeave(e); if(e.dataTransfer.files[0]) parseCSVFile(e.dataTransfer.files[0]); }
+
+function handleFileUpload(e){ if(e.target.files[0]) parseCSVFile(e.target.files[0]); }
+
+function parseCSVFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result;
+    const lines = text.split(/\r?\n/).filter(l=>l.trim());
+    if(lines.length<2){ toast('File appears empty or invalid','error'); return; }
+
+    const headers = lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase());
+    const rows = [];
+    for(let i=1;i<lines.length;i++){
+      const cols = lines[i].split(',').map(c=>c.trim().replace(/^"|"$/g,''));
+      if(cols.length<4) continue;
+      const row = {};
+      headers.forEach((h,idx)=>{ row[h]=cols[idx]||''; });
+
+      // flexible header mapping
+      const date  = row['date']||row['transaction date']||row['txn date']||'';
+      const desc  = row['description']||row['payee']||row['memo']||row['name']||'';
+      const ref   = row['reference']||row['ref']||row['check']||row['check #']||'';
+      const type  = row['type']||'';
+      let   amount= parseFloat((row['amount']||row['debit']||row['credit']||'0').replace(/[,$]/g,''));
+      if(isNaN(amount)) amount=0;
+
+      if(!date||!desc||amount===0) continue;
+      const txnType = amount>0?'deposit':'payment';
+      rows.push({ date, payee:desc, ref, type:type||txnType, amount:Math.abs(amount), memo:'', isCredit:amount>0 });
+    }
+
+    if(!rows.length){ toast('No valid transactions found in file','error'); return; }
+    state.parsedImport = rows;
+    showImportPreview(rows);
+    $('importConfirmBtn').disabled = false;
+    toast(`Parsed ${rows.length} transactions`,'success');
+  };
+  reader.readAsText(file);
+}
+
+function handleOFXUpload(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const text = ev.target.result;
+    const rows = [];
+    const stmtMatches = text.match(/<STMTTRN>([\s\S]*?)<\/STMTTRN>/g)||[];
+    stmtMatches.forEach(block=>{
+      const get = tag => { const m=block.match(new RegExp(`<${tag}>([^<\n]+)`)); return m?m[1].trim():''; };
+      const dtraw = get('DTPOSTED'); const amtraw = parseFloat(get('TRNAMT')||'0');
+      if(!dtraw||!amtraw) return;
+      const y=dtraw.slice(0,4),mo=dtraw.slice(4,6),d=dtraw.slice(6,8);
+      rows.push({ date:`${y}-${mo}-${d}`, payee:get('NAME')||get('MEMO')||'Unknown', ref:get('FITID'), type:amtraw>0?'deposit':'payment', amount:Math.abs(amtraw), memo:get('MEMO'), isCredit:amtraw>0 });
+    });
+    if(!rows.length){ toast('No transactions found in OFX file','error'); return; }
+    state.parsedImport=rows;
+    showImportPreview(rows);
+    $('importConfirmBtn').disabled=false;
+    toast(`Parsed ${rows.length} OFX transactions`,'success');
+  };
+  reader.readAsText(file);
+}
+
+function showImportPreview(rows) {
+  $('importPreviewArea').style.display='';
+  const preview = rows.slice(0,5);
+  let html='<tr><th>Date</th><th>Type</th><th>Payee</th><th>Ref</th><th>Amount</th></tr>';
+  preview.forEach(r=>{
+    const col = r.isCredit?'#166534':'#b91c1c';
+    html+=`<tr><td>${r.date}</td><td>${r.type}</td><td>${r.payee.length>30?r.payee.slice(0,30)+'…':r.payee}</td><td>${r.ref}</td><td style="color:${col};font-weight:600">${r.isCredit?'+':'-'}${fmt(r.amount)}</td></tr>`;
+  });
+  $('importPreviewTable').innerHTML=html;
+  $('importStats').textContent=`✔ Found ${rows.length} transactions · ${rows.filter(r=>r.isCredit).length} deposits · ${rows.filter(r=>!r.isCredit).length} payments`;
+}
+
+function confirmImport() {
+  const newTxns = state.parsedImport;
+  let added=0, skipped=0;
+  const maxId = Math.max(0,...transactions.map(t=>t.id));
+  newTxns.forEach((r,i)=>{
+    // duplicate check by date + amount
+    const exists = transactions.some(t=>t.date===r.date && Math.abs(t.amount-r.amount)<0.01 && t.payee===r.payee);
+    if(exists){ skipped++; return; }
+    transactions.push({ id:maxId+i+1, date:r.date, type:r.type, payee:r.payee, ref:r.ref||'IMPORT', amount:r.amount, account:'Uncategorized', memo:r.memo||'', cleared:false, matched:false, reconciled:false });
+    added++;
+  });
+  closeImportModal();
+  renderTable();
+  toast(`Imported ${added} transactions${skipped?` (${skipped} duplicates skipped)`:''}`, 'success', 3500);
+}
+
+// ==================== FINISH ====================
+function tryFinish() {
+  const diff = getStmtBal() - getClearedBal();
+  if(Math.abs(diff)<0.01){
+    finishReconciliation();
+  } else {
+    $('adjDiffDisplay').textContent = fmt(Math.abs(diff));
+    $('adjustModal').classList.add('open');
+  }
+}
+
+function getClearedBal() {
+  let deps=0, pays=0;
+  transactions.forEach(t=>{ if(t.cleared){ if(isDeposit(t)) deps+=t.amount; else pays+=t.amount; }});
+  return getBeginBal()+deps-pays;
+}
+
+function finishReconciliation() {
+  const stmtDate = $('stmtDate').value;
+  const stmtBal  = getStmtBal();
+  // mark all cleared as reconciled
+  transactions.forEach(t=>{ if(t.cleared) t.reconciled=true; });
+  state.finishedPeriods.unshift({ period:`March 2025`, date:stmtDate, endBal:stmtBal, txnCount:transactions.filter(t=>t.reconciled).length, by:'Admin' });
+  state.step=3;
+  showReconciliationReport();
+  toast('Reconciliation completed and saved!','success',4000);
+}
+
+function finishWithAdjustment() {
+  closeAdjustModal();
+  // add adjusting entry
+  const diff = getStmtBal() - getClearedBal();
+  const maxId = Math.max(0,...transactions.map(t=>t.id));
+  transactions.push({ id:maxId+1, date:$('stmtDate').value, type:diff>0?'deposit':'payment', payee:'Reconciliation Discrepancy Adjustment', ref:'ADJ-001', amount:Math.abs(diff), account:'Reconciliation Discrepancies', memo:'Auto-generated adjusting entry', cleared:true, matched:false, reconciled:true });
+  finishReconciliation();
+}
+
+function closeAdjustModal(){ $('adjustModal').classList.remove('open'); }
+
+// ==================== REPORT ====================
+function showReconciliationReport() {
+  const stmtDate = $('stmtDate').value;
+  const stmtBal  = getStmtBal();
+  const beginBal = getBeginBal();
+  let deposits=0, payments=0;
+  const clearedDeps  = transactions.filter(t=>t.reconciled&&isDeposit(t));
+  const clearedPays  = transactions.filter(t=>t.reconciled&&!isDeposit(t));
+  const unclearedDeps = transactions.filter(t=>!t.reconciled&&isDeposit(t));
+  const unclearedPays = transactions.filter(t=>!t.reconciled&&!isDeposit(t));
+  clearedDeps.forEach(t=>deposits+=t.amount);
+  clearedPays.forEach(t=>payments+=t.amount);
+
+  const pageTitle = $('pageTitle');
+  if(pageTitle){ pageTitle.textContent='Reconciliation Report'; }
+  const pageSub = $('pageSubtitle');
+  if(pageSub){ pageSub.textContent='Step 3 of 3 — Review and print reconciliation report'; }
+
+  $('reconcileScreen').style.display='none';
+  const rs = $('reportScreen');
+  rs.style.display='block';
+
+  let txnRows = (arr,isD) => arr.map(t=>`
+    <div class="report-row">
+      <span style="color:var(--gray-500)">${t.date}</span>
+      <span style="flex:1;padding:0 16px">${t.payee} <span style="color:var(--gray-400);font-size:11px">(${t.ref})</span></span>
+      <span style="${isD?'color:#166534':'color:#b91c1c'};font-weight:500">${isD?'+':'-'}${fmt(t.amount)}</span>
+    </div>`).join('');
+
+  rs.innerHTML=`
+  <div class="report">
+    <div class="report-hdr">
+      <h2>Bank Reconciliation Report</h2>
+      <p>Checking — Chase ••4892 &nbsp;·&nbsp; Statement Date: ${stmtDate} &nbsp;·&nbsp; Prepared: ${new Date().toLocaleDateString()}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div class="report-section">
+        <div class="report-section-hdr">Bank Statement Summary</div>
+        <div class="report-row"><span>Beginning Balance</span><span style="font-weight:600">${fmt(beginBal)}</span></div>
+        <div class="report-row"><span>Deposits Cleared</span><span style="color:#166534;font-weight:600">+${fmt(deposits)}</span></div>
+        <div class="report-row"><span>Payments Cleared</span><span style="color:#b91c1c;font-weight:600">-${fmt(payments)}</span></div>
+        <div class="report-row total"><span>Statement Ending Balance</span><span>${fmt(stmtBal)}</span></div>
+      </div>
+      <div class="report-section">
+        <div class="report-section-hdr">QuickBooks Summary</div>
+        <div class="report-row"><span>Beginning Balance</span><span style="font-weight:600">${fmt(beginBal)}</span></div>
+        <div class="report-row"><span>Cleared Deposits</span><span style="color:#166534;font-weight:600">+${fmt(deposits)}</span></div>
+        <div class="report-row"><span>Cleared Payments</span><span style="color:#b91c1c;font-weight:600">-${fmt(payments)}</span></div>
+        <div class="report-row total"><span>Cleared Balance</span><span>${fmt(beginBal+deposits-payments)}</span></div>
+      </div>
+    </div>
+    <div class="report-section" style="margin-bottom:16px">
+      <div class="report-section-hdr" style="background:var(--green-pale);color:#166534">✔ Difference: $0.00 — Reconciliation Complete</div>
+    </div>
+    <div class="report-section">
+      <div class="report-section-hdr">Cleared Deposits (${clearedDeps.length})</div>
+      ${txnRows(clearedDeps,true)}
+      <div class="report-row subtotal"><span>Total Cleared Deposits</span><span style="color:#166534">+${fmt(deposits)}</span></div>
+    </div>
+    <div class="report-section">
+      <div class="report-section-hdr">Cleared Payments (${clearedPays.length})</div>
+      ${txnRows(clearedPays,false)}
+      <div class="report-row subtotal"><span>Total Cleared Payments</span><span style="color:#b91c1c">-${fmt(payments)}</span></div>
+    </div>
+    ${unclearedDeps.length||unclearedPays.length?`
+    <div class="report-section">
+      <div class="report-section-hdr">Outstanding / Uncleared Items (${unclearedDeps.length+unclearedPays.length})</div>
+      ${unclearedDeps.map(t=>`<div class="report-row"><span style="color:var(--gray-500)">${t.date}</span><span style="flex:1;padding:0 16px">${t.payee}</span><span style="color:#166534">+${fmt(t.amount)}</span></div>`).join('')}
+      ${unclearedPays.map(t=>`<div class="report-row"><span style="color:var(--gray-500)">${t.date}</span><span style="flex:1;padding:0 16px">${t.payee}</span><span style="color:#b91c1c">-${fmt(t.amount)}</span></div>`).join('')}
+    </div>`:''}
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-primary" onclick="printReport()">🖨 Print Report</button>
+      <button class="btn btn-ghost" onclick="exportReportCSV()">📥 Export CSV</button>
+      <button class="btn btn-ghost" onclick="startNewReconciliation()">+ Start New Reconciliation</button>
+    </div>
+  </div>`;
+}
+
+function printReport() { window.print(); }
+
+function exportReportCSV() {
+  const rows = [['Date','Type','Payee','Reference','Amount','Status']];
+  transactions.forEach(t=>{ rows.push([t.date,t.type,t.payee,t.ref,t.amount,t.reconciled?'Reconciled':t.cleared?'Cleared':'Uncleared']); });
+  const csv = rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='reconciliation-report.csv'; a.click();
+  toast('CSV exported','success');
+}
+
+function startNewReconciliation() {
+  transactions.forEach(t=>{ t.cleared=false; }); // reset for demo purposes
+  state.step=1; state.selectedIds.clear();
+  $('reportScreen').style.display='none';
+  $('reconcileScreen').style.display='none';
+  $('startScreen').style.display='flex';
+  $('setupSection').style.display='';
+  $('summarySection').style.display='none';
+  $('pageTitle').textContent='Reconcile Account';
+  $('pageSubtitle').textContent='Step 1 of 3 — Set up reconciliation parameters';
+  $('finishBtn').disabled=true;
+}
+
+// ==================== HISTORY ====================
+function showHistory() {
+  $('reconcileScreen').style.display='none';
+  $('startScreen').style.display='none';
+  $('reportScreen').style.display='none';
+  const hs = $('historyScreen');
+  hs.style.display='block';
+
+  let rows = state.finishedPeriods.map(p=>`
+    <tr>
+      <td>${p.period}</td>
+      <td>${p.date}</td>
+      <td style="text-align:right;font-weight:600">${fmt(p.endBal)}</td>
+      <td style="text-align:center">${p.txnCount}</td>
+      <td>${p.by}</td>
+      <td><button class="btn btn-ghost" style="font-size:11px;padding:4px 10px" onclick="toast('Opening report…','info')">View Report</button></td>
+    </tr>`).join('');
+
+  hs.innerHTML=`<div style="padding:24px;max-width:800px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <h2 style="font-size:18px;font-weight:700">Reconciliation History</h2>
+      <button class="btn btn-ghost" onclick="$('historyScreen').style.display='none';if(state.step>=2){$('reconcileScreen').style.display='flex';}else{$('startScreen').style.display='flex';}">← Back</button>
+    </div>
+    <div style="background:white;border:var(--border);border-radius:var(--radius-lg);overflow:hidden">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:var(--gray-50)">
+          <th style="padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-500);border-bottom:var(--border)">Period</th>
+          <th style="padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-500);border-bottom:var(--border)">Statement Date</th>
+          <th style="padding:10px 14px;text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-500);border-bottom:var(--border)">Ending Balance</th>
+          <th style="padding:10px 14px;text-align:center;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-500);border-bottom:var(--border)">Transactions</th>
+          <th style="padding:10px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gray-500);border-bottom:var(--border)">Prepared By</th>
+          <th style="padding:10px 14px;border-bottom:var(--border)"></th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px;background:var(--blue-pale);border:1px solid #bcd2f7;border-radius:var(--radius);padding:12px 14px;font-size:12px;color:var(--blue-light)">
+      <strong>Note:</strong> To undo a previous reconciliation, use the "Undo Reconciliation" button in the top toolbar.
+    </div>
+  </div>`;
+}
+
+// ==================== UNDO ====================
+function openUndoModal() {
+  let html = '';
+  state.finishedPeriods.forEach((p,i)=>{
+    html+=`<div class="undo-item">
+      <div class="ui-info">
+        <div class="ui-date">${p.period} — ${p.date}</div>
+        <div class="ui-bal">Ending Balance: ${fmt(p.endBal)} · ${p.txnCount} transactions</div>
+      </div>
+      <button class="btn btn-danger-sm" onclick="undoPeriod(${i})">Undo</button>
+    </div>`;
+  });
+  if(!html) html='<div style="font-size:12px;color:var(--gray-400)">No previous reconciliations to undo.</div>';
+  $('undoList').innerHTML=html;
+  $('undoModal').classList.add('open');
+}
+
+function undoPeriod(idx) {
+  const p = state.finishedPeriods[idx];
+  if(!confirm(`Undo reconciliation for ${p.period}?\n\nAll transactions from this period will be marked as uncleared.`)) return;
+  transactions.forEach(t=>{ if(t.reconciled){ t.reconciled=false; t.cleared=false; }});
+  state.finishedPeriods.splice(idx,1);
+  closeUndoModal();
+  if(state.step>=2) renderTable();
+  toast(`Reconciliation for ${p.period} undone`,'warn',3500);
+}
+
+function closeUndoModal(){ $('undoModal').classList.remove('open'); }
+
+// ==================== DISCREPANCY ====================
+function showDiscrepancyReport() {
+  const body = $('discModalBody');
+  const modified = transactions.filter(t=>t.reconciled);
+  let html='';
+
+  if(!modified.length){
+    html='<div class="disc-item"><div class="disc-icon">✅</div><div class="disc-text"><strong>No Discrepancies Found</strong>All reconciled transactions appear unchanged.</div></div>';
+  } else {
+    html+=`<div style="margin-bottom:14px;font-size:12px;color:var(--gray-600)">This report shows transactions that may have been changed since the last reconciliation.</div>`;
+    const potDisc = transactions.filter(t=>t.reconciled && t.amount < 100);
+    if(potDisc.length){
+      potDisc.slice(0,3).forEach(t=>{
+        html+=`<div class="disc-item">
+          <div class="disc-icon">⚠</div>
+          <div class="disc-text">
+            <strong>${t.payee} (${t.date})</strong>
+            Amount: ${fmt(t.amount)} · Ref: ${t.ref} · This transaction was reconciled. Any modifications will affect future reconciliations.
+          </div>
+        </div>`;
+      });
+    } else {
+      html='<div class="disc-item"><div class="disc-icon">✅</div><div class="disc-text"><strong>No Issues Detected</strong>All transactions appear consistent with last reconciliation.</div></div>';
+    }
+  }
+
+  html+=`<div style="margin-top:14px;background:var(--amber-pale);border:1px solid var(--amber-border);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--amber)">
+    <strong>Missing Checks Report:</strong> Checks CHK-1042, CHK-1043, CHK-1044 are in the ledger but not yet cleared on the bank statement. These may clear in the next period.
+  </div>`;
+
+  body.innerHTML=html;
+  $('discModal').classList.add('open');
+}
+
+// ==================== SAVE FOR LATER ====================
+function saveForLater() {
+  // simulate saving state
+  const savedData = { step:state.step, clearedIds:transactions.filter(t=>t.cleared).map(t=>t.id) };
+  localStorage.setItem('recon_saved', JSON.stringify(savedData));
+  toast('Progress saved. You can resume from the Reconcile menu.','success',3500);
+}
+
+// ==================== MODAL CLOSE ON OVERLAY CLICK ====================
+['txnModal','importModal','undoModal','adjustModal','discModal'].forEach(id=>{
+  $(id).addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+});
+
+// ==================== KEYBOARD SHORTCUT ====================
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    ['txnModal','importModal','undoModal','adjustModal','discModal'].forEach(id=>$(id).classList.remove('open'));
+  }
+  if(e.key==='n' && (e.ctrlKey||e.metaKey) && state.step>=2){ e.preventDefault(); openAddTxn(); }
+});
+
+// ==================== HEADER BUTTON: ADD TXN ====================
+document.querySelector('.hdr-actions').insertBefore(
+  (() => { const b=document.createElement('button'); b.className='btn btn-ghost'; b.id='addTxnBtn'; b.textContent='+ Add Transaction'; b.style.display='none'; b.onclick=openAddTxn; return b; })(),
+  $('importBtn')
+);
+
+// ==================== INIT ====================
+updateSummary();
+</script>
+</body>
+</html>

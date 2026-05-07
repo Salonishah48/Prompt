@@ -1,0 +1,19 @@
+Date,Type,Description,Reference,Amount,Balance
+03/01/2025,Opening Balance,Beginning Balance,,31420.00,31420.00
+03/03/2025,Credit,Client Payment - Acme Industries,DEP-001,15000.00,46420.00
+03/05/2025,Debit,Amazon Web Services,TRF-4421,-2340.50,44079.50
+03/07/2025,Check,Johnson & Associates - Legal,CHK-1042,-850.00,43229.50
+03/10/2025,Debit,Rent - 123 Commerce St,TRF-4455,-4200.00,39029.50
+03/12/2025,Credit,Client Payment - Beta Corp,DEP-002,8500.00,47529.50
+03/14/2025,Debit,Payroll Processing,ACH-9981,-12500.00,35029.50
+03/17/2025,Debit,Google Workspace,TRF-4477,-180.00,34849.50
+03/19/2025,Credit,Client Payment - Gamma LLC,DEP-003,3200.00,38049.50
+03/21/2025,Check,Office Supplies - Staples,CHK-1043,-127.40,37922.10
+03/24/2025,Debit,Slack Technologies,TRF-4490,-87.50,37834.60
+03/26/2025,Credit,Interest Income,INT-0326,45.12,37879.72
+03/28/2025,Debit,Insurance Premium,TRF-4512,-620.00,37259.72
+03/29/2025,Check,Freelancer - Mike Chen,CHK-1044,-1800.00,35459.72
+03/30/2025,Credit,Client Payment - Delta Inc,DEP-004,6200.00,41659.72
+03/31/2025,Debit,Utilities - Electric,ACH-1143,-310.22,41349.50
+03/31/2025,Debit,Service Charge - Bank Fee,SVC-001,-25.00,41324.50
+03/31/2025,Credit,Interest Earned,INT-031,19.20,41343.70
