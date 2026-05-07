@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>WIP Dashboard — US Accounts Team</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f8f9fc;color:#1e293b;font-size:14px}
+
+/* ── LOGIN ── */
+#ls{position:fixed;inset:0;background:linear-gradient(145deg,#0a1540,#1a3280 60%,#2a4fc0);display:flex;align-items:center;justify-content:center;z-index:9999}
+.lcard{background:#fff;border-radius:20px;padding:44px 40px;width:420px;box-shadow:0 24px 80px rgba(0,0,0,.35)}
+.lbrand{text-align:center;margin-bottom:32px}
+.lbrand .lb{width:52px;height:52px;background:linear-gradient(135deg,#0f2057,#4f6ef7);border-radius:14px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px}
+.lbrand .lb span{color:#fff;font-size:22px;font-weight:800}
+.lbrand h2{font-size:21px;font-weight:700;color:#0f172a}
+.lbrand p{font-size:12px;color:#94a3b8;margin-top:4px}
+.fg{margin-bottom:18px}
+.fg label{display:block;font-size:11px;font-weight:700;color:#64748b;margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em}
+.fg select,.fg input{width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s}
+.fg select:focus,.fg input:focus{border-color:#4f6ef7;box-shadow:0 0 0 3px rgba(79,110,247,.12)}
+.btnl{width:100%;padding:13px;background:linear-gradient(135deg,#1a3280,#4f6ef7);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:4px}
+.btnl:hover{opacity:.9}
+.lerr{color:#ef4444;font-size:13px;text-align:center;margin-top:10px;display:none;font-weight:500}
+
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,#0f2057,#1a3280);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.hl{display:flex;align-items:center;gap:12px}
+.wchip{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);border-radius:7px;padding:3px 11px;font-size:11px;font-weight:700;color:#fff;letter-spacing:.08em}
+.htitle{color:#fff;font-size:16px;font-weight:600}
+.hwk{background:rgba(79,110,247,.4);border:1px solid rgba(79,110,247,.5);border-radius:20px;padding:3px 12px;color:#c7d4ff;font-size:12px;font-weight:500}
+.hr-r{display:flex;align-items:center;gap:14px}
+.upill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;color:#fff;font-size:13px;display:flex;align-items:center;gap:7px}
+.btnout{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);padding:5px 14px;border-radius:7px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif}
+.btnout:hover{background:rgba(255,255,255,.18)}
+
+/* ── NAV ── */
+.ntabs{background:#fff;border-bottom:2px solid #e9edf5;display:flex;padding:0 24px;position:sticky;top:58px;z-index:190}
+.ntab{padding:15px 22px;cursor:pointer;font-size:13px;font-weight:500;color:#64748b;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
+.ntab.on{color:#1a3280;border-bottom-color:#1a3280;font-weight:700}
+.ntab:hover:not(.on){color:#334155;background:#f8fafc}
+
+/* ── PAGE ── */
+.page{padding:20px 24px;max-width:1900px}
+
+/* ── SCOPE BAR ── */
+.sbar{background:#dbeafe;border:1px solid #93c5fd;border-radius:8px;padding:8px 16px;font-size:12.5px;color:#1d4ed8;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* ── FILTER BAR ── */
+.fbar{background:#f1f5f9;border-bottom:1px solid #dde3ee;padding:10px 24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 -24px 18px;position:sticky;top:114px;z-index:180}
+.flbl{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.fbar select{padding:6px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:#fff;cursor:pointer}
+.fbar select:focus{border-color:#4f6ef7}
+.pills{display:flex;gap:5px;flex-wrap:wrap}
+.pill{padding:4px 11px;border-radius:20px;border:1.5px solid #e2e8f0;font-size:12px;font-weight:500;cursor:pointer;background:#fff;color:#64748b;transition:all .2s}
+.pill.on{border-color:#1a3280;background:#1a3280;color:#fff}
+.p-cmp.on{background:#16a34a;border-color:#16a34a}
+.p-inp.on{background:#2563eb;border-color:#2563eb}
+.p-ns.on{background:#64748b;border-color:#64748b}
+.p-rtw.on{background:#0d9488;border-color:#0d9488}
+.p-rev.on{background:#d97706;border-color:#d97706}
+.p-prp.on{background:#7c3aed;border-color:#7c3aed}
+
+/* ── WEEK FILTER ── */
+.wkgrp{display:flex;gap:0;border:1.5px solid #e2e8f0;border-radius:9px;overflow:hidden}
+.wkbtn{padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;border:none;font-family:'DM Sans',sans-serif;color:#64748b;transition:all .2s;white-space:nowrap;border-right:1px solid #e2e8f0}
+.wkbtn:last-child{border-right:none}
+.wkbtn.on{background:#1a3280;color:#fff}
+/* Per-week colours */
+.wkbtn.on.wk1{background:#0f766e;border-color:#0f766e}   /* teal   W1 */
+.wkbtn.on.wk2{background:#1d4ed8;border-color:#1d4ed8}   /* blue   W2 */
+.wkbtn.on.wk3{background:#6d28d9;border-color:#6d28d9}   /* purple W3 */
+.wkbtn.on.wk4{background:#b45309;border-color:#b45309}   /* amber  W4 */
+
+/* ── METRIC CARDS ── */
+.mg{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:1200px){.mg{grid-template-columns:repeat(3,1fr)}}
+.mc{background:#fff;border-radius:12px;padding:16px 15px;box-shadow:0 1px 5px rgba(0,0,0,.07);border:1px solid #e9edf5}
+.mc .lbl{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.mc .val{font-size:24px;font-weight:800;font-family:'DM Mono',monospace}
+.mc .sub{font-size:11px;color:#94a3b8;margin-top:2px}
+.mc-b .val{color:#2563eb}.mc-p .val{color:#7c3aed}.mc-o .val{color:#ea580c}
+.mc-g .val{color:#16a34a}.mc-t .val{color:#0d9488}.mc-n .val{color:#1a3280}
+
+/* ── WEEK COLUMN COLOURS ── */
+.cw1{background:#f0fdf4!important;color:#065f46}
+.cw2{background:#eff6ff!important;color:#1d4ed8}
+.cw3{background:#f5f3ff!important;color:#5b21b6}
+.cw4{background:#fffbeb!important;color:#92400e}
+.cwt{background:#f8fafc!important;color:#0f172a;font-weight:700}
+th.cw1,th.cw2,th.cw3,th.cw4,th.cwt{font-weight:700}
+
+/* ── SECTION CARD ── */
+.sc{background:#fff;border-radius:12px;border:1px solid #e9edf5;box-shadow:0 1px 5px rgba(0,0,0,.07);margin-bottom:20px;overflow:visible}
+.sc-hd{padding:14px 20px;border-bottom:1px solid #f0f4f8;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.sc-ttl{font-size:14px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:8px}
+.wk-legend{display:flex;gap:14px;font-size:11px;font-weight:600;flex-wrap:wrap}
+.wl1{color:#0f766e}.wl2{color:#1d4ed8}.wl3{color:#5b21b6}.wl4{color:#92400e}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{padding:9px 11px;text-align:left;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em;border-bottom:1.5px solid #e2e8f0;white-space:nowrap}
+.tbl th.r,.tbl td.r{text-align:right;font-family:'DM Mono',monospace}
+.tbl td{padding:8px 11px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{filter:brightness(.97)}
+
+/* ── HIERARCHY ── */
+.hr{cursor:pointer;transition:background .12s}
+.hr:hover{filter:brightness(.95)!important}
+.hl0{background:#e8edf8;font-weight:700}
+.hl1{background:#eff2fc;font-weight:600}
+.hl2{background:#f8fafc;font-weight:500}
+.xi{display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;margin-right:4px;transition:transform .2s;font-size:9px;color:#94a3b8;vertical-align:middle}
+.xr .xi{transform:rotate(90deg)}
+.i1{padding-left:30px!important}.i2{padding-left:48px!important}.i3{padding-left:66px!important}
+
+/* ── STATUS TAGS ── */
+.stag{padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap;display:inline-block}
+.s-cmp{background:#dcfce7;color:#15803d}.s-inp{background:#dbeafe;color:#1d4ed8}
+.s-ns{background:#f1f5f9;color:#475569}.s-rtw{background:#ccfbf1;color:#0f766e}
+.s-rev{background:#fef3c7;color:#b45309}.s-prp{background:#ede9fe;color:#6d28d9}
+
+/* ── CAPACITY BAR ── */
+.cbw{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.cb{height:7px;border-radius:4px;background:#e2e8f0;width:60px;overflow:hidden;flex-shrink:0}
+.cbf{height:100%;border-radius:4px}
+.cg{background:#22c55e}.ca{background:#f59e0b}.cr{background:#ef4444}
+.cpct{font-size:12px;font-family:'DM Mono',monospace}
+
+/* ── ALERT SECTIONS ── */
+.asec{margin-bottom:22px;border-radius:12px;overflow:hidden;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.ahd{padding:14px 20px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.a-nw{background:#fee2e2;color:#b91c1c}.a-t1{background:#dbeafe;color:#1e40af}
+.a-stale{background:#fef3c7;color:#92400e}
+.a-u{background:#fff7ed;color:#9a3412}.a-ov{background:#fdf4ff;color:#6b21a8}
+.abody{background:#fff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px}
+tr.rr{background:#fee2e2!important}tr.ra{background:#fffbeb!important}tr.ry{background:#fefce8!important}
+
+/* ── BADGES ── */
+.bdg{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;padding:0 7px;border-radius:11px;font-size:11px;font-weight:700}
+.bdg-b{background:#dbeafe;color:#1d4ed8}.bdg-o{background:#ffedd5;color:#c2410c}
+.bdg-r{background:#fee2e2;color:#b91c1c}.bdg-g{background:#dcfce7;color:#15803d}
+.bdg-y{background:#fef9c3;color:#854d0e}
+.nowip{background:#fee2e2;color:#b91c1c;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:5px}
+.stale-tag{background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:5px}
+
+/* ── SUB TABS ── */
+.stabs{display:flex;border-bottom:2px solid #e9edf5;padding:0 20px;background:#fff}
+.stab{padding:12px 18px;cursor:pointer;font-size:13px;font-weight:500;color:#64748b;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
+.stab.on{color:#1a3280;border-bottom-color:#1a3280;font-weight:700}
+.sc-body{display:none}.sc-body.on{display:block}
+
+/* ── TOGGLE ── */
+.tgrp{display:flex;border:1.5px solid #e2e8f0;border-radius:9px;overflow:hidden}
+.tbtn{padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;border:none;font-family:'DM Sans',sans-serif;color:#64748b;transition:all .2s}
+.tbtn.on{background:#1a3280;color:#fff}
+
+/* ── UNASSIGNED ── */
+.udot{width:10px;height:10px;border-radius:50%;background:#f97316;display:inline-block;margin-right:6px;vertical-align:middle}
+.elnk{color:#2563eb;cursor:pointer;text-decoration:underline;font-size:12px;font-weight:500}
+.elnk:hover{color:#1d4ed8}
+
+/* ── MODAL ── */
+.mov{position:fixed;inset:0;background:rgba(15,32,87,.55);backdrop-filter:blur(4px);z-index:800;display:none;align-items:center;justify-content:center}
+.mov.open{display:flex}
+.mdlg{background:#fff;border-radius:16px;width:94%;max-width:1100px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.3)}
+.mhd{padding:18px 24px;border-bottom:1px solid #e9edf5;display:flex;justify-content:space-between;align-items:center}
+.mhd h3{font-size:17px;font-weight:700}
+.mcls{background:none;border:none;font-size:22px;cursor:pointer;color:#64748b;line-height:1;padding:2px 6px;border-radius:6px}
+.mcls:hover{background:#f1f5f9}
+.mbody{overflow-y:auto;padding:20px 24px;flex:1}
+.tw{overflow-x:auto}
+.hidden{display:none!important}
+
+/* ── WEEK DATE PICKER ── */
+.wk-picker-bar{background:linear-gradient(135deg,#1e3a8a,#1a3280);padding:8px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:2px solid #4f6ef7}
+.wk-picker-lbl{color:#c7d4ff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.wk-boxes{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.wk-box{display:flex;align-items:center;gap:6px}
+.wk-box label{font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;white-space:nowrap}
+.wk-box.bw1 label{background:#0f766e;color:#fff}
+.wk-box.bw2 label{background:#1d4ed8;color:#fff}
+.wk-box.bw3 label{background:#5b21b6;color:#fff}
+.wk-box.bw4 label{background:#92400e;color:#fff}
+.wk-box input[type=date]{padding:4px 8px;border:1.5px solid rgba(255,255,255,.25);border-radius:6px;font-size:12px;font-family:'DM Mono',monospace;background:rgba(255,255,255,.12);color:#fff;outline:none;cursor:pointer;width:130px}
+.wk-box input[type=date]:focus{border-color:#a5b4fc;background:rgba(255,255,255,.2)}
+.wk-box input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer}
+.wk-apply{padding:5px 14px;background:#4f6ef7;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background .2s}
+.wk-apply:hover{background:#3b55e6}
+.wk-applied{color:#86efac;font-size:11px;font-weight:600;display:none}
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="ls">
+  <div class="lcard">
+    <div class="lbrand">
+      <div class="lb"><span>W</span></div>
+      <h2>WIP Dashboard</h2>
+      <p>US Accounts Team &nbsp;·&nbsp; <span id="login-period">Loading...</span></p>
+    </div>
+    <div class="fg">
+      <label>Select User</label>
+      <select id="lname">
+        <option value="">— Select your name —</option>
+        <option value="T1">Admin</option>
+        <option value="1158">Parshwa Vora</option>
+        <option value="1308">Firoz Shaikh</option>
+        <option value="1330">Saloni Shah</option>
+        <option value="1039">Piyush Prajapati</option>
+        <option value="1024">Jainam Appa</option>
+        <option value="219">Pragnesh Soni</option>
+        <option value="1318">Anant Suthar</option>
+        <option value="1219">Sandeepkumar Chavda</option>
+        <option value="1343">Viral Patel</option>
+        <option value="1309">Nidhi Pandya</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <input type="password" id="lpwd" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btnl" onclick="doLogin()">Sign In →</button>
+    <div class="lerr" id="lerr">Invalid credentials. Please try again.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="hidden">
+  <header>
+    <div class="hl">
+      <div class="wchip">WIP</div>
+      <span class="htitle">US Accounts Team — Work In Progress</span>
+      <span class="hwk">📅 <span id="hdr-week-lbl">Loading...</span></span>
+    </div>
+    <div class="hr-r">
+      <div class="upill">👤 <span id="ulbl">Admin</span></div>
+      <button class="btnout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+
+  <!-- ── WEEK DATE PICKER BAR ── -->
+  <div class="wk-picker-bar" id="wk-picker-bar" style="display:none">
+    <span class="wk-picker-lbl">📅 Set Week Dates:</span>
+    <div class="wk-boxes">
+      <div class="wk-box bw1">
+        <label>W1</label>
+        <input type="date" id="inp-w1" onchange="applyWeekDates()">
+      </div>
+      <div class="wk-box bw2">
+        <label>W2</label>
+        <input type="date" id="inp-w2" onchange="applyWeekDates()">
+      </div>
+      <div class="wk-box bw3">
+        <label>W3</label>
+        <input type="date" id="inp-w3" onchange="applyWeekDates()">
+      </div>
+      <div class="wk-box bw4">
+        <label>W4</label>
+        <input type="date" id="inp-w4" onchange="applyWeekDates()">
+      </div>
+      <button class="wk-apply" onclick="applyWeekDates()">Apply</button>
+      <span class="wk-applied" id="wk-applied-msg">✓ Labels updated</span>
+    </div>
+  </div>
+  <div class="ntabs">
+    <div class="ntab"     onclick="switchTab('c')">📊 Client Wise Summary</div>
+    <div class="ntab"     onclick="switchTab('e')">👥 Employee Wise Summary</div>
+    <div class="ntab on"  onclick="switchTab('a')">🔔 Alerts</div>
+  </div>
+
+  <!-- ══════════════ MODULE 1: CLIENT WISE ══════════════ -->
+  <div id="pg-c" class="page hidden">
+    <div id="sn-c" class="sbar hidden"></div>
+    <div class="fbar">
+      <span class="flbl">Client</span>
+      <select id="cc" onchange="renderC()"><option value="all">All Clients</option></select>
+      <span class="flbl" id="ct1l" style="display:none">T1 Manager</span>
+      <select id="ct1" onchange="renderC()" style="display:none">
+        <option value="all">All T1 Managers</option>
+        <option>Piyush Prajapati</option><option>Parshwa Vora</option><option>Viral Patel</option>
+      </select>
+      <span class="flbl">Status</span>
+      <div class="pills" id="cp"></div>
+      <div class="wkgrp" style="margin-left:auto">
+        <button class="wkbtn on" onclick="setWkC('all',this)">All Weeks</button>
+        <button class="wkbtn wk1" onclick="setWkC('w1',this)">W1 (<span class="wk1-range">—</span>)</button>
+        <button class="wkbtn wk2" onclick="setWkC('w2',this)">W2 (<span class="wk2-range">—</span>)</button>
+        <button class="wkbtn wk3" onclick="setWkC('w3',this)">W3 (<span class="wk3-range">—</span>)</button>
+        <button class="wkbtn wk4" onclick="setWkC('w4',this)">W4 (<span class="wk4-range">—</span>)</button>
+      </div>
+    </div>
+
+    <div class="mg" id="cm"></div>
+
+    <div class="sc">
+      <div class="sc-hd">
+        <span class="sc-ttl">Client → Project → Task &nbsp;<span id="cinfo" class="bdg bdg-b">—</span></span>
+        <div class="wk-legend">
+          <span class="wl1">■ W1 <span class="wk1-range">—</span></span>
+          <span class="wl2">■ W2 <span class="wk2-range">—</span></span>
+          <span class="wl3">■ W3 <span class="wk3-range">—</span></span>
+          <span class="wl4">■ W4 <span class="wk4-range">—</span></span>
+        </div>
+      </div>
+      <div class="tw">
+        <table class="tbl">
+          <thead><tr>
+            <th style="min-width:260px">Client / Project / Task</th>
+            <th class="r cw1">W1 Hrs</th>
+            <th class="r cw2">W2 Hrs</th>
+            <th class="r cw3">W3 Hrs</th>
+            <th class="r cw4">W4 Hrs</th>
+            <th class="r cwt">Total</th>
+            <th style="min-width:120px">Status</th>
+            <th style="min-width:140px">Employee</th>
+            <th style="min-width:130px">Designation</th>
+          </tr></thead>
+          <tbody id="ctb"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-hd"><span class="sc-ttl"><span class="udot"></span>Unassigned Hours by T1 &amp; Designation</span></div>
+      <div class="tw">
+        <table class="tbl">
+          <thead><tr>
+            <th>T1 Manager</th><th>Designation</th>
+            <th class="r cw1">W1</th><th class="r cw2">W2</th>
+            <th class="r cw3">W3</th><th class="r cw4">W4</th>
+            <th class="r cwt">Total</th><th>Employees</th>
+          </tr></thead>
+          <tbody id="cutb"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ MODULE 2: EMPLOYEE WISE ══════════════ -->
+  <div id="pg-e" class="page hidden">
+    <div id="sn-e" class="sbar hidden"></div>
+    <div class="sc" style="overflow:visible">
+      <div class="stabs">
+        <div class="stab on"  onclick="switchES('t1')">🏢 T1 Manager View</div>
+        <div class="stab"     onclick="switchES('ev')">👤 Employee View</div>
+        <div class="stab"     onclick="switchES('ua')">⚡ Unassigned Hours</div>
+      </div>
+      <div class="fbar" style="position:static;margin:0;border-radius:0;top:auto">
+        <span class="flbl">Client</span>
+        <select id="ec" onchange="renderEA()"><option value="all">All Clients</option></select>
+        <span class="flbl" id="et1l" style="display:none">T1 Manager</span>
+        <select id="et1" onchange="renderEA()" style="display:none">
+          <option value="all">All T1 Managers</option>
+          <option>Piyush Prajapati</option><option>Parshwa Vora</option><option>Viral Patel</option>
+        </select>
+        <span class="flbl">Status</span>
+        <div class="pills" id="ep"></div>
+        <div class="wkgrp" style="margin-left:auto">
+          <button class="wkbtn on" onclick="setWkE('all',this)">All Weeks</button>
+          <button class="wkbtn wk1" onclick="setWkE('w1',this)">W1 (<span class="wk1-range">—</span>)</button>
+          <button class="wkbtn wk2" onclick="setWkE('w2',this)">W2 (<span class="wk2-range">—</span>)</button>
+          <button class="wkbtn wk3" onclick="setWkE('w3',this)">W3 (<span class="wk3-range">—</span>)</button>
+          <button class="wkbtn wk4" onclick="setWkE('w4',this)">W4 (<span class="wk4-range">—</span>)</button>
+        </div>
+      </div>
+
+      <!-- T1 VIEW -->
+      <div class="sc-body on" id="es-t1">
+        <div class="tw"><table class="tbl">
+          <thead><tr>
+            <th style="min-width:270px">Hierarchy / Name</th>
+            <th class="r cw1">W1 Hrs</th><th class="r cw2">W2 Hrs</th>
+            <th class="r cw3">W3 Hrs</th><th class="r cw4">W4 Hrs</th>
+            <th class="r cwt">Total</th>
+            <th style="min-width:120px">Capacity</th>
+            <th>Designation</th>
+          </tr></thead>
+          <tbody id="et1tb"></tbody>
+        </table></div>
+      </div>
+
+      <!-- EMP VIEW -->
+      <div class="sc-body" id="es-ev">
+        <div class="tw"><table class="tbl">
+          <thead><tr>
+            <th style="min-width:270px">Employee / Client / Task</th>
+            <th class="r cw1">W1 Bill</th><th class="r cw2">W2 Bill</th>
+            <th class="r cw3">W3 Bill</th><th class="r cw4">W4 Bill</th>
+            <th class="r cwt">Tot Bill</th>
+            <th class="r cwt">Tot NB</th>
+            <th class="r cwt">Total</th>
+            <th style="min-width:120px">Capacity</th>
+            <th>Status</th>
+          </tr></thead>
+          <tbody id="eevtb"></tbody>
+        </table></div>
+      </div>
+
+      <!-- UNASSIGNED VIEW -->
+      <div class="sc-body" id="es-ua">
+        <div style="padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #e9edf5;flex-wrap:wrap">
+          <div class="tgrp">
+            <button class="tbtn on" id="ua1b" onclick="switchUAV(1)">📊 Designation Summary</button>
+            <button class="tbtn"    id="ua2b" onclick="switchUAV(2)">📋 Full Detail</button>
+          </div>
+          <div class="tgrp">
+            <button class="tbtn on" id="uaAb" onclick="setUAF('all')">All Employees</button>
+            <button class="tbtn"    id="uaOb" onclick="setUAF('only')">Unassigned Only</button>
+          </div>
+        </div>
+        <div id="uav1"><div class="tw"><table class="tbl">
+          <thead><tr>
+            <th style="min-width:250px">T1 / Sub-Mgr / Designation</th>
+            <th class="r">Count</th>
+            <th class="r cw1">Bill W1</th><th class="r cw2">Bill W2</th>
+            <th class="r cw3">Bill W3</th><th class="r cw4">Bill W4</th>
+            <th class="r cwt">Tot Bill</th><th class="r cwt">Tot NB</th>
+            <th class="r cwt">Total</th>
+            <th class="r" style="color:#ea580c">Unassigned</th>
+            <th class="r">Avg Cap</th>
+          </tr></thead>
+          <tbody id="uav1tb"></tbody>
+        </table></div></div>
+        <div id="uav2" class="hidden"><div class="tw"><table class="tbl">
+          <thead><tr>
+            <th style="min-width:250px">T1 / Sub-Mgr / Employee</th>
+            <th>Designation</th>
+            <th class="r cw1">Bill W1</th><th class="r cw2">Bill W2</th>
+            <th class="r cw3">Bill W3</th><th class="r cw4">Bill W4</th>
+            <th class="r cwt">Tot Bill</th><th class="r cwt">Tot NB</th>
+            <th class="r cwt">Total</th>
+            <th class="r" style="color:#ea580c">Unassigned</th>
+            <th style="min-width:110px">Capacity</th>
+          </tr></thead>
+          <tbody id="uav2tb"></tbody>
+        </table></div></div>
+
+        <!-- Under 40h panel -->
+        <div style="border-top:2px solid #fbbf24">
+          <div onclick="toggleU40()" style="padding:11px 20px;background:#fffbeb;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none">
+            <span style="font-weight:700;color:#92400e;font-size:13px">⏱ Employees Under 40h (per selected week)</span>
+            <span id="u40b" class="bdg bdg-o">—</span>
+          </div>
+          <div id="u40p" class="tw"><table class="tbl">
+            <thead><tr>
+              <th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw1">W1</th><th class="r cw2">W2</th>
+              <th class="r cw3">W3</th><th class="r cw4">W4</th>
+              <th class="r cwt">Total</th>
+              <th class="r">Gap (40h)</th><th>Capacity</th>
+            </tr></thead>
+            <tbody id="u40tb"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ MODULE 3: ALERTS ══════════════ -->
+  <div id="pg-a" class="page">
+    <div id="sn-a" class="sbar hidden"></div>
+
+    <!-- S1: No WIP -->
+    <div class="asec">
+      <div class="ahd a-nw">🚫 Employees Without WIP Sheet <span id="a1c" class="bdg bdg-r" style="margin-left:8px">—</span></div>
+      <div class="abody"><div class="tw"><table class="tbl">
+        <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>T1 Manager</th><th>Sub-Manager</th></tr></thead>
+        <tbody id="a1tb"></tbody>
+      </table></div></div>
+    </div>
+
+    <!-- S2: Stale WIP -->
+    <div class="asec">
+      <div class="ahd a-stale">⚠️ WIP Not Updated — J5 Date Doesn't Match Cycle Start <span id="a5c" class="bdg bdg-y" style="margin-left:8px">—</span></div>
+      <div class="abody">
+        <div style="padding:10px 18px;background:#fffbeb;font-size:12px;color:#78350f;border-bottom:1px solid #fde68a">
+          📌 Last Monday (expected J5 date): <b id="lastMonLbl">—</b> &nbsp;·&nbsp; Calculated dynamically each time the dashboard runs. Employees whose WIP file J5 date does not match are flagged as not updated.
+        </div>
+        <div class="tw"><table class="tbl">
+          <thead><tr>
+            <th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+            <th>J5 in File</th><th>Expected</th><th>Status</th>
+          </tr></thead>
+          <tbody id="a5tb"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- S3: Under 40h — all 4 weeks -->
+    <div class="asec">
+      <div class="ahd a-u" style="cursor:pointer" onclick="toggleCollapse('under40-panels')">
+        ⏱ Employees Under 40h — All Weeks
+        <span style="font-size:11px;font-weight:400;margin-left:8px;opacity:.7">(click to expand/collapse)</span>
+      </div>
+      <div id="under40-panels" class="abody">
+        <!-- W1 -->
+        <div style="border-bottom:2px solid #e2e8f0">
+          <div style="padding:10px 18px;background:#f0fdf4;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCollapse('u1-body')">
+            <span style="font-weight:700;color:#065f46">W1 — <span class="wk1-range-full">—</span></span>
+            <span id="a_u1_c" class="bdg bdg-o">—</span>
+          </div>
+          <div id="u1-body" class="tw"><table class="tbl">
+            <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw1">Bill W1</th><th class="r cw1">NB W1</th>
+              <th class="r cwt">Total W1</th><th class="r">Gap to 40h</th><th>Capacity</th></tr></thead>
+            <tbody id="a_u1_tb"></tbody>
+          </table></div>
+        </div>
+        <!-- W2 -->
+        <div style="border-bottom:2px solid #e2e8f0">
+          <div style="padding:10px 18px;background:#eff6ff;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCollapse('u2-body')">
+            <span style="font-weight:700;color:#1e40af">W2 — <span class="wk2-range-full">—</span></span>
+            <span id="a_u2_c" class="bdg bdg-o">—</span>
+          </div>
+          <div id="u2-body" class="tw"><table class="tbl">
+            <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw2">Bill W2</th><th class="r cw2">NB W2</th>
+              <th class="r cwt">Total W2</th><th class="r">Gap to 40h</th><th>Capacity</th></tr></thead>
+            <tbody id="a_u2_tb"></tbody>
+          </table></div>
+        </div>
+        <!-- W3 -->
+        <div style="border-bottom:2px solid #e2e8f0">
+          <div style="padding:10px 18px;background:#f5f3ff;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCollapse('u3-body')">
+            <span style="font-weight:700;color:#4c1d95">W3 — <span class="wk3-range-full">—</span></span>
+            <span id="a_u3_c" class="bdg bdg-o">—</span>
+          </div>
+          <div id="u3-body" class="tw"><table class="tbl">
+            <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw3">Bill W3</th><th class="r cw3">NB W3</th>
+              <th class="r cwt">Total W3</th><th class="r">Gap to 40h</th><th>Capacity</th></tr></thead>
+            <tbody id="a_u3_tb"></tbody>
+          </table></div>
+        </div>
+        <!-- W4 -->
+        <div>
+          <div style="padding:10px 18px;background:#fffbeb;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCollapse('u4-body')">
+            <span style="font-weight:700;color:#78350f">W4 — <span class="wk4-range-full">—</span></span>
+            <span id="a_u4_c" class="bdg bdg-o">—</span>
+          </div>
+          <div id="u4-body" class="tw"><table class="tbl">
+            <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw4">Bill W4</th><th class="r cw4">NB W4</th>
+              <th class="r cwt">Total W4</th><th class="r">Gap to 40h</th><th>Capacity</th></tr></thead>
+            <tbody id="a_u4_tb"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S4: Overburdened — all 4 weeks -->
+    <div class="asec">
+      <div class="ahd a-ov" style="cursor:pointer" onclick="toggleCollapse('over-panels')">
+        🟠 Overburdened (&gt;50h) — All Weeks
+        <span style="font-size:11px;font-weight:400;margin-left:8px;opacity:.7">(click to expand/collapse)</span>
+      </div>
+      <div id="over-panels" class="abody">
+        <!-- W1 -->
+        <div style="border-bottom:2px solid #e2e8f0">
+          <div style="padding:10px 18px;background:#f0fdf4;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCollapse('ov1-body')">
+            <span style="font-weight:700;color:#065f46">W1 — <span class="wk1-range-full">—</span></span>
+            <span id="a_ov1_c" class="bdg bdg-o">—</span>
+          </div>
+          <div id="ov1-body" class="tw"><table class="tbl">
+            <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw1">Bill W1</th><th class="r cw1">NB W1</th>
+              <th class="r cwt">Total W1</th><th class="r">Excess over 40h</th><th>Load</th></tr></thead>
+            <tbody id="a_ov1_tb"></tbody>
+          </table></div>
+        </div>
+        <!-- W2 -->
+        <div style="border-bottom:2px solid #e2e8f0">
+          <div style="padding:10px 18px;background:#eff6ff;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCollapse('ov2-body')">
+            <span style="font-weight:700;color:#1e40af">W2 — <span class="wk2-range-full">—</span></span>
+            <span id="a_ov2_c" class="bdg bdg-o">—</span>
+          </div>
+          <div id="ov2-body" class="tw"><table class="tbl">
+            <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw2">Bill W2</th><th class="r cw2">NB W2</th>
+              <th class="r cwt">Total W2</th><th class="r">Excess over 40h</th><th>Load</th></tr></thead>
+            <tbody id="a_ov2_tb"></tbody>
+          </table></div>
+        </div>
+        <!-- W3 -->
+        <div style="border-bottom:2px solid #e2e8f0">
+          <div style="padding:10px 18px;background:#f5f3ff;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCollapse('ov3-body')">
+            <span style="font-weight:700;color:#4c1d95">W3 — <span class="wk3-range-full">—</span></span>
+            <span id="a_ov3_c" class="bdg bdg-o">—</span>
+          </div>
+          <div id="ov3-body" class="tw"><table class="tbl">
+            <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw3">Bill W3</th><th class="r cw3">NB W3</th>
+              <th class="r cwt">Total W3</th><th class="r">Excess over 40h</th><th>Load</th></tr></thead>
+            <tbody id="a_ov3_tb"></tbody>
+          </table></div>
+        </div>
+        <!-- W4 -->
+        <div>
+          <div style="padding:10px 18px;background:#fffbeb;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCollapse('ov4-body')">
+            <span style="font-weight:700;color:#78350f">W4 — <span class="wk4-range-full">—</span></span>
+            <span id="a_ov4_c" class="bdg bdg-o">—</span>
+          </div>
+          <div id="ov4-body" class="tw"><table class="tbl">
+            <thead><tr><th>#</th><th>Name</th><th>Designation</th><th>Sub-Manager</th><th>T1</th>
+              <th class="r cw4">Bill W4</th><th class="r cw4">NB W4</th>
+              <th class="r cwt">Total W4</th><th class="r">Excess over 40h</th><th>Load</th></tr></thead>
+            <tbody id="a_ov4_tb"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- MODAL -->
+<div class="mov" id="modal" onclick="if(event.target===this)closeM()">
+  <div class="mdlg">
+    <div class="mhd">
+      <h3 id="mt">Employee Details</h3>
+      <button class="mcls" onclick="closeM()">✕</button>
+    </div>
+    <div class="mbody" id="mb"></div>
+  </div>
+</div>
+
+<script>
+// ━━━ DATA ━━━
+const WEEK_DATES_FROM_FILE = %%WEEK_DATA%%;
+const EMP = %%EMP_DATA%%;
+
+
+// ━━━ WEEK DATE PICKER & LABELS ━━━
+// W1=col J(idx9), W2=col K(idx10), W3=col L(idx11), W4=col M(idx12)
+// Dates shown in picker come from WEEK_DATES_FROM_FILE (row 6 of files)
+// User can override by editing the date inputs — labels update instantly
+
+function parseLocalDate(s){
+  if(!s) return null;
+  const [yr,mo,dy]=s.split('-').map(Number);
+  return new Date(yr,mo-1,dy);
+}
+function addDays(dt,n){ const r=new Date(dt); r.setDate(r.getDate()+n); return r; }
+function mon(dt){ return dt.toLocaleString('en-US',{month:'short'}); }
+function sht(dt){ return mon(dt)+' '+dt.getDate(); }
+function rng(dt){
+  const e=addDays(dt,6);
+  return mon(dt)+' '+dt.getDate()+'–'+e.getDate();
+}
+function rngFull(dt){
+  const e=addDays(dt,6);
+  return mon(dt)+' '+dt.getDate()+'–'+e.getDate()+', '+dt.getFullYear();
+}
+function fmtISO(dt){
+  return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+}
+
+function applyWeekLabels(w1,w2,w3,w4){
+  if(!w1||!w2||!w3||!w4) return;
+  // Header bar
+  const hdr=document.getElementById('hdr-week-lbl');
+  if(hdr) hdr.textContent='W1 ('+sht(w1)+') · W2 ('+sht(w2)+') · W3 ('+sht(w3)+') · W4 ('+sht(w4)+')';
+  // Login period
+  ['login-period','login-period2'].forEach(function(id){
+    const el=document.getElementById(id);
+    if(el) el.textContent=w1.toLocaleString('en-US',{month:'long'})+' '+w1.getFullYear()+' (W1 – W4)';
+  });
+  // All date spans in filter buttons, column headers, alert sub-sections
+  const map={
+    'wk1-range':rng(w1),'wk2-range':rng(w2),'wk3-range':rng(w3),'wk4-range':rng(w4),
+    'wk1-range-full':rngFull(w1),'wk2-range-full':rngFull(w2),
+    'wk3-range-full':rngFull(w3),'wk4-range-full':rngFull(w4),
+    'wk1-short':sht(w1),'wk2-short':sht(w2),'wk3-short':sht(w3),'wk4-short':sht(w4)
+  };
+  Object.keys(map).forEach(function(cls){
+    document.querySelectorAll('.'+cls).forEach(function(el){ el.textContent=map[cls]; });
+  });
+  // Store globally for stale check etc
+  window.WK_DATES={w1:w1,w2:w2,w3:w3,w4:w4,
+    sht:sht,rng:rng,rngFull:rngFull,fmtISO:fmtISO,addDays:addDays};
+  // Last Monday for stale alert
+  const today=new Date(),dow=today.getDay();
+  const lm=new Date(today); lm.setDate(today.getDate()-(dow===0?6:dow-1)); lm.setHours(0,0,0,0);
+  window._LAST_MONDAY_ISO=fmtISO(lm);
+}
+
+function applyWeekDates(){
+  // Read from the 4 input boxes
+  const v1=document.getElementById('inp-w1')?.value;
+  const v2=document.getElementById('inp-w2')?.value;
+  const v3=document.getElementById('inp-w3')?.value;
+  const v4=document.getElementById('inp-w4')?.value;
+  if(!v1||!v2||!v3||!v4){ return; }
+  const w1=parseLocalDate(v1),w2=parseLocalDate(v2),
+        w3=parseLocalDate(v3),w4=parseLocalDate(v4);
+  applyWeekLabels(w1,w2,w3,w4);
+  // Show confirmation flash
+  const msg=document.getElementById('wk-applied-msg');
+  if(msg){
+    msg.style.display='inline';
+    clearTimeout(msg._t);
+    msg._t=setTimeout(function(){ msg.style.display='none'; },2000);
+  }
+}
+
+function computeWeekDates(){
+  // Load dates from WEEK_DATES_FROM_FILE (parsed from row 6 of actual WIP files)
+  const wd=WEEK_DATES_FROM_FILE;
+  const w1=parseLocalDate(wd?.w1), w2=parseLocalDate(wd?.w2),
+        w3=parseLocalDate(wd?.w3), w4=parseLocalDate(wd?.w4);
+  // Pre-fill the date input boxes
+  if(wd?.w1){ const el=document.getElementById('inp-w1'); if(el) el.value=wd.w1; }
+  if(wd?.w2){ const el=document.getElementById('inp-w2'); if(el) el.value=wd.w2; }
+  if(wd?.w3){ const el=document.getElementById('inp-w3'); if(el) el.value=wd.w3; }
+  if(wd?.w4){ const el=document.getElementById('inp-w4'); if(el) el.value=wd.w4; }
+  // Apply labels
+  if(w1&&w2&&w3&&w4) applyWeekLabels(w1,w2,w3,w4);
+}
+document.addEventListener('DOMContentLoaded', computeWeekDates);
+
+// ━━━ AUTH ━━━
+const CREDS={
+  T1:{p:'2601',n:'Admin',r:'admin'},
+  1158:{p:'2106',n:'Parshwa Vora',r:'manager'},
+  1308:{p:'2905',n:'Firoz Shaikh',r:'manager'},
+  1330:{p:'0408',n:'Saloni Shah',r:'manager'},
+  1039:{p:'3008',n:'Piyush Prajapati',r:'manager'},
+  1024:{p:'1001',n:'Jainam Appa',r:'manager'},
+  219:{p:'1001',n:'Pragnesh Soni',r:'manager'},
+  1318:{p:'1504',n:'Anant Suthar',r:'manager'},
+  1219:{p:'1403',n:'Sandeepkumar Chavda',r:'manager'},
+  1343:{p:'1508',n:'Viral Patel',r:'manager'},
+  1309:{p:'1710',n:'Nidhi Pandya',r:'manager'}
+};
+let CU=null;
+
+function doLogin(){
+  const uid=document.getElementById('lname').value;
+  const pwd=document.getElementById('lpwd').value;
+  const c=CREDS[uid];
+  if(!c||c.p!==pwd){document.getElementById('lerr').style.display='block';return;}
+  CU={id:uid,...c};
+  document.getElementById('ls').style.display='none';
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('ulbl').textContent=c.n;
+  init();
+}
+function doLogout(){
+  CU=null;
+  document.getElementById('ls').style.display='flex';
+  const pb=document.getElementById('wk-picker-bar');if(pb)pb.style.display='none';
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('lpwd').value='';
+  document.getElementById('lerr').style.display='none';
+}
+
+// ━━━ LAST MONDAY CALC ━━━
+function getLastMonday(){
+  const today=new Date();
+  const day=today.getDay(); // 0=Sun,1=Mon,...
+  const diff=day===0?6:day-1;
+  const mon=new Date(today);
+  mon.setDate(today.getDate()-diff);
+  mon.setHours(0,0,0,0);
+  return mon;
+}
+function fmtDate(d){
+  return d.toISOString().slice(0,10);
+}
+
+// ━━━ SCOPE ━━━
+function scoped(){
+  if(!CU||CU.r==='admin') return EMP;
+  const mn=CU.n;
+  return EMP.filter(e=>e.t1===mn||e.sm===mn||
+    (()=>{const sm=EMP.find(x=>x.n===e.sm);return sm&&(sm.sm===mn||sm.t1===mn);})());
+}
+
+// ━━━ STATE ━━━
+let wkC='all',wkE='all',spC='All',spE='All',eSub='t1',uav=1,uaf='all';
+
+// ━━━ INIT ━━━
+function init(){
+  const isA=CU.r==='admin';
+  ['ct1','ct1l'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=isA?(id==='ct1'?'block':'inline'):'none';});
+  ['et1','et1l'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=isA?(id==='et1'?'block':'inline'):'none';});
+  if(!isA){
+    const msg=`🔒 Viewing data for: ${CU.n} and team`;
+    ['sn-c','sn-e','sn-a'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent=msg;el.classList.remove('hidden');}});
+  }
+  const cls=[...new Set(EMP.flatMap(e=>e.tasks.map(t=>t.c).filter(c=>c&&c!=='nan')))].sort();
+  ['cc','ec'].forEach(id=>{
+    const s=document.getElementById(id);if(!s)return;
+    cls.forEach(c=>{const o=document.createElement('option');o.value=o.textContent=c;s.appendChild(o);});
+  });
+  const stats=[['All',null],['Completed','p-cmp'],['In Progress','p-inp'],['Not Started','p-ns'],
+    ['Ready to Work','p-rtw'],['In Review','p-rev'],['In Preparation','p-prp']];
+  ['cp','ep'].forEach(pid=>{
+    const pfx=pid==='cp'?'c':'e';
+    const div=document.getElementById(pid);if(!div)return;
+    stats.forEach(([lbl,cls2],i)=>{
+      const b=document.createElement('button');
+      b.className='pill'+(i===0?' on':'')+(cls2?' '+cls2:'');
+      b.dataset.v=lbl;b.textContent=lbl;
+      b.onclick=()=>setPill(b,pfx,div);
+      div.appendChild(b);
+    });
+  });
+  computeWeekDates();
+  renderAlerts();renderET1();
+  // Show week picker bar
+  const bar=document.getElementById('wk-picker-bar');
+  if(bar) bar.style.display='flex';
+  computeWeekDates();
+}
+
+function setPill(btn,pfx,div){
+  div.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  if(pfx==='c'){spC=btn.dataset.v;renderC();}else{spE=btn.dataset.v;renderEA();}
+}
+function setWkC(v,btn){
+  wkC=v;
+  document.querySelectorAll('#pg-c .wkbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderC();
+}
+function setWkE(v,btn){
+  wkE=v;
+  document.querySelectorAll('#pg-e .wkbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderEA();
+}
+
+// ━━━ HELPERS ━━━
+function fn(n){return n?(+n).toFixed(1):'—'}
+function fz(n){return n&&n>0?(+n).toFixed(1):'—'}
+
+// Get week hours for an employee
+function eWkH(e,wk){
+  if(wk==='all') return (e.w1||0)+(e.w2||0)+(e.w3||0)+(e.w4||0);
+  return e[wk]||0;
+}
+function eBill(e,wk){
+  if(wk==='all') return (e.tb1||0)+(e.tb2||0)+(e.tb3||0)+(e.tb4||0);
+  return e['tb'+wk.slice(1)]||0;
+}
+function eNB(e,wk){
+  if(wk==='all') return (e.tnb1||0)+(e.tnb2||0)+(e.tnb3||0)+(e.tnb4||0);
+  return e['tnb'+wk.slice(1)]||0;
+}
+function tskH(t,wk){
+  if(wk==='all') return (t.w1||0)+(t.w2||0)+(t.w3||0)+(t.w4||0);
+  return t[wk]||0;
+}
+function nbH(n,wk){
+  if(wk==='all') return (n.w1||0)+(n.w2||0)+(n.w3||0)+(n.w4||0);
+  return n[wk]||0;
+}
+function getUna(e){
+  const u=e.nb.find(n=>n.cat&&n.cat.toLowerCase().includes('unassign'));
+  return u||{w1:0,w2:0,w3:0,w4:0};
+}
+
+function stag(s){
+  if(!s||s==='nan') return '';
+  const mp={'completed':'s-cmp','in progress':'s-inp','not started':'s-ns',
+    'ready to work':'s-rtw','in review':'s-rev','in preparation':'s-prp'};
+  const cl=Object.entries(mp).find(([k])=>s.toLowerCase().includes(k));
+  return `<span class="stag ${cl?cl[1]:''}">${s}</span>`;
+}
+function cbar(pct){
+  const w=Math.min(100,Math.max(0,pct));
+  const cls=pct>=90?'cg':pct>=60?'ca':'cr';
+  return `<div class="cbw"><div class="cb"><div class="cbf ${cls}" style="width:${w}%"></div></div><span class="cpct">${Math.round(pct)}%</span></div>`;
+}
+
+function t1f(emps){const s=document.getElementById('ct1');return s&&s.value!=='all'?emps.filter(e=>e.t1===s.value):emps;}
+function et1f(emps){const s=document.getElementById('et1');return s&&s.value!=='all'?emps.filter(e=>e.t1===s.value):emps;}
+
+// ━━━ HIERARCHY ━━━
+function tx(id){
+  const r=document.getElementById('r-'+id);if(!r)return;
+  if(r.classList.contains('xr')){r.classList.remove('xr');collapse(id);}
+  else{r.classList.add('xr');document.querySelectorAll('.ch-'+id).forEach(x=>x.classList.remove('hidden'));}
+}
+function collapse(id){
+  document.querySelectorAll('.ch-'+id).forEach(r=>{
+    r.classList.add('hidden');r.classList.remove('xr');
+    const rid=r.id?r.id.replace('r-',''):null;if(rid)collapse(rid);
+  });
+}
+
+// ━━━ MODULE 1: CLIENT WISE ━━━
+function renderC(){
+  const emps=t1f(scoped());
+  const cf=(document.getElementById('cc')||{}).value||'all';
+  const wk=wkC; const sp=spC;
+  const tgt=wk==='all'?160:40;
+
+  // Metrics
+  let tb=0,tnb=0,tu=0; const cset=new Set();
+  emps.forEach(e=>{
+    if(!e.w)return;
+    tb+=eBill(e,wk); tnb+=eNB(e,wk);
+    const u=getUna(e); tu+=nbH(u,wk);
+    e.tasks.forEach(t=>{if(t.c&&t.c!=='nan')cset.add(t.c);});
+  });
+  const wklbl=wk==='all'?'W1+W2+W3+W4':wk==='w1'?'W1 (<span class="wk1-range">—</span>)':wk==='w2'?'W2 (<span class="wk2-range">—</span>)':wk==='w3'?'W3 (<span class="wk3-range">—</span>)':'W4 (<span class="wk4-range">—</span>)';
+  document.getElementById('cm').innerHTML=`
+    <div class="mc mc-b"><div class="lbl">Billable Hours</div><div class="val">${fn(tb)}</div><div class="sub">${wklbl}</div></div>
+    <div class="mc mc-p"><div class="lbl">Non-Billable Hrs</div><div class="val">${fn(tnb)}</div><div class="sub">${wklbl}</div></div>
+    <div class="mc mc-o"><div class="lbl">Unassigned Hrs</div><div class="val">${fn(tu)}</div><div class="sub">${wklbl}</div></div>
+    <div class="mc mc-g"><div class="lbl">Total Hours</div><div class="val">${fn(tb+tnb)}</div><div class="sub">${wklbl}</div></div>
+    <div class="mc mc-t"><div class="lbl">Active Clients</div><div class="val">${cset.size}</div><div class="sub">in scope</div></div>
+    <div class="mc mc-n"><div class="lbl">Team Members</div><div class="val">${emps.length}</div><div class="sub">in scope</div></div>`;
+
+  // Client hierarchy
+  const hier={};
+  emps.forEach(e=>{
+    if(!e.w)return;
+    e.tasks.forEach(t=>{
+      if(cf!=='all'&&t.c!==cf)return;
+      if(sp!=='All'&&t.s!==sp)return;
+      const h=tskH(t,wk); if(!h)return;
+      const c=t.c||'Unknown',p=t.p||'Unknown';
+      if(!hier[c])hier[c]={};
+      if(!hier[c][p])hier[c][p]=[];
+      hier[c][p].push({t,e});
+    });
+  });
+
+  // NB agg
+  const nba={};
+  if(sp==='All'){
+    emps.forEach(e=>{
+      if(!e.w)return;
+      e.nb.forEach(n=>{
+        const h=nbH(n,wk);if(!h)return;
+        if(!nba[n.cat])nba[n.cat]={w1:0,w2:0,w3:0,w4:0};
+        nba[n.cat].w1+=n.w1||0;nba[n.cat].w2+=n.w2||0;
+        nba[n.cat].w3+=n.w3||0;nba[n.cat].w4+=n.w4||0;
+      });
+    });
+  }
+
+  const rows=[];let ccnt=0;
+  Object.entries(hier).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([cl,projs],ci)=>{
+    ccnt++;const cid='c'+ci;
+    const aggW=(wk)=>Object.values(projs).flat().reduce((s,{t})=>s+(t[wk]||0),0);
+    const cW1=aggW('w1'),cW2=aggW('w2'),cW3=aggW('w3'),cW4=aggW('w4');
+    const cH=wk==='all'?cW1+cW2+cW3+cW4:aggW(wk);
+    rows.push(`<tr class="hr hl1" id="r-${cid}" onclick="tx('${cid}')">
+      <td><span class="xi">▶</span><b>${cl}</b></td>
+      <td class="r cw1">${fz(cW1)}</td><td class="r cw2">${fz(cW2)}</td>
+      <td class="r cw3">${fz(cW3)}</td><td class="r cw4">${fz(cW4)}</td>
+      <td class="r cwt">${fn(cW1+cW2+cW3+cW4)}</td>
+      <td></td><td></td><td></td></tr>`);
+    Object.entries(projs).sort().forEach(([pr,tasks],pi)=>{
+      const pid=`${cid}p${pi}`;
+      const pW1=tasks.reduce((s,{t})=>s+(t.w1||0),0),pW2=tasks.reduce((s,{t})=>s+(t.w2||0),0);
+      const pW3=tasks.reduce((s,{t})=>s+(t.w3||0),0),pW4=tasks.reduce((s,{t})=>s+(t.w4||0),0);
+      rows.push(`<tr class="hr hl2 ch-${cid} hidden" id="r-${pid}" onclick="tx('${pid}')">
+        <td class="i1"><span class="xi">▶</span>${pr}</td>
+        <td class="r cw1">${fz(pW1)}</td><td class="r cw2">${fz(pW2)}</td>
+        <td class="r cw3">${fz(pW3)}</td><td class="r cw4">${fz(pW4)}</td>
+        <td class="r cwt">${fn(pW1+pW2+pW3+pW4)}</td>
+        <td></td><td></td><td></td></tr>`);
+      tasks.forEach(({t,e})=>{
+        rows.push(`<tr class="ch-${pid} hidden" style="font-size:12px">
+          <td class="i2">${t.w||t.p||'—'}</td>
+          <td class="r cw1">${fz(t.w1)}</td><td class="r cw2">${fz(t.w2)}</td>
+          <td class="r cw3">${fz(t.w3)}</td><td class="r cw4">${fz(t.w4)}</td>
+          <td class="r cwt">${fn((t.w1||0)+(t.w2||0)+(t.w3||0)+(t.w4||0))}</td>
+          <td>${stag(t.s)}</td><td>${e.n}</td>
+          <td><span style="font-size:11px;color:#64748b">${e.d}</span></td></tr>`);
+      });
+    });
+  });
+
+  // NB section
+  const nbTot=Object.values(nba).reduce((s,v)=>s+v.w1+v.w2+v.w3+v.w4,0);
+  if(nbTot>0){
+    const nbW1=Object.values(nba).reduce((s,v)=>s+v.w1,0);
+    const nbW2=Object.values(nba).reduce((s,v)=>s+v.w2,0);
+    const nbW3=Object.values(nba).reduce((s,v)=>s+v.w3,0);
+    const nbW4=Object.values(nba).reduce((s,v)=>s+v.w4,0);
+    rows.push(`<tr class="hr hl1" id="r-nb0" onclick="tx('nb0')" style="background:#faf5ff">
+      <td><span class="xi">▶</span><span style="color:#5b21b6">🟣 Non-Billable Hours</span></td>
+      <td class="r cw1">${fz(nbW1)}</td><td class="r cw2">${fz(nbW2)}</td>
+      <td class="r cw3">${fz(nbW3)}</td><td class="r cw4">${fz(nbW4)}</td>
+      <td class="r cwt">${fn(nbTot)}</td><td></td><td></td><td></td></tr>`);
+    Object.entries(nba).forEach(([cat,v])=>{
+      rows.push(`<tr class="ch-nb0 hidden" style="font-size:12px;background:#faf5ff">
+        <td class="i1">${cat}</td>
+        <td class="r cw1">${fz(v.w1)}</td><td class="r cw2">${fz(v.w2)}</td>
+        <td class="r cw3">${fz(v.w3)}</td><td class="r cw4">${fz(v.w4)}</td>
+        <td class="r cwt">${fn(v.w1+v.w2+v.w3+v.w4)}</td>
+        <td></td><td></td><td></td></tr>`);
+    });
+  }
+
+  document.getElementById('ctb').innerHTML=rows.join('');
+  document.getElementById('cinfo').textContent=`${ccnt} clients`;
+
+  // Unassigned table
+  const ua={};
+  emps.forEach(e=>{
+    if(!e.w)return;
+    const u=getUna(e);
+    const uh=(u.w1||0)+(u.w2||0)+(u.w3||0)+(u.w4||0);
+    if(uh<=0)return;
+    const k=`${e.t1}||${e.d}`;
+    if(!ua[k])ua[k]={t1:e.t1,d:e.d,w1:0,w2:0,w3:0,w4:0,names:[]};
+    ua[k].w1+=u.w1||0;ua[k].w2+=u.w2||0;ua[k].w3+=u.w3||0;ua[k].w4+=u.w4||0;
+    ua[k].names.push(e.n);
+  });
+  const uas=Object.values(ua).sort((a,b)=>(b.w1+b.w2+b.w3+b.w4)-(a.w1+a.w2+a.w3+a.w4));
+  document.getElementById('cutb').innerHTML=uas.length?
+    uas.map(r=>`<tr>
+      <td>${r.t1}</td><td>${r.d}</td>
+      <td class="r cw1">${fz(r.w1)}</td><td class="r cw2">${fz(r.w2)}</td>
+      <td class="r cw3">${fz(r.w3)}</td><td class="r cw4">${fz(r.w4)}</td>
+      <td class="r cwt">${fn(r.w1+r.w2+r.w3+r.w4)}</td>
+      <td>${r.names.map(n=>`<span class="elnk" onclick="openM('${n.replace(/'/g,"\\'")}')">${n}</span>`).join(', ')}</td>
+    </tr>`).join(''):
+    '<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:20px">No unassigned hours</td></tr>';
+}
+
+// ━━━ MODULE 2 ━━━
+function switchES(s){
+  eSub=s;
+  document.querySelectorAll('.stab').forEach((t,i)=>t.classList.toggle('on',['t1','ev','ua'][i]===s));
+  document.querySelectorAll('.sc-body').forEach((c,i)=>c.classList.toggle('on',['es-t1','es-ev','es-ua'][i]==='es-'+s));
+  renderEA();
+}
+function renderEA(){
+  if(eSub==='t1')renderET1();else if(eSub==='ev')renderEV();else renderUA();
+}
+function getES(){return et1f(scoped());}
+
+function renderET1(){
+  const emps=getES();const wk=wkE;
+  const t1m={};
+  emps.forEach(e=>{if(!t1m[e.t1])t1m[e.t1]={};if(!t1m[e.t1][e.sm])t1m[e.t1][e.sm]=[];t1m[e.t1][e.sm].push(e);});
+  const rows=[];
+  Object.entries(t1m).forEach(([t1,smm],ti)=>{
+    const tid='et1-'+ti;
+    const all=Object.values(smm).flat();
+    const tw1=all.reduce((s,e)=>s+e.w1,0),tw2=all.reduce((s,e)=>s+e.w2,0);
+    const tw3=all.reduce((s,e)=>s+e.w3,0),tw4=all.reduce((s,e)=>s+e.w4,0);
+    const pct=(eWkH({w1:tw1,w2:tw2,w3:tw3,w4:tw4},wk)/(((wk==='all'?160:40))*all.length))*100;
+    rows.push(`<tr class="hr hl0" id="r-${tid}" onclick="tx('${tid}')">
+      <td><span class="xi">▶</span>🏢 ${t1}</td>
+      <td class="r cw1">${fn(tw1)}</td><td class="r cw2">${fn(tw2)}</td>
+      <td class="r cw3">${fn(tw3)}</td><td class="r cw4">${fn(tw4)}</td>
+      <td class="r cwt">${fn(tw1+tw2+tw3+tw4)}</td>
+      <td>${cbar(pct)}</td><td></td></tr>`);
+    Object.entries(smm).forEach(([sm,elist],si)=>{
+      const smid=`${tid}s${si}`;
+      const sw1=elist.reduce((s,e)=>s+e.w1,0),sw2=elist.reduce((s,e)=>s+e.w2,0);
+      const sw3=elist.reduce((s,e)=>s+e.w3,0),sw4=elist.reduce((s,e)=>s+e.w4,0);
+      const sp2=(eWkH({w1:sw1,w2:sw2,w3:sw3,w4:sw4},wk)/((wk==='all'?160:40)*elist.length))*100;
+      rows.push(`<tr class="hr hl1 ch-${tid} hidden" id="r-${smid}" onclick="tx('${smid}')">
+        <td class="i1"><span class="xi">▶</span>👤 ${sm}</td>
+        <td class="r cw1">${fn(sw1)}</td><td class="r cw2">${fn(sw2)}</td>
+        <td class="r cw3">${fn(sw3)}</td><td class="r cw4">${fn(sw4)}</td>
+        <td class="r cwt">${fn(sw1+sw2+sw3+sw4)}</td>
+        <td>${cbar(sp2)}</td><td></td></tr>`);
+      elist.forEach((e,ei)=>{
+        const eid=`${smid}e${ei}`;
+        const epct=(eWkH(e,wk)/(wk==='all'?160:40))*100;
+        const nw=!e.w?`<span class="nowip">No WIP</span>`:'';
+        const sl=e.j6&&e.j6<fmtDate(getLastMonday())?`<span class="stale-tag">⚠️ Stale</span>`:'';
+        rows.push(`<tr class="hr hl2 ch-${smid} hidden" id="r-${eid}" onclick="tx('${eid}');openM('${e.n.replace(/'/g,"\\'")}')">
+          <td class="i2"><span class="xi">▶</span>${e.n}${nw}${sl}</td>
+          <td class="r cw1">${fn(e.w1)}</td><td class="r cw2">${fn(e.w2)}</td>
+          <td class="r cw3">${fn(e.w3)}</td><td class="r cw4">${fn(e.w4)}</td>
+          <td class="r cwt">${fn(e.w1+e.w2+e.w3+e.w4)}</td>
+          <td>${cbar(epct)}</td>
+          <td><span style="font-size:11px;color:#64748b">${e.d}</span></td></tr>`);
+      });
+    });
+  });
+  document.getElementById('et1tb').innerHTML=rows.join('');
+}
+
+function renderEV(){
+  const emps=getES();const wk=wkE;
+  const cf=(document.getElementById('ec')||{}).value||'all';const sp=spE;
+  const rows=[];
+  emps.forEach((e,ei)=>{
+    const eid='ev'+ei;
+    const epct=(eWkH(e,wk)/(wk==='all'?160:40))*100;
+    const nw=!e.w?`<span class="nowip">No WIP</span>`:'';
+    const sl=e.j6&&e.j6<fmtDate(getLastMonday())?`<span class="stale-tag">⚠️ Stale</span>`:'';
+    rows.push(`<tr class="hr hl1" id="r-${eid}" onclick="tx('${eid}')">
+      <td><span class="xi">▶</span><b>${e.n}</b>${nw}${sl} <span style="font-size:11px;color:#94a3b8">/ ${e.sm}</span></td>
+      <td class="r cw1">${fn(e.tb1)}</td><td class="r cw2">${fn(e.tb2)}</td>
+      <td class="r cw3">${fn(e.tb3)}</td><td class="r cw4">${fn(e.tb4)}</td>
+      <td class="r cwt">${fn(e.tb)}</td><td class="r cwt">${fn(e.tnb)}</td>
+      <td class="r cwt">${fn(e.th)}</td>
+      <td>${cbar(epct)}</td><td></td></tr>`);
+    // Billable tasks
+    const bts=e.tasks.filter(t=>{
+      if(cf!=='all'&&t.c!==cf)return false;
+      if(sp!=='All'&&t.s!==sp)return false;
+      return tskH(t,wk)>0;
+    });
+    if(bts.length){
+      rows.push(`<tr class="ch-${eid} hidden" style="background:#eff6ff">
+        <td class="i1" colspan="10" style="font-size:11px;font-weight:700;color:#1d4ed8">📘 BILLABLE TASKS</td></tr>`);
+      const byC={};bts.forEach(t=>{if(!byC[t.c])byC[t.c]=[];byC[t.c].push(t);});
+      Object.entries(byC).forEach(([cl,ts],ci)=>{
+        const cid2=`${eid}c${ci}`;
+        const cW1=ts.reduce((s,t)=>s+(t.w1||0),0),cW2=ts.reduce((s,t)=>s+(t.w2||0),0);
+        const cW3=ts.reduce((s,t)=>s+(t.w3||0),0),cW4=ts.reduce((s,t)=>s+(t.w4||0),0);
+        rows.push(`<tr class="hr hl2 ch-${eid} hidden" id="r-${cid2}" onclick="tx('${cid2}')">
+          <td class="i2"><span class="xi">▶</span>${cl}</td>
+          <td class="r cw1">${fz(cW1)}</td><td class="r cw2">${fz(cW2)}</td>
+          <td class="r cw3">${fz(cW3)}</td><td class="r cw4">${fz(cW4)}</td>
+          <td class="r cwt">${fn(cW1+cW2+cW3+cW4)}</td>
+          <td class="r cwt">—</td><td class="r cwt">${fn(cW1+cW2+cW3+cW4)}</td>
+          <td></td><td></td></tr>`);
+        ts.forEach(t=>{
+          rows.push(`<tr class="ch-${cid2} hidden" style="font-size:12px">
+            <td class="i3">${t.w||t.p||'—'}</td>
+            <td class="r cw1">${fz(t.w1)}</td><td class="r cw2">${fz(t.w2)}</td>
+            <td class="r cw3">${fz(t.w3)}</td><td class="r cw4">${fz(t.w4)}</td>
+            <td class="r cwt">${fn((t.w1||0)+(t.w2||0)+(t.w3||0)+(t.w4||0))}</td>
+            <td class="r cwt">—</td><td class="r cwt">${fn((t.w1||0)+(t.w2||0)+(t.w3||0)+(t.w4||0))}</td>
+            <td></td><td>${stag(t.s)}</td></tr>`);
+        });
+      });
+    }
+    // NB
+    const nbs=e.nb.filter(n=>nbH(n,wk)>0);
+    if(nbs.length){
+      rows.push(`<tr class="ch-${eid} hidden" style="background:#faf5ff">
+        <td class="i1" colspan="10" style="font-size:11px;font-weight:700;color:#5b21b6">🟣 NON-BILLABLE</td></tr>`);
+      nbs.forEach(n=>{
+        rows.push(`<tr class="ch-${eid} hidden" style="font-size:12px;background:#faf5ff">
+          <td class="i2">${n.cat}</td>
+          <td class="r cw1">${fz(n.w1)}</td><td class="r cw2">${fz(n.w2)}</td>
+          <td class="r cw3">${fz(n.w3)}</td><td class="r cw4">${fz(n.w4)}</td>
+          <td class="r cwt">—</td>
+          <td class="r cwt">${fn(nbH(n,wk))}</td>
+          <td class="r cwt">${fn(nbH(n,wk))}</td>
+          <td></td><td></td></tr>`);
+      });
+    }
+  });
+  document.getElementById('eevtb').innerHTML=rows.join('');
+}
+
+// UNASSIGNED
+function switchUAV(v){
+  uav=v;
+  document.getElementById('ua1b').classList.toggle('on',v===1);
+  document.getElementById('ua2b').classList.toggle('on',v===2);
+  document.getElementById('uav1').classList.toggle('hidden',v!==1);
+  document.getElementById('uav2').classList.toggle('hidden',v!==2);
+  renderUA();
+}
+function setUAF(f){
+  uaf=f;
+  document.getElementById('uaAb').classList.toggle('on',f==='all');
+  document.getElementById('uaOb').classList.toggle('on',f==='only');
+  renderUA();
+}
+function renderUA(){const emps=getES();renderU40(emps);if(uav===1)renderUAV1(emps);else renderUAV2(emps);}
+
+function renderUAV1(emps){
+  const wk=wkE;const agg={};
+  emps.forEach(e=>{
+    const u=getUna(e);const uh=nbH(u,wk);
+    if(uaf==='only'&&uh===0)return;
+    const k=`${e.t1}||${e.sm}||${e.d}`;
+    if(!agg[k])agg[k]={t1:e.t1,sm:e.sm,d:e.d,cnt:0,tb1:0,tb2:0,tb3:0,tb4:0,tnb1:0,tnb2:0,tnb3:0,tnb4:0,u:0,cs:0};
+    const r=agg[k];r.cnt++;
+    r.tb1+=e.tb1;r.tb2+=e.tb2;r.tb3+=e.tb3;r.tb4+=e.tb4;
+    r.tnb1+=e.tnb1;r.tnb2+=e.tnb2;r.tnb3+=e.tnb3;r.tnb4+=e.tnb4;
+    r.u+=uh;r.cs+=(eWkH(e,wk)/(wk==='all'?160:40))*100;
+  });
+  const t1m={};Object.values(agg).forEach(r=>{if(!t1m[r.t1])t1m[r.t1]={};if(!t1m[r.t1][r.sm])t1m[r.t1][r.sm]=[];t1m[r.t1][r.sm].push(r);});
+  const rows=[];
+  Object.entries(t1m).forEach(([t1,smm],ti)=>{
+    const tid='ua1t'+ti;
+    let tb1=0,tb2=0,tb3=0,tb4=0,tnb1=0,tnb2=0,tnb3=0,tnb4=0,tu=0,tc=0,tcs=0;
+    Object.values(smm).flat().forEach(r=>{tb1+=r.tb1;tb2+=r.tb2;tb3+=r.tb3;tb4+=r.tb4;tnb1+=r.tnb1;tnb2+=r.tnb2;tnb3+=r.tnb3;tnb4+=r.tnb4;tu+=r.u;tc+=r.cnt;tcs+=r.cs;});
+    rows.push(`<tr class="hr hl0" id="r-${tid}" onclick="tx('${tid}')">
+      <td><span class="xi">▶</span>🏢 ${t1}</td><td class="r">${tc}</td>
+      <td class="r cw1">${fn(tb1)}</td><td class="r cw2">${fn(tb2)}</td><td class="r cw3">${fn(tb3)}</td><td class="r cw4">${fn(tb4)}</td>
+      <td class="r cwt">${fn(tb1+tb2+tb3+tb4)}</td><td class="r cwt">${fn(tnb1+tnb2+tnb3+tnb4)}</td>
+      <td class="r cwt">${fn(tb1+tb2+tb3+tb4+tnb1+tnb2+tnb3+tnb4)}</td>
+      <td class="r" style="color:#ea580c">${fn(tu)}</td><td class="r">${Math.round(tcs/tc)}%</td></tr>`);
+    Object.entries(smm).forEach(([sm,ds],si)=>{
+      const smid=`${tid}s${si}`;
+      let sb1=0,sb2=0,sb3=0,sb4=0,snb1=0,snb2=0,snb3=0,snb4=0,su=0,sc=0,scs=0;
+      ds.forEach(r=>{sb1+=r.tb1;sb2+=r.tb2;sb3+=r.tb3;sb4+=r.tb4;snb1+=r.tnb1;snb2+=r.tnb2;snb3+=r.tnb3;snb4+=r.tnb4;su+=r.u;sc+=r.cnt;scs+=r.cs;});
+      rows.push(`<tr class="hr hl1 ch-${tid} hidden" id="r-${smid}" onclick="tx('${smid}')">
+        <td class="i1"><span class="xi">▶</span>${sm}</td><td class="r">${sc}</td>
+        <td class="r cw1">${fn(sb1)}</td><td class="r cw2">${fn(sb2)}</td><td class="r cw3">${fn(sb3)}</td><td class="r cw4">${fn(sb4)}</td>
+        <td class="r cwt">${fn(sb1+sb2+sb3+sb4)}</td><td class="r cwt">${fn(snb1+snb2+snb3+snb4)}</td>
+        <td class="r cwt">${fn(sb1+sb2+sb3+sb4+snb1+snb2+snb3+snb4)}</td>
+        <td class="r" style="color:#ea580c">${fn(su)}</td><td class="r">${Math.round(scs/sc)}%</td></tr>`);
+      ds.forEach(r=>{
+        rows.push(`<tr class="hl2 ch-${smid} hidden">
+          <td class="i2">${r.d}</td><td class="r">${r.cnt}</td>
+          <td class="r cw1">${fn(r.tb1)}</td><td class="r cw2">${fn(r.tb2)}</td><td class="r cw3">${fn(r.tb3)}</td><td class="r cw4">${fn(r.tb4)}</td>
+          <td class="r cwt">${fn(r.tb1+r.tb2+r.tb3+r.tb4)}</td><td class="r cwt">${fn(r.tnb1+r.tnb2+r.tnb3+r.tnb4)}</td>
+          <td class="r cwt">${fn(r.tb1+r.tb2+r.tb3+r.tb4+r.tnb1+r.tnb2+r.tnb3+r.tnb4)}</td>
+          <td class="r" style="color:#ea580c">${fn(r.u)}</td><td>${cbar(Math.round(r.cs/r.cnt))}</td></tr>`);
+      });
+    });
+  });
+  document.getElementById('uav1tb').innerHTML=rows.join('')||'<tr><td colspan="11" style="text-align:center;color:#94a3b8;padding:20px">No data</td></tr>';
+}
+
+function renderUAV2(emps){
+  const wk=wkE;const t1m={};
+  emps.forEach(e=>{
+    const u=getUna(e);const uh=nbH(u,wk);
+    if(uaf==='only'&&uh===0)return;
+    if(!t1m[e.t1])t1m[e.t1]={};if(!t1m[e.t1][e.sm])t1m[e.t1][e.sm]=[];
+    t1m[e.t1][e.sm].push({e,uh});
+  });
+  const rows=[];
+  Object.entries(t1m).forEach(([t1,smm],ti)=>{
+    const tid='ua2t'+ti;const cnt=Object.values(smm).flat().length;
+    rows.push(`<tr class="hr hl0" id="r-${tid}" onclick="tx('${tid}')"><td colspan="11"><span class="xi">▶</span>🏢 ${t1} <span style="color:#94a3b8;font-weight:400">(${cnt})</span></td></tr>`);
+    Object.entries(smm).forEach(([sm,list],si)=>{
+      const smid=`${tid}s${si}`;
+      rows.push(`<tr class="hr hl1 ch-${tid} hidden" id="r-${smid}" onclick="tx('${smid}')"><td colspan="11" class="i1"><span class="xi">▶</span>${sm} <span style="color:#94a3b8;font-weight:400">(${list.length})</span></td></tr>`);
+      list.forEach(({e,uh})=>{
+        const nw=!e.w?`<span class="nowip">No WIP</span>`:'';
+        const sl=e.j6&&e.j6<fmtDate(getLastMonday())?`<span class="stale-tag">⚠️ Stale</span>`:'';
+        rows.push(`<tr class="ch-${smid} hidden" style="font-size:12px">
+          <td class="i2">${e.n}${nw}${sl}</td><td>${e.d}</td>
+          <td class="r cw1">${fn(e.tb1)}</td><td class="r cw2">${fn(e.tb2)}</td>
+          <td class="r cw3">${fn(e.tb3)}</td><td class="r cw4">${fn(e.tb4)}</td>
+          <td class="r cwt">${fn(e.tb)}</td><td class="r cwt">${fn(e.tnb)}</td>
+          <td class="r cwt">${fn(e.th)}</td>
+          <td class="r" style="color:#ea580c">${fn(uh)}</td>
+          <td>${cbar((eWkH(e,wk)/(wk==='all'?160:40))*100)}</td></tr>`);
+      });
+    });
+  });
+  document.getElementById('uav2tb').innerHTML=rows.join('')||'<tr><td colspan="11" style="text-align:center;color:#94a3b8;padding:20px">No data</td></tr>';
+}
+
+function renderU40(emps){
+  const wk=wkE;const tgt=wk==='all'?160:40;
+  const under=emps.filter(e=>e.w&&eWkH(e,wk)<tgt).map(e=>({e,gap:tgt-eWkH(e,wk)})).sort((a,b)=>b.gap-a.gap);
+  document.getElementById('u40b').textContent=under.length;
+  document.getElementById('u40tb').innerHTML=under.length?
+    under.map(({e,gap},i)=>{
+      const rc=gap>(tgt*.75)?'rr':gap>(tgt*.5)?'ra':'ry';
+      return `<tr class="${rc}">
+        <td>${i+1}</td><td>${e.n}</td><td>${e.d}</td><td>${e.sm}</td><td>${e.t1}</td>
+        <td class="r cw1">${fn(e.w1)}</td><td class="r cw2">${fn(e.w2)}</td>
+        <td class="r cw3">${fn(e.w3)}</td><td class="r cw4">${fn(e.w4)}</td>
+        <td class="r cwt">${fn(eWkH(e,wk))}</td>
+        <td class="r" style="color:#ef4444;font-weight:700">${fn(gap)}</td>
+        <td>${cbar((eWkH(e,wk)/tgt)*100)}</td></tr>`;
+    }).join(''):
+    '<tr><td colspan="12" style="text-align:center;color:#16a34a;padding:16px;font-weight:600">✅ All employees meet the target</td></tr>';
+}
+function toggleU40(){document.getElementById('u40p').classList.toggle('hidden');}
+
+// ━━━ MODULE 3: ALERTS ━━━
+function renderAlerts(){
+  const emps=scoped();
+  // Dynamically compute last Monday from today's date
+  const LAST_MON = window._LAST_MONDAY_ISO || fmtDate(getLastMonday());
+
+  // S1 No WIP
+  const nw=emps.filter(e=>!e.w);
+  document.getElementById('a1c').textContent=nw.length;
+  document.getElementById('a1tb').innerHTML=nw.length?
+    nw.map((e,i)=>`<tr><td>${i+1}</td><td><b>${e.n}</b></td><td>${e.d||'—'}</td><td>${e.t1}</td><td>${e.sm}</td></tr>`).join(''):
+    '<tr><td colspan="5" style="text-align:center;color:#16a34a;padding:20px;font-weight:600">✅ All employees have submitted WIP sheets</td></tr>';
+
+  // S2 Stale WIP — J5 must equal last Monday's date
+  const stale=emps.filter(e=>e.w&&e.j6&&e.j6!==LAST_MON);
+  document.getElementById('a5c').textContent=stale.length;
+  document.getElementById('lastMonLbl').textContent=LAST_MON;
+  document.getElementById('a5tb').innerHTML=stale.length?
+    stale.map((e,i)=>`<tr class="ra">
+      <td>${i+1}</td><td><b>${e.n}</b></td><td>${e.d}</td><td>${e.sm}</td><td>${e.t1}</td>
+      <td style="font-family:monospace;color:#b45309">${e.j6}</td>
+      <td style="font-family:monospace;color:#15803d">${LAST_MON}</td>
+      <td><span class="stag s-rev">⚠️ Not updated</span></td>
+    </tr>`).join(''):
+    `<tr><td colspan="8" style="text-align:center;color:#16a34a;padding:20px;font-weight:600">✅ All WIP files are updated for the current week (${LAST_MON})</td></tr>`;
+
+  function under40(wk,lbl,tbId,cntId){
+    const wn=wk.slice(1),billK='tb'+wn,nbK='tnb'+wn,cwCls='cw'+wn;
+    const list=emps.filter(e=>e.w&&(e[wk]||0)<40).sort((a,b)=>(a[wk]||0)-(b[wk]||0));
+    document.getElementById(cntId).textContent=list.length;
+    document.getElementById(tbId).innerHTML=list.length?
+      list.map((e,i)=>{
+        const tot=e[wk]||0,gap=+(40-tot).toFixed(1);
+        const rc=gap>30?'rr':gap>20?'ra':'ry';
+        return `<tr class="${rc}">
+          <td>${i+1}</td><td><b>${e.n}</b></td><td>${e.d}</td><td>${e.sm}</td><td>${e.t1}</td>
+          <td class="r ${cwCls}">${fn(e[billK]||0)}</td>
+          <td class="r ${cwCls}">${fn(e[nbK]||0)}</td>
+          <td class="r cwt">${fn(tot)}</td>
+          <td class="r" style="color:#ef4444;font-weight:700">${fn(gap)}</td>
+          <td>${cbar((tot/40)*100)}</td></tr>`;
+      }).join(''):
+      `<tr><td colspan="10" style="text-align:center;color:#16a34a;padding:16px;font-weight:600">✅ All employees have 40+ hours in ${lbl}</td></tr>`;
+  }
+
+  function overBurdened(wk,lbl,tbId,cntId){
+    const wn=wk.slice(1),billK='tb'+wn,nbK='tnb'+wn,cwCls='cw'+wn;
+    const list=emps.filter(e=>e.w&&(e[wk]||0)>50).sort((a,b)=>(b[wk]||0)-(a[wk]||0));
+    document.getElementById(cntId).textContent=list.length;
+    document.getElementById(tbId).innerHTML=list.length?
+      list.map((e,i)=>{
+        const tot=e[wk]||0,exc=+(tot-40).toFixed(1);
+        const rc=tot>60?'rr':tot>55?'ra':'ry';
+        return `<tr class="${rc}">
+          <td>${i+1}</td><td><b>${e.n}</b></td><td>${e.d}</td><td>${e.sm}</td><td>${e.t1}</td>
+          <td class="r ${cwCls}">${fn(e[billK]||0)}</td>
+          <td class="r ${cwCls}">${fn(e[nbK]||0)}</td>
+          <td class="r cwt">${fn(tot)}</td>
+          <td class="r" style="color:#ef4444;font-weight:700">+${fn(exc)}</td>
+          <td>${cbar((tot/50)*100)}</td></tr>`;
+      }).join(''):
+      `<tr><td colspan="10" style="text-align:center;color:#16a34a;padding:16px;font-weight:600">✅ No overburdened employees in ${lbl}</td></tr>`;
+  }
+
+  under40('w1','W1 (<span class="wk1-range">—</span>)','a_u1_tb','a_u1_c');
+  under40('w2','W2 (<span class="wk2-range">—</span>)','a_u2_tb','a_u2_c');
+  under40('w3','W3 (<span class="wk3-range">—</span>)','a_u3_tb','a_u3_c');
+  under40('w4','W4 (<span class="wk4-range">—</span>)','a_u4_tb','a_u4_c');
+  overBurdened('w1','W1 (<span class="wk1-range">—</span>)','a_ov1_tb','a_ov1_c');
+  overBurdened('w2','W2 (<span class="wk2-range">—</span>)','a_ov2_tb','a_ov2_c');
+  overBurdened('w3','W3 (<span class="wk3-range">—</span>)','a_ov3_tb','a_ov3_c');
+  overBurdened('w4','W4 (<span class="wk4-range">—</span>)','a_ov4_tb','a_ov4_c');
+}
+
+// ━━━ MODAL ━━━
+function openM(name){
+  const e=EMP.find(x=>x.n===name);if(!e)return;
+  document.getElementById('mt').textContent=`${e.n}  ·  ${e.d}`;
+  const lastMonStr=fmtDate(getLastMonday());
+  const isStale=e.j6&&e.j6<lastMonStr;
+  let html=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:18px">
+    <div class="mc cw1" style="border-radius:10px"><div class="lbl">W1 (<span class="wk1-range">—</span>)</div><div class="val" style="font-size:20px;color:#0f766e">${fn(e.w1)}</div></div>
+    <div class="mc cw2" style="border-radius:10px"><div class="lbl">W2 (<span class="wk2-range">—</span>)</div><div class="val" style="font-size:20px;color:#1d4ed8">${fn(e.w2)}</div></div>
+    <div class="mc cw3" style="border-radius:10px"><div class="lbl">W3 (<span class="wk3-range">—</span>)</div><div class="val" style="font-size:20px;color:#5b21b6">${fn(e.w3)}</div></div>
+    <div class="mc cw4" style="border-radius:10px"><div class="lbl">W4 (<span class="wk4-range">—</span>)</div><div class="val" style="font-size:20px;color:#92400e">${fn(e.w4)}</div></div>
+    <div class="mc cwt" style="border-radius:10px"><div class="lbl">Total (W1–W4)</div><div class="val" style="font-size:20px">${fn(e.th)}</div></div>
+    <div class="mc" style="border-radius:10px"><div class="lbl">J5 Date</div><div style="font-size:13px;font-weight:700;margin-top:6px;font-family:monospace;color:${isStale?'#b45309':'#15803d'}">${e.j6||'—'} ${isStale?'⚠️':''}</div></div>
+  </div>`;
+  if(isStale){
+    html+=`<div style="background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12.5px;color:#92400e">
+      ⚠️ <b>WIP may not be updated.</b> J6 date (${e.j6}) is before last Monday (${lastMonStr}).
+    </div>`;
+  }
+  const bt=e.tasks.filter(t=>(t.w1||0)+(t.w2||0)+(t.w3||0)+(t.w4||0)>0);
+  if(bt.length){
+    html+=`<div style="font-size:12px;font-weight:700;color:#1d4ed8;padding:8px 12px;background:#dbeafe;border-radius:8px;margin-bottom:8px">📘 Billable Tasks (All Weeks)</div>
+    <div class="tw" style="margin-bottom:16px"><table class="tbl">
+      <thead><tr><th>Client</th><th>Project</th><th>Work Item</th>
+        <th class="r cw1">W1</th><th class="r cw2">W2</th>
+        <th class="r cw3">W3</th><th class="r cw4">W4</th>
+        <th class="r cwt">Total</th><th>Status</th>
+      </tr></thead><tbody>`;
+    bt.forEach(t=>{
+      html+=`<tr><td>${t.c}</td><td>${t.p}</td><td>${t.w||'—'}</td>
+        <td class="r cw1">${fz(t.w1)}</td><td class="r cw2">${fz(t.w2)}</td>
+        <td class="r cw3">${fz(t.w3)}</td><td class="r cw4">${fz(t.w4)}</td>
+        <td class="r cwt">${fn((t.w1||0)+(t.w2||0)+(t.w3||0)+(t.w4||0))}</td>
+        <td>${stag(t.s)}</td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+  const nbs=e.nb.filter(n=>(n.w1||0)+(n.w2||0)+(n.w3||0)+(n.w4||0)>0);
+  if(nbs.length){
+    html+=`<div style="font-size:12px;font-weight:700;color:#5b21b6;padding:8px 12px;background:#ede9fe;border-radius:8px;margin-bottom:8px">🟣 Non-Billable (All Weeks)</div>
+    <div class="tw"><table class="tbl">
+      <thead><tr><th>Category</th>
+        <th class="r cw1">W1</th><th class="r cw2">W2</th>
+        <th class="r cw3">W3</th><th class="r cw4">W4</th>
+        <th class="r cwt">Total</th></tr></thead><tbody>`;
+    nbs.forEach(n=>{
+      html+=`<tr><td>${n.cat}</td>
+        <td class="r cw1">${fz(n.w1)}</td><td class="r cw2">${fz(n.w2)}</td>
+        <td class="r cw3">${fz(n.w3)}</td><td class="r cw4">${fz(n.w4)}</td>
+        <td class="r cwt">${fn((n.w1||0)+(n.w2||0)+(n.w3||0)+(n.w4||0))}</td></tr>`;
+    });
+    html+=`</tbody></table></div>`;
+  }
+  document.getElementById('mb').innerHTML=html;
+  document.getElementById('modal').classList.add('open');
+}
+function closeM(){document.getElementById('modal').classList.remove('open');}
+
+
+function toggleCollapse(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle('hidden');
+}
+// ━━━ TAB SWITCH ━━━
+function switchTab(t){
+  document.querySelectorAll('.ntab').forEach((el,i)=>el.classList.toggle('on',['c','e','a'][i]===t));
+  ['pg-c','pg-e','pg-a'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!=='pg-'+t));
+  if(t==='e')renderEA();if(t==='a')renderAlerts();
+}
+</script>
+</body>
+</html>
